@@ -5,14 +5,25 @@ import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/libs/supabase";
 
+// ドキュメントのカラム名を定義
+interface Document {
+  privacy_policy?: string;
+  terms_of_service?: string;
+  community_guidelines?: string;
+  maintenance_status?: string;
+  patch_notes?: string;
+  updated_at: string;
+  created_at: string;
+}
+
 export default function DocumentPage({ params }: { params: { id: string } }) {
   const { id } = params;
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Document | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   // `id` に基づいて取得するカラムを決定
-  const columnMap: { [key: string]: string } = {
+  const columnMap: Record<string, keyof Document> = {
     "privacy-policy": "privacy_policy",
     "terms-of-service": "terms_of_service",
     "community-guidelines": "community_guidelines",
@@ -31,8 +42,11 @@ export default function DocumentPage({ params }: { params: { id: string } }) {
 
     async function fetchData() {
       const { data, error } = await supabase.from("documents").select("*").single();
-      if (error) setError(error.message);
-      else setData(data);
+      if (error) {
+        setError(error.message);
+      } else {
+        setData(data as Document);
+      }
       setLoading(false);
     }
 
@@ -60,20 +74,22 @@ export default function DocumentPage({ params }: { params: { id: string } }) {
         </Link>
 
         <div className="mb-8 w-full text-gray-600 text-sm md:text-base overflow-y-auto h-[60vh] p-4 border border-gray-300 rounded-lg">
-          <ReactMarkdown>{data[columnName]}</ReactMarkdown>
+          <ReactMarkdown components={{
+            h1: (props) => <h1 className="text-gray-700 text-2xl font-bold" {...props} />, 
+            h2: (props) => <h2 className="text-gray-600 text-xl font-semibold mt-4" {...props} />, 
+            h3: (props) => <h3 className="text-gray-500 text-lg font-semibold mt-3" {...props} />, 
+            p: (props) => <p className="text-black mt-2" {...props} />, 
+            li: (props) => <li className="text-black ml-6 list-disc" {...props} />, 
+            blockquote: (props) => <blockquote className="bg-gray-100 border-l-4 border-gray-500 text-gray-700 p-4 italic" {...props} />
+          }}>
+            {data ? data[columnName] || "内容がありません。" : "データがありません。"}
+          </ReactMarkdown>
         </div>
 
         <div className="flex flex-row items-end justify-center gap-5">
-          <p className="text-gray-500 mb-4">最終更新: {new Date(data.updated_at).toLocaleString()}</p>
-          <p className="text-gray-500 mb-4">作成日: {new Date(data.created_at).toLocaleString()}</p>
+          <p className="text-gray-500 mb-4">最終更新: {new Date(data?.updated_at || '').toLocaleString()}</p>
+          <p className="text-gray-500 mb-4">作成日: {new Date(data?.created_at || '').toLocaleString()}</p>
         </div>
-
-        <Link
-          href="/"
-          className="mt-4 inline-block rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base"
-        >
-          ホームに戻る
-        </Link>
       </div>
     </div>
   );
