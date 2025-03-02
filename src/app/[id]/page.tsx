@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "next/navigation";
 import { useDocumentContext, Document } from "@/context/DocumentContext";
@@ -48,8 +46,8 @@ export default function DocumentPage() {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center px-4 md:px-8 ml-0 lg:ml-0 sm:ml-64 mt-12">
-      <div className="flex flex-col items-center w-full max-w-2xl h-screen">
+    <div className="flex-1 flex items-center justify-center px-4 md:px-8 ml-0 lg:ml-0 sm:ml-64">
+      <div className="flex-1 flex justify-content items-center w-full max-w-2xl h-[85vh] mt-16">
         <div className="mb-8 w-full h-full text-gray-600 text-sm md:text-base overflow-y-auto p-4 border-2 border-gray-700 rounded-lg">
           <ReactMarkdown components={{
             h1: (props) => <h1 className="text-gray-950 text-2xl font-bold" {...props} />,
@@ -61,10 +59,10 @@ export default function DocumentPage() {
           }}>
             {data ? data[columnName] || "内容がありません。" : "データがありません。"}
           </ReactMarkdown>
-        </div>
 
-        <div className="flex flex-row items-end justify-center gap-5">
+        <div className="flex flex-row items-end justify-center gap-5 mt-7">
           <p className="text-gray-500 mb-4">最終更新: {new Date(data?.updated_at || '').toLocaleString()}</p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "@/libs/supabase";
+import { supabase } from "@/lib/supabase";
 
 export interface Document {
   privacy_policy?: string;
