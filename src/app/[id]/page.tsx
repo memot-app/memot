@@ -1,33 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import { supabase } from "@/libs/supabase";
-import { usePathname } from "next/navigation";
-
-// ドキュメントのカラム名を定義
-interface Document {
-  privacy_policy?: string;
-  terms_of_service?: string;
-  community_guidelines?: string;
-  maintenance_status?: string;
-  patch_notes?: string;
-  updated_at: string;
-  created_at: string;
-}
-
 import { useParams } from "next/navigation";
-import Sidebar from "@/components/ui/Sidebar";
-
-export default function DocumentPage() {
-  const params = useParams();
-  const pathname = usePathname();
-  const id = params?.id as string;
-
-  const [data, setData] = useState<Document | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+import { useDocumentContext, Document } from "@/context/DocumentContext";
 
   // `id` に基づいて取得するカラムを決定
   const columnMap: Record<string, keyof Document> = {
@@ -38,46 +16,38 @@ export default function DocumentPage() {
     "patch-notes": "patch_notes",
   };
 
-  const columnName = columnMap[id] || null;
+export default function DocumentPage() {
+  const params = useParams();
+  const id = params?.id as string;
+  const columnName = columnMap[id];
 
-  useEffect(() => {
-    if (!columnName) {
-      setError("無効なドキュメントIDです。");
-      setLoading(false);
-      return;
-    }
+  const { data, loading, error } = useDocumentContext();
 
-    async function fetchData() {
-      const { data, error } = await supabase.from("documents").select("*").single();
-      if (error) {
-        setError(error.message);
-      } else {
-        setData(data as Document);
-      }
-      setLoading(false);
-    }
+  if (!columnName) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-red-500 text-center">無効なドキュメントIDです。</p>
+      </div>
+    );
+  }
 
-    fetchData();
-  }, [columnName]);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-gray-500 text-center">データを読み込み中...</p>
+      </div>
+    );
+  }
 
-if (loading) {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p className="text-gray-500 text-center">データを読み込み中...</p>
-    </div>
-  );
-}
-
-if (error) {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p className="text-red-500 text-center">{error}</p>
-    </div>
-  );
-}
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-red-500 text-center">{error}</p>
+      </div>
+    );
+  }
 
   return (
-    
     <div className="flex-1 flex items-center justify-center px-4 md:px-8 ml-0 lg:ml-0 sm:ml-64">
       <div className="flex flex-col items-center w-full max-w-2xl h-screen">
         <Link
@@ -91,12 +61,12 @@ if (error) {
 
         <div className="mb-8 w-full text-gray-600 text-sm md:text-base overflow-y-auto h-[60vh] p-4 border border-gray-300 rounded-lg">
           <ReactMarkdown components={{
-            h1: (props) => <h1 className="text-gray-700 text-2xl font-bold" {...props} />, 
-            h2: (props) => <h2 className="text-gray-600 text-xl font-semibold mt-4" {...props} />, 
-            h3: (props) => <h3 className="text-gray-500 text-lg font-semibold mt-3" {...props} />, 
-            p: (props) => <p className="text-black mt-2" {...props} />, 
-            li: (props) => <li className="text-black ml-6 list-disc" {...props} />, 
-            blockquote: (props) => <blockquote className="bg-gray-100 border-l-4 border-gray-500 text-gray-700 p-4 italic" {...props} />
+            h1: (props) => <h1 className="text-gray-700 text-2xl font-bold" {...props} />,
+            h2: (props) => <h2 className="text-gray-600 text-xl font-semibold mt-4" {...props} />,
+            h3: (props) => <h3 className="text-gray-500 text-lg font-semibold mt-3" {...props} />,
+            p: (props) => <p className="text-black mt-2" {...props} />,
+            li: (props) => <li className="text-black ml-6 list-disc" {...props} />,
+            blockquote: (props) => <blockquote className="bg-gray-100 border-l-4 border-gray-500 text-gray-700 p-4 italic" {...props} />,
           }}>
             {data ? data[columnName] || "内容がありません。" : "データがありません。"}
           </ReactMarkdown>
