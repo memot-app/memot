@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/libs/supabase";
+import { usePathname } from "next/navigation";
 
 // ドキュメントのカラム名を定義
 interface Document {
@@ -16,8 +17,14 @@ interface Document {
   created_at: string;
 }
 
-export default function DocumentPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+import { useParams } from "next/navigation";
+import Sidebar from "@/components/ui/Sidebar";
+
+export default function DocumentPage() {
+  const params = useParams();
+  const pathname = usePathname();
+  const id = params?.id as string;
+
   const [data, setData] = useState<Document | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -53,16 +60,25 @@ export default function DocumentPage({ params }: { params: { id: string } }) {
     fetchData();
   }, [columnName]);
 
-  if (loading) {
-    return <p className="text-gray-500 text-center">データを読み込み中...</p>;
-  }
+if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <p className="text-gray-500 text-center">データを読み込み中...</p>
+    </div>
+  );
+}
 
-  if (error) {
-    return <p className="text-red-500 text-center">{error}</p>;
-  }
+if (error) {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <p className="text-red-500 text-center">{error}</p>
+    </div>
+  );
+}
 
   return (
-    <div className="mx-auto flex items-center justify-center w-full min-h-screen bg-white px-4 md:px-8 fixed top-0 left-0">
+    
+    <div className="flex-1 flex items-center justify-center px-4 md:px-8 ml-0 lg:ml-0 sm:ml-64">
       <div className="flex flex-col items-center w-full max-w-2xl h-screen">
         <Link
           href="/"
