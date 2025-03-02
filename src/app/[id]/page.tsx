@@ -46,9 +46,9 @@ export default function DocumentPage() {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center px-4 md:px-8 ml-0 lg:ml-0 sm:ml-64">
-      <div className="flex-1 flex justify-content items-center w-full max-w-2xl h-[85vh] mt-16">
-        <div className="mb-8 w-full h-full text-gray-600 text-sm md:text-base overflow-y-auto p-4 border-2 border-gray-700 rounded-lg">
+    <div className="flex-1 flex items-center justify-start px-4 sm:px-6 md:px-8 lg:px-16 ml-0 sm:ml-0 lg:ml-64">
+      <div className="flex-1 flex justify-center items-start w-full max-w-2xl h-[85vh] mt-24 sm:mt-20">
+        <div className="mb-8 w-full h-full text-gray-600 text-sm md:text-base overflow-y-auto p-6 sm:p-8 border-2 border-gray-700 rounded-lg">
           <ReactMarkdown components={{
             h1: (props) => <h1 className="text-gray-950 text-2xl font-bold" {...props} />,
             h2: (props) => <h2 className="text-gray-900 text-xl font-semibold mt-4" {...props} />,
@@ -60,8 +60,9 @@ export default function DocumentPage() {
             {data ? data[columnName] || "内容がありません。" : "データがありません。"}
           </ReactMarkdown>
 
-        <div className="flex flex-row items-end justify-center gap-5 mt-7">
-          <p className="text-gray-500 mb-4">最終更新: {new Date(data?.updated_at || '').toLocaleString()}</p>
+          {/* 最終更新日 */}
+          <div className="flex flex-row items-end justify-center gap-5 mt-7">
+            <p className="text-gray-500 mb-4">最終更新: {new Date(data?.updated_at || '').toLocaleString()}</p>
           </div>
         </div>
       </div>
