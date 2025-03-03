@@ -5,7 +5,7 @@ const ImageIconContext = createContext<{
   value: string;
   setValue: (newValue: string) => void;
 }>({
-  value: "/images/profileIcon/rion.png", // Web版では文字列のパスを使用
+  value: "/assets/images/profileIcon/rion.png", // Web版では文字列のパスを使用
   setValue: () => {},
 });
 
@@ -15,7 +15,7 @@ export const ImageIconProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [value, setValue] = useState<string>("/images/profileIcon/rion.png");
+  const [value, setValue] = useState<string>("/assets/images/profileIcon/rion.png");
 
   return (
     <ImageIconContext.Provider value={{ value, setValue }}>
