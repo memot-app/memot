@@ -46,7 +46,7 @@ export default function DocumentPage() {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-start px-4 sm:px-6 md:px-8 lg:px-16 ml-0 sm:ml-0 lg:ml-64">
+    <div className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16 ml-0 sm:ml-0 lg:ml-64">
       <div className="flex-1 flex justify-center items-start w-full max-w-2xl h-[85vh] mt-24 sm:mt-20">
         <div className="mb-8 w-full h-full text-gray-600 text-sm md:text-base overflow-y-auto p-6 sm:p-8 border-2 border-gray-700 rounded-lg">
           <ReactMarkdown components={{

@@ -1,7 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createContext, useContext, useState } from "react";
 
 export interface Document {
   privacy_policy?: string;
@@ -21,27 +20,22 @@ interface DocumentContextType {
 
 const DocumentContext = createContext<DocumentContextType | undefined>(undefined);
 
-export function DocumentProvider({ children }: { children: React.ReactNode }) {
-  const [data, setData] = useState<Document | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      const { data, error } = await supabase.from("documents").select("*").single();
-      if (error) {
-        setError(error.message);
-      } else {
-        setData(data as Document);
-      }
-      setLoading(false);
-    }
-
-    fetchData();
-  }, []);
+export function DocumentProvider({
+  children,
+  initialData,
+  error,
+}: {
+  children: React.ReactNode;
+  initialData: Document | null;
+  error: string | null;
+}) {
+  // 🔹 初期データをそのまま useState で保持（再取得はしない）
+  const [data] = useState<Document | null>(initialData);
+  const [loading] = useState<boolean>(false);
+  const [contextError] = useState<string | null>(error);
 
   return (
-    <DocumentContext.Provider value={{ data, loading, error }}>
+    <DocumentContext.Provider value={{ data, loading, error: contextError }}>
       {children}
     </DocumentContext.Provider>
   );
