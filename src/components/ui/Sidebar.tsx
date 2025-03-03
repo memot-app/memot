@@ -14,7 +14,7 @@ export default function Sidebar() {
       {!isOpen && (
         <button 
           onClick={() => setIsOpen(true)} 
-          className="fixed top-6 left-6 z-50 p-3 text-sm text-green-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-200"
+          className="fixed top-6 left-6 z-50 p-3 text-sm text-green-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-200"
         >
           <span className="sr-only">Open sidebar</span>
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +27,7 @@ export default function Sidebar() {
       <aside 
         className={`fixed top-0 left-0 z-40 w-72 h-screen transition-transform bg-white shadow-lg ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:translate-x-0`}
+        } lg:translate-x-0`}
       >
         <div className="h-full px-10 py-10 overflow-y-auto">
           {/* ロゴ（クリックでサイドバーを閉じる） */}
