@@ -1,36 +1,27 @@
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
-import { Post } from "@/constants/types"; // 型をインポート
 
-export const PostMemo = () => {
+export const usePostMemo = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const postMemo = async (
-    content: string,
-    userId: string
-  ): Promise<any | undefined> => {
+  const postMemo = async (content: string, userId: string) => {
     setLoading(true);
     setError(null);
 
     try {
-      // Memolog テーブルに投稿を挿入し、挿入したデータをそのまま返す
-      const { data, error } = await supabase
-        .from("Memolog")
-        .insert([
-          {
-            content: content,
-            is_public: true,
-            user_id: userId,
-          },
-        ])
-        .select("*")
-        .single();
+      const res = await fetch("/api/memo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content, userId }),
+      });
 
-      if (error) {
-        throw error;
+      if (!res.ok) {
+        throw new Error("メモの投稿に失敗しました");
       }
 
+      const data = await res.json();
       return data;
     } catch (err: any) {
       console.error("メモ送信エラー:", err.message);
