@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Sidebar from "@/components/ui/Sidebar";
+import DocumentSideBar from "@/components/sidebars/DocumentSideBar";
 import { DocumentProvider } from "@/context/DocumentContext";
 import { supabase } from "@/lib/supabase";
 import "./globals.css";
@@ -29,7 +29,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <DocumentProvider initialData={data || null} error={error?.message || null}>
-          <Sidebar />
+          <DocumentSideBar />
           {children}
         </DocumentProvider>
       </body>
