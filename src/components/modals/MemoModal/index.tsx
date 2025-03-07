@@ -4,11 +4,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Xmark } from "iconoir-react";
 import { PrimaryButton } from "@/components/buttons/PrimaryButton";
 import { Planet, Edit } from "iconoir-react";
-import { postMemo } from "@/utils/IndividualMemo/api";
+import { usePostMemo } from "@/hooks/supabase/post/postMemo"; // 修正
 import { IconText } from "@/components/headers/IconText";
 import IosSwitcheButton from "@/components/buttons/IosSwitchButton";
-//import { filterProfanity } from "@/filters/profanityFilter";
-import supabase from "@/utils/supabase/client";
+// import { filterProfanity } from "@/filters/profanityFilter";
 
 const MAX_CHAR_LIMIT = 150;
 const URL_REGEX = /https?:\/\/[^\s]+/g;
@@ -16,27 +15,18 @@ const URL_REGEX = /https?:\/\/[^\s]+/g;
 interface MemoModalProps {
   isOpen: boolean;
   onClose: () => void;
+  userId: string; // userId を親から渡すように変更
 }
 
-export function MemoModal({ isOpen, onClose }: MemoModalProps) {
+export function MemoModal({ isOpen, onClose, userId }: MemoModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
   const [memo, setMemo] = useState("");
   const [isPublic, setIsPublic] = useState(true);
-  const [userId, setUserId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [displayLength, setDisplayLength] = useState(0);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUserId(user.id);
-      }
-    };
-    getUser();
-  }, []);
+  const { postMemo, loading } = usePostMemo(); // 修正
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -83,15 +73,15 @@ export function MemoModal({ isOpen, onClose }: MemoModalProps) {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = e.target.value;
     const lines = input.split("\n");
-  
+
     if (lines.length > 10) {
       setError("メモは10行以内にしてください。");
       return;
     }
-  
+
     setMemo(input);
-    setError(null); // Clear error if line count is valid
-  
+    setError(null);
+
     const displayLen = calculateDisplayLength(input);
     setDisplayLength(displayLen);
     if (displayLen > MAX_CHAR_LIMIT) {
@@ -104,12 +94,13 @@ export function MemoModal({ isOpen, onClose }: MemoModalProps) {
   };
 
   const handleSubmit = async () => {
-    // if (filterProfanity(memo)) {
-    //   setError("禁止ワードが含まれています。");
-    //   return;
-    // }
+    if (!userId) {
+      setError("ユーザー情報が取得できませんでした。");
+      return;
+    }
+
     try {
-      const result = await postMemo(memo, isPublic, userId!);
+      const result = await postMemo(memo, userId);
       if (result) {
         window.location.reload();
         setMemo("");
@@ -145,7 +136,7 @@ export function MemoModal({ isOpen, onClose }: MemoModalProps) {
             <IosSwitcheButton checked={isPublic} onChange={handleSwitchChange} />
           </div>
         </div>
-        
+
         <div className="relative w-full h-full">
           <div
             className="absolute inset-0 p-2 text-2xl whitespace-pre-wrap"
@@ -166,7 +157,7 @@ export function MemoModal({ isOpen, onClose }: MemoModalProps) {
             style={{ color: "black", background: "transparent", fontSize: "24px" }}
           ></textarea>
         </div>
-        
+
         <div className="flex justify-end items-center mt-2">
           {error && <p className="text-red-500">{error}</p>}
           <span className={`text-sm pl-5 ${displayLength > MAX_CHAR_LIMIT ? "text-red-500" : "text-gray-600"}`}>
@@ -176,10 +167,9 @@ export function MemoModal({ isOpen, onClose }: MemoModalProps) {
       </div>
       <div ref={buttonWrapperRef} className="fixed bottom-20 w-2/12 flex justify-center items-center z-50 xl:w-3/12">
         <PrimaryButton 
-          title="メモする" 
           icon={Edit} 
           onClick={handleSubmit} 
-          disabled={error !== null || memo.length === 0}
+          disabled={error !== null || memo.length === 0 || loading}
           hideTextOnSmallScreen={false}
         />
       </div>

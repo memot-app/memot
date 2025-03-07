@@ -4,7 +4,7 @@
 import Link from "next/link";
 import React from 'react';
 import Image from 'next/image';
-import {getImageSrcById} from '@/utils/iconImage/getImageSrcById';
+import {getImageSrcById} from '@/hooks/getImageSrcById';
 
 interface ProfileButtonProps {
   path: string;             
@@ -16,7 +16,7 @@ export function ProfileButton({
   path,
   icon_number
 }: ProfileButtonProps) {
-  const icon_url = getImageSrcById(icon_number);
+  const icon_url = getImageSrcById(icon_number) || '/images/profileIcon/buta.png';
   return (
     <Link href={`/${path}`}>
       <button

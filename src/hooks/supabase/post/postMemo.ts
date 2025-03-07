@@ -9,7 +9,7 @@ export const usePostMemo = () => {
     setError(null);
 
     try {
-      const res = await fetch("/api/memo", {
+      const res = await fetch("/app/api/post/postMemo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
