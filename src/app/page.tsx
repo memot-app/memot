@@ -3,9 +3,9 @@ import React from 'react';
 import Link from "next/link";
 import Image from 'next/image';
 
-const DocumentPage = () => {
+const HomePage = () => {
   return (
-    <div className="flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16 ml-0 sm:ml-0 lg:ml-64">
+    <div className="flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16">
       
       {/* スマホ画面時に左上に表示するサイドバーボタン */}
       <button 
@@ -40,4 +40,4 @@ const DocumentPage = () => {
   );
 }
 
-export default DocumentPage;
+export default HomePage;
