@@ -6,7 +6,7 @@ import { Xmark } from 'iconoir-react';
 import Script from 'next/script';
 import supabase from "@/utils/supabase/client";
 
-const clientId = process.env.NEXT_PUBLIC_Google_Client_ID!;
+const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!;
 
 interface AccountModalProps {
   isOpen: boolean;

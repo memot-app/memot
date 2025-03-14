@@ -43,11 +43,11 @@ export default function DocumentSideBar() {
 
           <ul className="space-y-5 font-medium">
             {[
-              { href: "/privacy-policy", label: "プライバシーポリシー" },
-              { href: "/terms-of-service", label: "利用規約" },
-              { href: "/community-guidelines", label: "コミュニティガイドライン" },
-              { href: "/maintenance-status", label: "メンテナンス状況" },
-              { href: "/patch-notes", label: "パッチノート" },
+              { href: "/document/privacy-policy", label: "プライバシーポリシー" },
+              { href: "/document/terms-of-service", label: "利用規約" },
+              { href: "/document/community-guidelines", label: "コミュニティガイドライン" },
+              { href: "/document/maintenance-status", label: "メンテナンス状況" },
+              { href: "/document/patch-notes", label: "パッチノート" },
             ].map(({ href, label }) => (
               <li key={href}>
                 <Link 

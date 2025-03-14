@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import {supabase} from "@/lib/supabase";
+import supabase from "@/utils/supabase/client";
 import { LeftSideBar } from '@/components/sidebars/LeftSideBar';
 import { RightSideBar } from '@/components/sidebars/RightSideBar';
 import { BottomBar } from '@/components/bar/BottomBar';
@@ -86,7 +86,7 @@ export default function Home() {
 
       {/* モーダルコンポーネントの配置 */}
       <SettingsModal isOpen={isSettingsModalOpen} onClose={closeSettingsModal} />
-      <MemoModal isOpen={isMemoModalOpen} onClose={closeMemoModal} />
+      <MemoModal isOpen={isMemoModalOpen} onClose={closeMemoModal}/>
       <AccountModal
         isOpen={isAccountModalOpen}
         onClose={closeAccountModal}

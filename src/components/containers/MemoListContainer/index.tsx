@@ -1,25 +1,26 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { MemoLogType } from "@/types";
+
+import React, { useState } from "react";
+import { Post } from "@/constants/types";
 import ReloadButton from "@/components/buttons/ReloadButton";
 import { PostCard } from "@/components/cards/PostingCard";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 
 // 仮データを用意
-const mockMemos: MemoLogType[] = Array.from({ length: 15 }, (_, i) => ({
-  id: `mock-${i}`,
+const mockMemos: Post[] = Array.from({ length: 15 }, (_, i) => ({
+  id: i, // `number` 型に修正
+  user_id: `user-${i + 1}`, // `user_id` を追加
+  title: `仮のタイトル ${i + 1}`, // `title` を適切に設定
   content: `これは仮のメモ ${i + 1} です。`,
-  created_at: new Date(Date.now() - i * 1000 * 60 * 5).toISOString(), // 5分間隔で過去のデータを作成
-  account: {
-    display_name: `User ${i + 1}`,
-    user_name: `user${i + 1}`,
-    profile_picture: i % 10, // アイコン用の仮の数字
-  },
+  path: `/user${i + 1}`, // `path` を適用
+  created_at: new Date(Date.now() - i * 1000 * 60 * 5).toISOString(), // 5分間隔の過去データ
+  timeAgo: "", // 一旦空で定義（後で `formatDistanceToNow` を適用）
+  icon_number: i % 10, // `icon_number` に直接数値をセット
 }));
 
 export const MemoListContainer = () => {
-  const [memos, setMemos] = useState<MemoLogType[]>(mockMemos);
+  const [memos, setMemos] = useState<Post[]>(mockMemos);
 
   // リロードボタン用の仮の関数（実際にはデータを変更しない）
   const getMemos = () => {
@@ -28,16 +29,16 @@ export const MemoListContainer = () => {
   };
 
   return (
-    <div className="w-fullmd:min-w-[640px] bg-white rounded-full">
+    <div className="w-full md:min-w-[640px] bg-white rounded-lg">
       <ReloadButton onReload={getMemos} />
-      <div className=" overflow-hidden rounded-3xl  border-2 border-gray-400 ">
-        {memos.map((memo: MemoLogType) => (
+      <div className="overflow-hidden rounded-3xl border-2 border-gray-400">
+        {memos.map((memo) => (
           <PostCard
             key={memo.id}
-            title={memo.account.display_name || "No Name"}
+            title={memo.title} // `display_name` ではなく `title`
             content={memo.content}
-            path={memo.account.user_name}
-            icon_number={memo.account.profile_picture}
+            path={memo.path} // `user_id` ではなく `path`
+            icon_number={memo.icon_number} // そのまま適用
             timeAgo={formatDistanceToNow(new Date(memo.created_at), {
               addSuffix: true,
               locale: ja,

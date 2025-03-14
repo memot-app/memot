@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { WarningTriangleSolid } from 'iconoir-react';
-import supabase from '@/utils/supabase/client';
+import supabase from "@/utils/supabase/client";
 
 interface SettingsModalProps {
   isOpen: boolean;

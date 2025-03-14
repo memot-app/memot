@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect } from "react";
-import { GetGroupData } from "@/hooks/supabase/group/getGroupData";
+import { GetGroupData } from "@/hooks/group/getGroupData";
 
 interface GroupDataType {
   groupData: any[]; 

@@ -4,9 +4,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Xmark } from "iconoir-react";
 import { PrimaryButton } from "@/components/buttons/PrimaryButton";
 import { Planet, Edit } from "iconoir-react";
-import { usePostMemo } from "@/hooks/supabase/post/postMemo"; // 修正
+import { usePostMemo } from "@/hooks/post/postMemo"; // 修正
 import { IconText } from "@/components/headers/IconText";
 import IosSwitcheButton from "@/components/buttons/IosSwitchButton";
+import supabase from "@/utils/supabase/client";
 // import { filterProfanity } from "@/filters/profanityFilter";
 
 const MAX_CHAR_LIMIT = 150;
@@ -15,18 +16,29 @@ const URL_REGEX = /https?:\/\/[^\s]+/g;
 interface MemoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  userId: string; // userId を親から渡すように変更
 }
 
-export function MemoModal({ isOpen, onClose, userId }: MemoModalProps) {
+export function MemoModal({ isOpen, onClose }: MemoModalProps) {
+
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
   const [memo, setMemo] = useState("");
+  const [userId, setUserId] = useState<string | null>(null);
   const [isPublic, setIsPublic] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [displayLength, setDisplayLength] = useState(0);
   const { postMemo, loading } = usePostMemo(); // 修正
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id);
+      }
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
