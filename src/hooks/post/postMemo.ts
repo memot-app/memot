@@ -1,4 +1,5 @@
 import { useState } from "react";
+import supabase from "@/utils/supabase/client";
 
 export const usePostMemo = () => {
   const [loading, setLoading] = useState(false);
@@ -9,10 +10,18 @@ export const usePostMemo = () => {
     setError(null);
 
     try {
-      const res = await fetch("/app/api/post/postMemo", {
+      // 認証トークンの取得
+      const { data: session } = await supabase.auth.getSession();
+      const token = session?.session?.access_token;
+      if (!token) {
+        throw new Error("認証トークンが取得できませんでした");
+      }
+
+      const res = await fetch("/api/post/post-memo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ content, userId }),
       });
@@ -23,9 +32,12 @@ export const usePostMemo = () => {
 
       const data = await res.json();
       return data;
-    } catch (err: any) {
-      console.error("メモ送信エラー:", err.message);
-      setError(err.message || "メモ送信に失敗しました。");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message || "メモ送信に失敗しました。");
+      } else {
+        setError("メモ送信に失敗しました。");
+      }
       return undefined;
     } finally {
       setLoading(false);

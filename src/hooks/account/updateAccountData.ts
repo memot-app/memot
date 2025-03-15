@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import { supabase } from "@/lib/supabase";
 
 interface UpdateError {
   message: string;
@@ -18,48 +17,28 @@ export const useUpdateAccountData = () => {
       bio,
     }: {
       id: string;
-      username: string;
-      displayName: string;
-      profilePicture: string;
+      username?: string;
+      displayName?: string;
+      profilePicture?: string;
       bio?: string;
     }) => {
       try {
-        // ✅ `user_name` の重複チェック（他のユーザーと重複しないか確認）
-        const { data: existingUsers, error: checkError } = await supabase
-          .from("account")
-          .select("id")
-          .neq("id", id) 
-          .eq("user_name", username);
+        const response = await fetch("/api/account/update", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, username, displayName, profilePicture, bio }),
+        });
 
-        if (checkError) throw checkError;
-        if (existingUsers && existingUsers.length > 0) {
-          setUpdateError({
-            message: "このユーザー名はすでに使用されています。",
-            code: "usernameTaken",
-          });
+        const result = await response.json();
+
+        if (!response.ok) {
+          setUpdateError({ message: result.error, code: result.code || "updateFailed" });
           return false;
         }
 
-        // ✅ アカウント情報を更新
-        const { error } = await supabase
-          .from("account")
-          .update({
-            user_name: username,
-            display_name: displayName,
-            profile_picture: profilePicture,
-            bio: bio || null, 
-            updated_at: new Date(),
-          })
-          .eq("id", id);
-
-        if (error) throw error;
-
         return true;
-      } catch (err: any) {
-        setUpdateError({
-          message: err.message || "アカウント情報の更新に失敗しました。",
-          code: "updateFailed",
-        });
+      } catch (err: unknown) {
+        setUpdateError({ message: (err as Error).message || "アカウント情報の更新に失敗しました。", code: "updateFailed" });
         return false;
       }
     },
