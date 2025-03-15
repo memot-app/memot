@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Planet, Settings, LogIn, BellNotification, Search } from "iconoir-react";
+import { Planet, Settings, LogIn, Search } from "iconoir-react";
 import Image from "next/image";
 
 // components
@@ -10,7 +10,6 @@ import { ActionButton } from "@/components/buttons/ActionButton";
 import { PrimaryButton } from "@/components/buttons/PrimaryButton";
 
 // modals
-import { MemoModal } from "@/components/modals/MemoModal";
 import { AccountModal } from "@/components/modals/AccountModal";
 import SettingsModal from "@/components/modals/SettingsModal";
 
@@ -22,12 +21,11 @@ import { useAccountIdData } from "@/hooks/account/getAcountData";
 
 export function LeftSideBar() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 
-  // ユーザー情報の取得（useAccountData を利用）
+  // ユーザー情報の取得
   const { account: userData, loading: isUserLoading } = useAccountIdData(userId!);
 
   useEffect(() => {
@@ -56,12 +54,9 @@ export function LeftSideBar() {
     checkSession();
   }, []);
 
-  const buttonIcon = isLogin ? BellNotification : LogIn;
-  const buttonAction = isLogin ? () => setIsMemoModalOpen(true) : () => setIsAccountModalOpen(true);
-
   const openSettingsModal = () => setIsSettingsModalOpen(true);
   const closeSettingsModal = () => setIsSettingsModalOpen(false);
-  const closeMemoModal = () => setIsMemoModalOpen(false);
+  const openAccountModal = () => setIsAccountModalOpen(true);
   const closeAccountModal = () => setIsAccountModalOpen(false);
 
   if (isUserLoading) {
@@ -78,7 +73,7 @@ export function LeftSideBar() {
         <Image src="/icons/club-icon.svg" alt="Example Image" width={30} height={30} />
       </div>
 
-      {/* アイコンとボタンを囲む枠（縦中央に配置） */}
+      {/* アイコンとボタンを囲む枠 */}
       <div className="flex flex-col items-center justify-center bg-contentbg rounded-2xl">
         {isLogin && userId && (
           <ProfileButton
@@ -92,16 +87,12 @@ export function LeftSideBar() {
         {isLogin && (
           <PrimaryButton icon={Settings} onClick={openSettingsModal} hideTextOnSmallScreen={true} />
         )}
-        <PrimaryButton icon={buttonIcon} onClick={buttonAction} hideTextOnSmallScreen={true} />
+        <PrimaryButton icon={LogIn} onClick={openAccountModal} hideTextOnSmallScreen={true} />
       </div>
 
+      {/* モーダル */}
       <SettingsModal isOpen={isSettingsModalOpen} onClose={closeSettingsModal} />
-      <MemoModal isOpen={isMemoModalOpen} onClose={closeMemoModal} />
-      <AccountModal
-        isOpen={isAccountModalOpen}
-        onClose={closeAccountModal}
-        onLogin={() => setIsLogin(true)}
-      />
+      <AccountModal isOpen={isAccountModalOpen} onClose={closeAccountModal} onLogin={() => setIsLogin(true)} />
     </div>
   );
 }

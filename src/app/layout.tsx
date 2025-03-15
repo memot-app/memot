@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import React from "react";
+import { LeftSideBar } from "@/components/sidebars/LeftSideBar";
+import { RightSideBar } from "@/components/sidebars/RightSideBar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +15,22 @@ export default function Layout({
   return (
     <html lang="ja">
       <body>
-        {children}
+        <div className="flex justify-center bg-contentbg">
+          {/* Left Sidebar (固定) */}
+          <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 left-0 h-full p-4 bg-contentbg shadow-lg">
+            <LeftSideBar />
+          </div>
+
+          {/* メインコンテンツ（スクロール可能） */}
+          <div className="flex flex-col w-full md:w-[50%] max-w-3xl ml-auto mr-auto">
+            {children}
+          </div>
+
+          {/* Right Sidebar (固定) */}
+          <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 right-0 h-full p-4 bg-contentbg shadow-lg">
+            <RightSideBar />
+          </div>
+        </div>
       </body>
     </html>
   );
