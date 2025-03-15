@@ -14,13 +14,14 @@ import { ProceedButton } from '@/components/buttons/ProceedButton';
 
 // API
 import supabase from '@/utils/supabase/client';
-import { updateUserIcon } from '@/utils/signup/api';
+import { useUpdateAccountData } from "@/hooks/account/updateAccountData";
 
 const CreateIcon = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageId, setSelectedImageId] = useState<number | null>(null); 
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const { updateAccountData, updateError } = useUpdateAccountData();
   const activeStep = 2;
 
   const handleImageSelect = (id: number, imageSrc: string) => {
@@ -51,11 +52,16 @@ const CreateIcon = () => {
       console.error("ユーザーIDまたは選択された画像IDが存在しません");
       return;
     }
-    const result = await updateUserIcon(userId, selectedImageId);
-    if (result) {
+
+    const success = await updateAccountData({
+      id: userId,
+      profilePicture: String(selectedImageId), // 数値を文字列として渡す
+    });
+
+    if (success) {
       console.log("アイコンが更新されました");
     } else {
-      console.error("アイコン更新に失敗しました");
+      console.error("アイコン更新に失敗しました:", updateError?.message);
     }
   };
 

@@ -1,43 +1,97 @@
 "use client";
-import React from 'react';
-import Link from "next/link";
-import Image from 'next/image';
 
-const HomePage = () => {
+import React, { useState, useEffect } from 'react';
+import supabase from "@/utils/supabase/client";
+import { LeftSideBar } from '@/components/sidebars/LeftSideBar';
+import { RightSideBar } from '@/components/sidebars/RightSideBar';
+import { BottomBar } from '@/components/bar/BottomBar';
+import SettingsModal from "@/components/modals/SettingsModal";
+import { MemoModal } from "@/components/modals/MemoModal";
+import { AccountModal } from "@/components/modals/AccountModal";
+import { MemoListContainer } from "@/components/containers/MemoListContainer";
+import { FloatingInputBox } from "@/components/cards/PostCard";
+import TopicBar from "@/components/bar/TopicBar";
+
+export default function Home() {
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isMemoModalOpen, setIsMemoModalOpen] = useState(false);
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error('Failed to get session:', error.message);
+      } else if (session) {
+        setIsLogin(true);
+      }
+
+      const { data: authListener } = supabase.auth.onAuthStateChange(
+        (event) => {
+          if (event === 'SIGNED_IN') {
+            setIsLogin(true);
+          } else if (event === 'SIGNED_OUT') {
+            setIsLogin(false);
+          }
+        }
+      );
+
+      return () => authListener.subscription.unsubscribe();
+    };
+
+    checkSession();
+  }, []);
+
+  // ボタンのアクション関数
+  const openSettingsModal = () => setIsSettingsModalOpen(true);
+  const closeSettingsModal = () => setIsSettingsModalOpen(false);
+  const closeMemoModal = () => setIsMemoModalOpen(false);
+  const closeAccountModal = () => setIsAccountModalOpen(false);
+
+  // ボタンのアクション定義
+  const onPlanetClick = () => { /* "みんな" ボタンのアクション */ };
+  const buttonAction = isLogin ? () => setIsMemoModalOpen(true) : () => setIsAccountModalOpen(true);
+
   return (
-    <div className="flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16">
-      
-      {/* スマホ画面時に左上に表示するサイドバーボタン */}
-      <button 
-        data-drawer-target="default-sidebar" 
-        data-drawer-toggle="default-sidebar" 
-        aria-controls="default-sidebar" 
-        type="button" 
-        className="fixed top-4 left-4 z-50 p-3 text-sm text-green-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-200"
-      >
-        <span className="sr-only">Open sidebar</span>
-      </button>
-
-      <div className="flex flex-col items-center w-full max-w-xs sm:max-w-md md:max-w-2xl min-h-screen justify-center text-center">
-        
-        {/* ロゴリンク */}
-        <Link href="/" className="mb-8 inline-flex items-center gap-5 text-2xl font-bold text-gray-900 md:text-3xl" aria-label="logo">
-          <Image src="/icons/club-icon.svg" alt="Webut Logo" width={40} height={40} />
-          Webut
-        </Link>
-        
-        {/* メッセージ */}
-        <div className="mb-8 w-full text-gray-900 text-lg md:text-xl font-semibold">
-          <h1 className="text-2xl md:text-3xl font-bold">Webut開発者一同から皆様へ</h1>
-          <p className="mt-4 text-gray-800 text-xl md:text-lg leading-relaxed">
-            このアプリを楽しんでいただけると嬉しいです！<br />
-            快適にご利用いただけるよう、皆さんのご意見をお待ちしています。<br />
-            フィードバックは、それぞれのプラットフォームやDiscordでお気軽にお寄せください！
-          </p>
-        </div>
+    <div className="flex justify-center bg-contentbg">
+      {/* Left Sidebar (固定) */}
+      <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 left-0 h-full p-4 bg-contentbg shadow-lg">
+        <LeftSideBar />
       </div>
+
+      {/* メインコンテンツ（スクロール可能） */}
+      <div className="flex flex-col w-full md:w-[50%] max-w-3xl ml-auto mr-auto">
+        <TopicBar />
+        <MemoListContainer />
+      </div>
+
+      {/* Right Sidebar (固定) */}
+      <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 right-0 h-full p-4 bg-contentbg shadow-lg">
+        <RightSideBar />
+      </div>
+
+      {/* Bottom Navigation for mobile */}
+      <div className="md:hidden fixed bottom-0 w-full">
+        <BottomBar
+          isLogin={isLogin}
+          onPlanetClick={onPlanetClick}
+          onProfileClick={buttonAction}
+          onSettingsClick={openSettingsModal}
+        />
+      </div>
+
+      {/* フローティング入力ボックス（下中央固定配置） */}
+      <FloatingInputBox />
+
+      {/* モーダルコンポーネントの配置 */}
+      <SettingsModal isOpen={isSettingsModalOpen} onClose={closeSettingsModal} />
+      <MemoModal isOpen={isMemoModalOpen} onClose={closeMemoModal}/>
+      <AccountModal
+        isOpen={isAccountModalOpen}
+        onClose={closeAccountModal}
+        onLogin={() => setIsLogin(true)}
+      />
     </div>
   );
 }
-
-export default HomePage;

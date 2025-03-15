@@ -18,7 +18,7 @@ import SettingsModal from "@/components/modals/SettingsModal";
 import supabase from "@/utils/supabase/client";
 
 // hooks
-import { useAccountData } from "@/hooks/account/getAcountData";
+import { useAccountIdData } from "@/hooks/account/getAcountData";
 
 export function LeftSideBar() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
@@ -28,7 +28,7 @@ export function LeftSideBar() {
   const [userId, setUserId] = useState<string | null>(null);
 
   // ユーザー情報の取得（useAccountData を利用）
-  const { account: userData, loading: isUserLoading } = useAccountData(userId!);
+  const { account: userData, loading: isUserLoading } = useAccountIdData(userId!);
 
   useEffect(() => {
     const checkSession = async () => {

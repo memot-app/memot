@@ -10,7 +10,7 @@ import { GuideTitle } from '@/components/headers/GuideTitle';
 import { ProceedButton } from '@/components/buttons/ProceedButton';
 
 // API
-import { updateUserHandle } from '@/utils/signup/api';
+import { useUpdateAccountData } from "@/hooks/account/updateAccountData";
 import supabase from '@/utils/supabase/client';
 
 // MUI
@@ -23,6 +23,7 @@ const CreateUserName = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [helperText, setHelperText] = useState('ハンドルネームは3〜10文字で入力してください');
   const [isError, setIsError] = useState(false);
+  const { updateAccountData, updateError } = useUpdateAccountData();
 
   // ログインしているユーザーIDを取得
   useEffect(() => {
@@ -66,11 +67,16 @@ const CreateUserName = () => {
       console.error("ユーザーIDが存在しません");
       return;
     }
-    const result = await updateUserHandle(userId, display_name);
-    if (result) {
+
+    const success = await updateAccountData({
+      id: userId,
+      displayName: display_name,
+    });
+
+    if (success) {
       console.log("ハンドルネームが更新されました");
     } else {
-      console.error("ハンドルネームの更新に失敗しました");
+      console.error("ハンドルネームの更新に失敗しました:", updateError?.message);
     }
   };
 
@@ -97,13 +103,19 @@ const CreateUserName = () => {
             onChange={handleUsernameChange}
             error={isError}
             helperText={helperText}
-            slotProps={
-              {formHelperText() {
-                return {style: {color: isError ? 'red' : 'black'
-              },}
-            }}}
+            slotProps={{
+              formHelperText() {
+                return {
+                  style: { color: isError ? 'red' : 'black' },
+                };
+              },
+            }}
           />
         </Box>
+
+        {/* エラーメッセージの表示 */}
+        {updateError && <p className="text-red-500">{updateError.message}</p>}
+
         <ProceedButton
           title="登録する"
           icon={ArrowRightCircle}

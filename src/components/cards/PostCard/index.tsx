@@ -1,75 +1,32 @@
 import React, { useState, useRef, useEffect } from "react";
 import { TextareaAutosize } from "@mui/material";
 import { MediaImagePlus } from "iconoir-react";
-
-interface PostCardProps {
-  content: string;
-  path: string;
-  timeAgo: string;
-  icon_number: number;
-}
-
-const parseContentWithLinks = (text: string) => {
-  const urlPattern = /(https?:\/\/[^\s]+)/g;
-  return text.split("\n").map((line, lineIndex) => (
-    <span key={lineIndex} style={{ display: "block", whiteSpace: "pre-wrap" }}>
-      {line.split(urlPattern).map((part, index) => {
-        if (urlPattern.test(part)) {
-          return (
-            <a
-              key={index}
-              href={part}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline"
-            >
-              {part.length > 20 ? `${part.slice(0, 17)}...` : part}
-            </a>
-          );
-        }
-        return <span key={index}>{part}</span>;
-      })}
-    </span>
-  ));
-};
-
-export function PostCard({ content, path, timeAgo, icon_number }: PostCardProps) {
-  return (
-    <div className="w-full bg-white border-b border-gray-200 p-4">
-      <div className="flex justify-between items-center">
-        <div>
-          <div className="ml-16 mr-24 pb-4">
-            <p className="text-gray-700">{parseContentWithLinks(content)}</p>
-          </div>
-        </div>
-        <div className="flex flex-col items-center m-5">
-          <span className="text-base text-gray-500">{timeAgo}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { usePostMemo } from "@/hooks/post/postMemo";
+import supabase from "@/utils/supabase/client";
 
 export function FloatingInputBox() {
   const [text, setText] = useState("");
-  const [posts, setPosts] = useState<PostCardProps[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+  const [userId, setUserId] = useState<string | null>(null);
+  const { postMemo } = usePostMemo();
   useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id);
+      }
+    };
+    getUser();
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, [text]);
 
-  const handleSubmit = () => {
-    if (text.trim() !== "") {
-      setPosts([
-        { content: text, path: "/profile", timeAgo: "Just now", icon_number: 1 },
-        ...posts,
-      ]);
-      setText("");
-    }
+  const handleSubmit = async () => {
+    console.log("送信前チェック: content, userId", text, userId);
+    const result = await postMemo(text, userId!);
+    console.log("送信結果:", result);
   };
 
   return (
@@ -89,11 +46,6 @@ export function FloatingInputBox() {
         >
           <MediaImagePlus width={24} height={24} className="text-white" />
         </button>
-      </div>
-      <div className="w-full mt-3">
-        {posts.map((post, index) => (
-          <PostCard key={index} {...post} />
-        ))}
       </div>
     </div>
   );

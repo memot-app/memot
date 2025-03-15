@@ -11,7 +11,7 @@ import { ProceedButton } from '@/components/buttons/ProceedButton';
 import { ArrowRightCircle } from 'iconoir-react';
 
 // API
-import { updateUserId } from '@/utils/signup/api';
+import { useUpdateAccountData } from "@/hooks/account/updateAccountData";
 import supabase from '@/utils/supabase/client';
 
 // MUI
@@ -23,7 +23,7 @@ const CreateUserName = () => {
   const [error, setError] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   const isButtonDisabled = error !== "" || user_name === "";
-
+  const { updateAccountData, updateError } = useUpdateAccountData();
   // ログインしているユーザーIDを取得
   useEffect(() => {
     const fetchUser = async () => {
@@ -51,19 +51,24 @@ const CreateUserName = () => {
     setUserName(value);
   };
 
+
   const handleProceedClick = async () => {
     if (!userId) {
       console.error("ユーザーIDが存在しません");
       return;
     }
-    const result = await updateUserId(userId, user_name);
-    if (result) {
+
+    const success = await updateAccountData({
+      id: userId,
+      username: user_name,
+    });
+
+    if (success) {
       console.log("ユーザー名が更新されました");
     } else {
-      console.error("ユーザー名の更新に失敗しました");
+      console.error("ユーザー名の更新に失敗しました:", updateError?.message);
     }
   };
-
   return (
     <div className="pl-8 pt-8 mb-5 h-full">
       <Image
