@@ -1,27 +1,27 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
-export async function GET(request: Request, { params }: { params: { userId: string } }) {
-  const supabase = await createClient(); // `await` で解決
-
+export async function GET(
+  request: Request,
+  context: { params: { userId: string } }
+) {
+  const { params } = context; // context 経由で params を取得
   const userId = params.userId;
+  const supabase = await createClient();
   if (!userId) {
     return NextResponse.json({ error: "ユーザーIDが必要です" }, { status: 400 });
   }
-
   try {
-    // ユーザー情報を取得
     const { data, error } = await supabase
       .from("account")
       .select("id, display_name, user_name, profile_picture, post_count, bio")
       .eq("id", userId)
       .single();
-
     if (error || !data) {
       return NextResponse.json({ error: "アカウント情報が見つかりません" }, { status: 404 });
     }
 
-    // フォロー数とフォロワー数を並列取得
+    // フォロー数とフォロワー数を取得
     const [{ count: followCount }, { count: followerCount }] = await Promise.all([
       supabase
         .from("follow")
