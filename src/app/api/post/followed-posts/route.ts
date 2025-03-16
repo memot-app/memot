@@ -9,21 +9,20 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "ユーザーIDが必要です" }, { status: 400 });
   }
 
-  const supabase = await createClient(); // 修正: await を追加
+  const supabase = await createClient(); // 修正: `await` を追加
 
   try {
     // フォローしているユーザーのIDを取得
     const { data: followsData, error: followsError } = await supabase
       .from("follow")
-      .select("follow")
-      .eq("follower", userId);
+      .select("follower, follow") // 明示的にカラム名を指定
+      .eq("follow", userId);
 
-    if (followsError) {
-      throw followsError;
-    }
+    if (followsError) throw followsError;
 
-    const followedIds = followsData?.map((item) => item.follow) || [];
-    followedIds.push(userId);
+    // フォローしているユーザー + 自分の投稿を取得
+    const followedIds = new Set(followsData?.map((item) => item.follow) || []);
+    followedIds.add(userId);
 
     // 投稿データの取得
     const { data, error } = await supabase
@@ -41,17 +40,16 @@ export async function GET(request: Request) {
           )
         `
       )
-      .in("user_id", followedIds)
+      .in("user_id", Array.from(followedIds)) // 配列化して渡す
       .eq("is_public", true)
       .order("created_at", { ascending: false })
       .limit(100);
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     return NextResponse.json({ posts: data }, { status: 200 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

@@ -77,17 +77,20 @@ export function LeftSideBar() {
       <div className="flex flex-col items-center justify-center bg-contentbg rounded-2xl">
         {isLogin && userId && (
           <ProfileButton
+            title={userData?.display_name ?? "No Name"}
             path={userData?.user_name ?? "nobody"}
-            hideTextOnSmallScreen={true}
+            hideTextOnSmallScreen={false}
             icon_number={userData?.profile_picture ?? 1}
           />
         )}
         <ActionButton path="/" icon={Planet} />
         <ActionButton path="/" icon={Search} />
-        {isLogin && (
+        {isLogin ? (
           <PrimaryButton icon={Settings} onClick={openSettingsModal} hideTextOnSmallScreen={true} />
-        )}
-        <PrimaryButton icon={LogIn} onClick={openAccountModal} hideTextOnSmallScreen={true} />
+        ): (
+          <PrimaryButton icon={LogIn} onClick={openAccountModal} hideTextOnSmallScreen={true} />
+        )
+          }
       </div>
 
       {/* モーダル */}

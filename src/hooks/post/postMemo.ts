@@ -17,7 +17,7 @@ export const usePostMemo = () => {
         throw new Error("認証トークンが取得できませんでした");
       }
 
-      const res = await fetch("/api/post/post-memo", {
+      const res = await fetch("/api/post/postMemo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

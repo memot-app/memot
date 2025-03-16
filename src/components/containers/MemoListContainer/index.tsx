@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { Post } from "@/constants/types";
 import ReloadButton from "@/components/buttons/ReloadButton";
 import { PostCard } from "@/components/cards/PostingCard";
-import { formatDistanceToNow } from "date-fns";
-import { ja } from "date-fns/locale";
 
 // 仮データを用意
 const mockMemos: Post[] = Array.from({ length: 15 }, (_, i) => ({
@@ -35,14 +33,11 @@ export const MemoListContainer = () => {
         {memos.map((memo) => (
           <PostCard
             key={memo.id}
-            title={memo.title} // `display_name` ではなく `title`
+            title={memo.title}
             content={memo.content}
-            path={memo.path} // `user_id` ではなく `path`
-            icon_number={memo.icon_number} // そのまま適用
-            timeAgo={formatDistanceToNow(new Date(memo.created_at), {
-              addSuffix: true,
-              locale: ja,
-            })}
+            path={memo.path}
+            icon_number={memo.icon_number}
+            timeAgo={memo.created_at} 
           />
         ))}
       </div>

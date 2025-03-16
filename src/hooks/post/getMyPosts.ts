@@ -12,7 +12,7 @@ export const useMyPosts = (userId: string | undefined) => {
     setError(null);
     
     try {
-      const response = await fetch(`/api/get-mypost/posts/${userId}`);
+      const response = await fetch(`/api/post/getMyPost/${userId}`);
       const data = await response.json();
 
       if (!response.ok) {

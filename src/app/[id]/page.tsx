@@ -20,7 +20,7 @@ import { useAccountNameData } from '@/hooks/account/getAcountData';
 import { getImageSrcById } from '@/hooks/getImageSrcById';
 
 //types
-import { Post, Account } from '@/constants/types';
+import { Account } from '@/constants/types';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -57,10 +57,8 @@ export default function Profile() {
   const [countMemos, setCountMemos] = useState(0);
   const [value, setValue] = useState(0);
   const [loading, setLoading] = useState(true);
-  const { posts } = useMyPosts(id);
-  const [memos, setMemos] = useState<Post[]>(posts);
   const { account } = useAccountNameData(id);
-
+  const { posts } = useMyPosts(account?.id);
   useEffect(() => {
     const getMemos = async () => {
       try {
@@ -68,7 +66,6 @@ export default function Profile() {
         setUser(account);
         setImage(getImageSrcById(account.profile_picture) || "1");
         setCountMemos(account.post_count);
-        setMemos(posts);
       } catch (error) {
         console.error("Failed to fetch memos or user data:", error);
       } finally {
@@ -83,8 +80,26 @@ export default function Profile() {
   };
 
   const renderTabPanelContent = (daysAgo: number) => {
-    return memos.length > 0 ? (
-      memos.map((memo) => (
+    // 現在の日付を取得（時刻を 00:00:00 にリセット）
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+  
+    // 投稿データをフィルタリング
+    const filteredPosts = posts.filter((memo) => {
+      // `memo.created_at` を `Date` オブジェクトに変換
+      const createdAt = new Date(memo.created_at);
+      createdAt.setHours(0, 0, 0, 0);
+  
+      // 経過日数を計算
+      const diffTime = today.getTime() - createdAt.getTime();
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+      // 指定された `daysAgo` と一致するメモのみ返す
+      return diffDays === daysAgo;
+    });
+  
+    return filteredPosts.length > 0 ? (
+      filteredPosts.map((memo) => (
         <PostCard
           key={memo.id}
           title={user?.display_name || "No Name"}
@@ -98,6 +113,7 @@ export default function Profile() {
       <div>{daysAgo === 0 ? "今日のメモはありません" : `${daysAgo}日前にメモはされてません`}</div>
     );
   };
+  
 
   if (loading) {
     return <LoadingScreen />;

@@ -2,9 +2,7 @@
 import React from 'react';
 // import { useState } from "react";
 import { ProfileButton } from "@/components/buttons/ProfileButton";
-// import { IconButton } from '@mui/material';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
-// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {getRelativeTimeString} from "@/hooks/timeUtils";
 
 interface PostCardProps {
   title: string;
@@ -33,7 +31,7 @@ const parseContentWithLinks = (text: string) => {
   ));
 };
 
-export function PostCard({content, path, timeAgo, icon_number }: PostCardProps) {
+export function PostCard({ title, content, path, timeAgo, icon_number }: PostCardProps) {
   // const [favo, setFavo] = useState(false);
   // const handleClick = () => {
   //   if (favo === false) {
@@ -46,13 +44,13 @@ export function PostCard({content, path, timeAgo, icon_number }: PostCardProps) 
     <div className="w-full bg-white border-b border-gray-200">
       <div className="flex justify-between items-center">
         <div>
-          <ProfileButton path={path} icon_number={icon_number} />
+          <ProfileButton title={title} path={path} icon_number={icon_number} hideTextOnSmallScreen={true}/>
           <div className="ml-16 mr-24 pb-4">
             <p className="text-gray-700">{parseContentWithLinks(content)}</p>
           </div>
         </div>
         <div className="flex flex-col items-center m-5">
-          <span className="text-base text-gray-500">{timeAgo}</span>
+          <span className="text-base text-gray-500">{getRelativeTimeString(timeAgo)}</span>
           {/* <IconButton onClick={handleClick}>
             {favo ? <FavoriteIcon style={{ color: '#F55757' ,fontSize: '2rem'}} /> : <FavoriteBorderIcon style={{ fontSize: '2rem' }}/>}
           </IconButton> */}

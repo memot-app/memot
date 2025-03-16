@@ -3,10 +3,11 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { userId: string } }
+  context: { params: { userId: string } }
 ) {
-  const { userId } = params;
-  const supabase = await createClient(); // `await` を追加
+  const { params } = context; // context 経由で params を取得
+  const userId = params.userId;
+  const supabase = await createClient();
 
   if (!userId) {
     return NextResponse.json({ error: "ユーザーIDが必要です" }, { status: 400 });
