@@ -1,69 +1,188 @@
 "use client";
 
-import React from "react";
-import ReactMarkdown from "react-markdown";
-import { useParams } from "next/navigation";
-import { useDocumentContext, Document } from "@/context/DocumentContext";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
 
-// `id` に基づいて取得するカラムを決定
-const columnMap: Record<string, keyof Document> = {
-  "privacy-policy": "privacy_policy",
-  "terms-of-service": "terms_of_service",
-  "community-guidelines": "community_guidelines",
-  "maintenance-status": "maintenance_status",
-  "patch-notes": "patch_notes",
-};
+//packages
+import { Edit } from 'iconoir-react';
+import { Tabs, Tab, Box } from '@mui/material';
 
-export default function DocumentPage() {
-  const params = useParams();
-  const id = params?.id as string;
-  const columnName = columnMap[id];
+//components
+import { PostCard } from '@/components/cards/PostingCard';
+import { ReturnButton } from '@/components/buttons/ReturnButton';
+import ArrowBox from '@/components/boxes/ArrowBox';
+import LoadingScreen from '@/components/LoadingScreen';
 
-  const { data, loading, error } = useDocumentContext();
+//utils
+import { useMyPosts } from '@/hooks/post/getMyPosts';
+import { useAccountNameData } from '@/hooks/account/getAcountData';
+import { getImageSrcById } from '@/hooks/getImageSrcById';
 
-  if (!columnName) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-500 text-center">無効なドキュメントIDです。</p>
-      </div>
+//types
+import { Account } from '@/constants/types';
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+export default function Profile() {
+  const { id } = useParams<{ id: string }>();
+  const [user, setUser] = useState<Account | null>(null);
+  const [image, setImage] = useState<string>("/images/profileIcon/buta.png");
+  const [countMemos, setCountMemos] = useState(0);
+  const [value, setValue] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const { account } = useAccountNameData(id);
+  const { posts } = useMyPosts(account?.id);
+  useEffect(() => {
+    const getMemos = async () => {
+      try {
+        if (!account) return;
+        setUser(account);
+        setImage(getImageSrcById(account.profile_picture) || "1");
+        setCountMemos(account.post_count);
+      } catch (error) {
+        console.error("Failed to fetch memos or user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getMemos();
+  }, [id, account, posts]);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  const renderTabPanelContent = (daysAgo: number) => {
+    // 現在の日付を取得（時刻を 00:00:00 にリセット）
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+  
+    // 投稿データをフィルタリング
+    const filteredPosts = posts.filter((memo) => {
+      // `memo.created_at` を `Date` オブジェクトに変換
+      const createdAt = new Date(memo.created_at);
+      createdAt.setHours(0, 0, 0, 0);
+  
+      // 経過日数を計算
+      const diffTime = today.getTime() - createdAt.getTime();
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+      // 指定された `daysAgo` と一致するメモのみ返す
+      return diffDays === daysAgo;
+    });
+  
+    return filteredPosts.length > 0 ? (
+      filteredPosts.map((memo) => (
+        <PostCard
+          key={memo.id}
+          title={user?.display_name || "No Name"}
+          content={memo.content}
+          icon_number={user?.profile_picture || 1}
+          path={user?.user_name || "Nobody"}
+          timeAgo={memo.created_at}
+        />
+      ))
+    ) : (
+      <div>{daysAgo === 0 ? "今日のメモはありません" : `${daysAgo}日前にメモはされてません`}</div>
     );
-  }
+  };
+  
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500 text-center">データを読み込み中...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-500 text-center">{error}</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16 ml-0 sm:ml-0 lg:ml-64">
-      <div className="flex-1 flex justify-center items-start w-full max-w-2xl h-[85vh] mt-24 sm:mt-20">
-        <div className="mb-8 w-full h-full text-gray-600 text-sm md:text-base overflow-y-auto p-6 sm:p-8 border-2 border-gray-700 rounded-lg">
-          <ReactMarkdown components={{
-            h1: (props) => <h1 className="text-gray-950 text-2xl font-bold" {...props} />,
-            h2: (props) => <h2 className="text-gray-900 text-xl font-semibold mt-4" {...props} />,
-            h3: (props) => <h3 className="text-gray-600 text-lg font-semibold mt-3" {...props} />,
-            p: (props) => <p className="text-black mt-2" {...props} />,
-            li: (props) => <li className="text-black ml-6 list-disc" {...props} />,
-            blockquote: (props) => <blockquote className="bg-gray-100 border-l-4 border-gray-500 text-gray-700 p-4 italic" {...props} />,
-          }}>
-            {data ? data[columnName] || "内容がありません。" : "データがありません。"}
-          </ReactMarkdown>
-
-          {/* 最終更新日 */}
-          <div className="flex flex-row items-end justify-center gap-5 mt-7">
-            <p className="text-gray-500 mb-4">最終更新: {new Date(data?.updated_at || '').toLocaleString()}</p>
+    <div className="flex justify-center h-full bg-contentbg">
+      <div className="w-full md:w-1/2 bg-white md:min-w-[640px]">
+        <div className='max-h-[40vh]'>
+          <div className='flex items-center mt-10 mb-5'>
+            <ReturnButton />
+            <div className="text-xl font-bold">{user?.display_name ?? "存在するアカウントが見つかりません。"}</div>
           </div>
+          <div className='mx-10 my-5'>
+            <div className='flex items-center space-x-10'>
+              <Image className='rounded-full' src={image} alt="profile" height={80} width={80}/>
+              <div className='flex items-center justify-between space-x-10'>
+                <div className='flex flex-col items-center'>
+                  <Edit color="#5DB53E" height={30} width={30}/>
+                  <div className='text-xl font-bold text-[#8C8C8C]'>{countMemos}</div>
+                </div>
+              </div>
+            </div>
+            <ArrowBox>{user?.bio || "一言メッセージはありません。"}</ArrowBox>
+          </div>
+          <div className='mx-10'>
+            <Box>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                variant="scrollable"
+                scrollButtons
+                allowScrollButtonsMobile
+                aria-label="メニュー"
+                sx={{
+                  '& .MuiTabs-indicator': {
+                    backgroundColor: '#5DB53E',
+                    height: '4px',
+                    borderRadius: '2px',
+                    width: '60%',
+                    margin: '0 auto',
+                  },
+                  justifyContent: 'flex-start',
+                }}
+                centered={false}
+              >
+                {[...Array(8).keys()].map((i) => (
+                  <Tab
+                    key={i}
+                    label={`${i === 0 ? "今日" : i + "日前"}`}
+                    {...a11yProps(i)}
+                    disableRipple
+                    sx={{
+                      fontWeight: 'bold',
+                      color: value === i ? '#404040' : '#8C8C8C',
+                      '&.Mui-selected': { color: '#404040' },
+                    }}
+                  />
+                ))}
+              </Tabs>
+            </Box>
+          </div>
+        </div>
+        <div className="overflow-y-auto max-h-[60vh]">
+          {[...Array(8).keys()].map((i) => (
+            <CustomTabPanel key={i} value={value} index={i}>
+              {renderTabPanelContent(i)}
+            </CustomTabPanel>
+          ))}
         </div>
       </div>
     </div>
