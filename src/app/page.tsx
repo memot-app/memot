@@ -3,7 +3,7 @@
 import React from "react";
 import { MemoListContainer } from "@/components/containers/MemoListContainer";
 import TopicBar from "@/components/bar/TopicBar";
-import {FloatingInputBox} from "@/components/cards/PostCard";
+import {FloatingInputBox} from "@/components/boxes/FloatingInputBox";
 
 export default function Home() {
   return (
