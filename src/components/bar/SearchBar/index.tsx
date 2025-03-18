@@ -18,7 +18,7 @@ export function SearchBar({ placeholder = "検索...", onSearch }: SearchBarProp
   };
 
   return (
-    <div className="bg-white border rounded-lg p-3 shadow-md">
+    <div className="bg-white border border-gray-500 rounded-lg p-3">
       <input
         type="text"
         placeholder={placeholder}

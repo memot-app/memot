@@ -17,7 +17,7 @@ export default function Layout({
       <body>
         <div className="flex justify-center bg-contentbg">
           {/* Left Sidebar (固定) */}
-          <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 left-0 h-full p-4 bg-contentbg shadow-lg">
+          <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 left-0 h-full p-4 bg-contentbg">
             <LeftSideBar />
           </div>
 
@@ -27,7 +27,7 @@ export default function Layout({
           </div>
 
           {/* Right Sidebar (固定) */}
-          <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 right-0 h-full p-4 bg-contentbg shadow-lg">
+          <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 right-0 h-full p-4 bg-contentbg">
             <RightSideBar />
           </div>
         </div>
