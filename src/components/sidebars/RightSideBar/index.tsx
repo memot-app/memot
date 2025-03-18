@@ -5,7 +5,8 @@ import { NotificationsSection } from "@/components/cards/NotificationsSectionCar
 
 export function RightSideBar() {
   return (
-    <div className="md:flex flex-col flex-grow p-4 gap-4 bg-transparent border-none shadow-none">
+<div className="h-screen flex flex-col flex-grow p-4 gap-4 border-none z-10">
+
       {/* 検索バー */}
       <SearchBar />
 

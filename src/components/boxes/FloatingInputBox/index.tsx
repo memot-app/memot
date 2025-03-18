@@ -30,7 +30,7 @@ export function FloatingInputBox() {
   };
 
   return (
-    <div className="border flex-row rounded-3xl fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full md:w-[48%] max-w-3xl flex items-center bg-white border-t border-gray-300 p-2 mb-12 shadow-2xl backdrop-blur-md z-0">
+    <div className="border flex-row rounded-3xl fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full md:w-[48%] max-w-3xl flex items-center bg-white border-t border-gray-300 p-2 mb-12 shadow-2xl backdrop-blur-md -z-40">
       <div className="w-full flex items-center flex-nowrap">
           <TextareaAutosize
             ref={textareaRef}
