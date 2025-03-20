@@ -24,6 +24,7 @@ export function LeftSideBar() {
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isActive, setIsActive] = useState(false); // 追加
 
   // ユーザー情報の取得
   const { account: userData, loading: isUserLoading } = useAccountIdData(userId!);
@@ -54,8 +55,16 @@ export function LeftSideBar() {
     checkSession();
   }, []);
 
-  const openSettingsModal = () => setIsSettingsModalOpen(true);
-  const closeSettingsModal = () => setIsSettingsModalOpen(false);
+  const openSettingsModal = () => {
+    setIsSettingsModalOpen(true);
+    setIsActive(true); // ボタンをアクティブにする
+  };
+  
+  const closeSettingsModal = () => {
+    setIsSettingsModalOpen(false);
+    setIsActive(false); // モーダルを閉じたらアイコンの色をリセット
+  };
+
   const openAccountModal = () => setIsAccountModalOpen(true);
   const closeAccountModal = () => setIsAccountModalOpen(false);
 
@@ -86,15 +95,25 @@ export function LeftSideBar() {
         <ActionButton path="/" icon={Planet} />
         <ActionButton path="/" icon={Search} />
         {isLogin ? (
-          <PrimaryButton icon={Settings} onClick={openSettingsModal} hideTextOnSmallScreen={true} />
-        ): (
-          <PrimaryButton icon={LogIn} onClick={openAccountModal} hideTextOnSmallScreen={true} />
-        )
-          }
+          <PrimaryButton 
+            icon={Settings} 
+            onClick={openSettingsModal} 
+            hideTextOnSmallScreen={true} 
+            isModalOpen={isSettingsModalOpen} 
+            isActive={isActive} // isActive を渡す
+            setIsActive={setIsActive} 
+          />
+        ) : (
+          <PrimaryButton 
+            icon={LogIn} 
+            onClick={openAccountModal} 
+            hideTextOnSmallScreen={true} 
+          />
+        )}
       </div>
 
       {/* モーダル */}
-      <SettingsModal isOpen={isSettingsModalOpen} onClose={closeSettingsModal} />
+      <SettingsModal isOpen={isSettingsModalOpen} onClose={closeSettingsModal} setIsActive={setIsActive} />
       <AccountModal isOpen={isAccountModalOpen} onClose={closeAccountModal} onLogin={() => setIsLogin(true)} />
     </div>
   );
