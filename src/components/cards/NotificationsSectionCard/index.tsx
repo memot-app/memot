@@ -1,12 +1,12 @@
 import React from "react";
-import { Circle } from "iconoir-react";
+import { BellNotification } from "iconoir-react";
 
 export function NotificationsSection() {
   return (
     <div>
       {/* 通知タイトル */}
-      <div className="flex items-center gap-2 text-gray-500">
-        <Circle width={24} height={24} />
+      <div className="flex items-center gap-2 text-gray-500 text-lg">
+        <BellNotification width="1em" height="1em" />
         <div>通知</div>
       </div>
 

@@ -68,8 +68,8 @@ export function LeftSideBar() {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-contentbg">
-      <div className="absolute top-4">
+    <div className="h-screen flex flex-col justify-center items-center bg-contentbg ">
+      <div className="absolute top-8">
         <Image src="/icons/club-icon.svg" alt="Example Image" width={30} height={30} />
       </div>
 

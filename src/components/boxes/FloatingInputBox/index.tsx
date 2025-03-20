@@ -30,14 +30,14 @@ export function FloatingInputBox() {
   };
 
   return (
-    <div className="border flex-row rounded-3xl fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full md:w-[48%] max-w-3xl flex items-center bg-white border-t border-gray-300 p-2 mb-12 shadow-2xl backdrop-blur-md z-0">
+    <div className=" flex-row rounded-3xl fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full md:w-[48%] max-w-3xl flex items-center bg-white p-2 mb-12 shadow-2xl backdrop-blur-md z-0">
       <div className="w-full flex items-center flex-nowrap">
           <TextareaAutosize
             ref={textareaRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="ここに入力してください..."
-            className="w-full p-3 pr-16  border-gray-300 rounded-md focus:outline-none resize-none overflow-hidden"
+            className="w-full p-3 pr-16 rounded-md focus:outline-none resize-none overflow-hidden"
             minRows={1}
           />
       </div>

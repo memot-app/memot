@@ -71,7 +71,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         if (error) {
           console.error('Logout error:', error.message);
         } else {
-          onClose(); 
+          onClose();
         }
       };
 

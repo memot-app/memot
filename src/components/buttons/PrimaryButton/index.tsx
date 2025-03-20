@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 
 interface PrimaryButtonProps {
   icon: React.ElementType;
@@ -14,8 +14,11 @@ export function PrimaryButton({
   onClick,
   disabled = false,
 }: PrimaryButtonProps) {
+  const [isActive, setIsActive] = useState(false);
+
   const handleClick = () => {
     if (!disabled) {
+      setIsActive((prev) => !prev);
       onClick();
     }
   };
@@ -28,7 +31,10 @@ export function PrimaryButton({
         disabled ? "text-gray-400 cursor-not-allowed" : "text-black hover:text-gray-600"
       }`}
     >
-      <Icon height={35} width={35} />
+      <Icon
+        color={isActive ? "#5DB53E" : "#8C8C8C"}
+        height={35}
+        width={35} />
     </button>
   );
 }

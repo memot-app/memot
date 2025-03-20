@@ -29,7 +29,7 @@ export const MemoListContainer = () => {
   return (
     <div className="w-full md:min-w-[640px] bg-white rounded-lg -z-50">
       <ReloadButton onReload={getMemos} />
-      <div className="overflow-hidden rounded-3xl border-2 border-gray-400">
+      <div className="overflow-hidden rounded-3xl border border-gray-400">
         {memos.map((memo) => (
           <PostCard
             key={memo.id}

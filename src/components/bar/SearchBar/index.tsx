@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import React, { useState } from "react";
 
@@ -24,7 +24,7 @@ export function SearchBar({ placeholder = "検索...", onSearch }: SearchBarProp
         placeholder={placeholder}
         value={query}
         onChange={handleChange}
-        className="w-full p-2 border-gray-300 rounded-md focus:ring-blue-300"
+        className="w-full p-2 rounded-md focus:outline-none focus:ring-0 focus:border-transparent"
       />
     </div>
   );

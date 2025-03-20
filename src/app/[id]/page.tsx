@@ -135,6 +135,14 @@ export default function Profile() {
                   <Edit color="#5DB53E" height={30} width={30}/>
                   <div className='text-xl font-bold text-[#8C8C8C]'>{countMemos}</div>
                 </div>
+                <div className='flex flex-col items-center'>
+                  <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followers ?? 0}</div>
+                  <div className='text-sm text-gray-500'>フォロワー</div>
+                </div>
+                <div className='flex flex-col items-center'>
+                  <div className='text-xl font-bold text-[#8C8C8C]'>{user?.following ?? 0}</div>
+                  <div className='text-sm text-gray-500'>フォロー</div>
+                </div>
               </div>
             </div>
             <ArrowBox>{user?.bio || "一言メッセージはありません。"}</ArrowBox>
