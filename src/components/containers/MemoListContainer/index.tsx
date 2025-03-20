@@ -39,7 +39,7 @@ export function MemoListContainer() {
   }, []);
 
   // ユーザーIDが取得できるまで待つ
-  const { posts: memos, loading, refreshNewPosts } = useFollowedPosts(userId || "");
+  const { posts: memos, refreshNewPosts } = useFollowedPosts(userId || "");
 
   // リロード処理
   const handleReload = async () => {
@@ -60,9 +60,7 @@ export function MemoListContainer() {
 
       {/* 投稿リスト */}
       <div className="overflow-hidden rounded-3xl border border-gray-400">
-        {loading ? (
-          <p className="text-center p-4">読み込み中...</p>
-        ) : memos.length === 0 ? (
+        {memos.length === 0 ? (
           <p className="text-center p-4">投稿がありません。</p>
         ) : (
           memos.map((memo) => (

@@ -18,25 +18,30 @@ import supabase from "@/utils/supabase/client";
 
 // hooks
 import { useAccountIdData } from "@/hooks/account/getAcountData";
-
 export function LeftSideBar() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const [isActive, setIsActive] = useState(false); // 追加
+  const [isActive, setIsActive] = useState(false);
 
-  // ユーザー情報の取得
-  const { account: userData, loading: isUserLoading } = useAccountIdData(userId!);
+  // `userId` が存在する場合のみ `useAccountIdData` を呼び出す
+  const { account: userData, loading: isUserLoading } = useAccountIdData(userId!) || { account: null, loading: false };
 
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
       if (error) {
         console.error("Failed to get session:", error.message);
-      } else if (session) {
+        return;
+      }
+
+      if (session) {
         setIsLogin(true);
         setUserId(session.user?.id ?? null);
+      } else {
+        setIsLogin(false);
+        setUserId(null);
       }
 
       const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
@@ -57,34 +62,25 @@ export function LeftSideBar() {
 
   const openSettingsModal = () => {
     setIsSettingsModalOpen(true);
-    setIsActive(true); // ボタンをアクティブにする
+    setIsActive(true);
   };
-  
+
   const closeSettingsModal = () => {
     setIsSettingsModalOpen(false);
-    setIsActive(false); // モーダルを閉じたらアイコンの色をリセット
+    setIsActive(false);
   };
 
   const openAccountModal = () => setIsAccountModalOpen(true);
   const closeAccountModal = () => setIsAccountModalOpen(false);
 
-  if (isUserLoading) {
-    return (
-      <div className="loading-container">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-contentbg ">
+    <div className="h-screen flex flex-col justify-center items-center bg-contentbg">
       <div className="absolute top-8">
         <Image src="/icons/club-icon.svg" alt="Example Image" width={30} height={30} />
       </div>
 
-      {/* アイコンとボタンを囲む枠 */}
       <div className="flex flex-col items-center justify-center bg-contentbg rounded-2xl">
-        {isLogin && userId && (
+        {isLogin && userId && !isUserLoading && (
           <ProfileButton
             title={userData?.display_name ?? "No Name"}
             path={`/profile/${userData?.user_name}`}
@@ -100,7 +96,7 @@ export function LeftSideBar() {
             onClick={openSettingsModal} 
             hideTextOnSmallScreen={true} 
             isModalOpen={isSettingsModalOpen} 
-            isActive={isActive} // isActive を渡す
+            isActive={isActive} 
             setIsActive={setIsActive} 
           />
         ) : (
