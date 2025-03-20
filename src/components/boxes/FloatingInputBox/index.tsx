@@ -30,23 +30,23 @@ export function FloatingInputBox() {
   };
 
   return (
-    <div className="border rounded-3xl fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full md:w-[50%] max-w-3xl flex flex-col items-center bg-white border-t border-gray-300 p-3 mb-4">
-      <div className="w-full flex items-center gap-2">
-        <TextareaAutosize
-          ref={textareaRef}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="ここに入力してください..."
-          className="w-full p-2 border-gray-300 rounded-md focus:outline-none resize-none overflow-hidden"
-          minRows={1}
-        />
-        <button
+    <div className=" flex-row rounded-3xl fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full md:w-[48%] max-w-3xl flex items-center bg-white p-2 mb-12 shadow-2xl backdrop-blur-md z-0">
+      <div className="w-full flex items-center flex-nowrap">
+          <TextareaAutosize
+            ref={textareaRef}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="ここに入力してください..."
+            className="w-full p-3 pr-16 rounded-md focus:outline-none resize-none overflow-hidden"
+            minRows={1}
+          />
+      </div>
+      <button
           onClick={handleSubmit}
-          className="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 focus:outline-none"
+          className=" w-12 h-12 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 focus:outline-none shadow-md whitespace-nowrap absolute bottom-2 right-2"
         >
           <MediaImagePlus width={24} height={24} className="text-white" />
         </button>
       </div>
-    </div>
   );
 }

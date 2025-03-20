@@ -6,9 +6,10 @@ import supabase from "@/utils/supabase/client";
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
+const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, setIsActive }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [userEmail, setUserEmail] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
@@ -41,12 +42,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setIsActive(false);
         onClose();
       }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        setIsActive(false);
         onClose();
       }
     };
@@ -63,7 +66,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, setIsActive]);
 
     // ログアウト処理
     const handleLogout = async () => {
@@ -71,7 +74,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         if (error) {
           console.error('Logout error:', error.message);
         } else {
-          onClose(); 
+          setIsActive(false);
+          onClose();
         }
       };
 
@@ -81,7 +85,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-30 flex items-center justify-center bg-transparent backdrop-blur-md"
       role="dialog"
       aria-modal="true"
     >
@@ -90,7 +94,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         className="relative bg-white rounded-xl sm:bg-gray-50 sm:px-8 sm:shadow-lg max-w-screen-xl mx-4 p-6"
       >
         <button
-          onClick={onClose}
+          onClick={() => { setIsActive(false); onClose(); }}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
           aria-label="閉じる"
         >

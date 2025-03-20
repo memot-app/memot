@@ -4,7 +4,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import React from 'react';
 
 interface ActionButtonProps {
-  path: string;              
+  path: string;
   icon: React.ElementType;
   className?: string;
 }

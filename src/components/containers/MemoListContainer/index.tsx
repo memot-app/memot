@@ -41,12 +41,12 @@ export function MemoListContainer() {
   };
 
   return (
-    <div className="w-full md:min-w-[640px] bg-white rounded-lg p-4">
+    <div className="w-full md:min-w-[640px] bg-white rounded-lg -z-50">
       {/* リロードボタン */}
       <ReloadButton onReload={handleReload} isLoading={isRefreshing} />
 
       {/* 投稿リスト */}
-      <div className="overflow-hidden rounded-3xl border-2 border-gray-400">
+      <div className="overflow-hidden rounded-3xl border border-gray-400">
         {loading ? (
           <p className="text-center p-4">読み込み中...</p>
         ) : memos.length === 0 ? (
