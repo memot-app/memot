@@ -87,7 +87,7 @@ export function LeftSideBar() {
         {isLogin && userId && (
           <ProfileButton
             title={userData?.display_name ?? "No Name"}
-            path={userData?.user_name ?? "nobody"}
+            path={`/profile/${userData?.user_name}`}
             hideTextOnSmallScreen={false}
             icon_number={userData?.profile_picture ?? 1}
           />
