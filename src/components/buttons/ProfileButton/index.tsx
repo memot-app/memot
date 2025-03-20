@@ -21,7 +21,7 @@ export function ProfileButton({
 }: ProfileButtonProps) {
   const icon_url = getImageSrcById(icon_number) || '/images/profileIcon/buta.png';
   return (
-    <Link href={`/${path}`}>
+    <Link href={path}>
       <button
       className={`flex justify-start  items-center m-3 rounded-full w-fit`}
     >
