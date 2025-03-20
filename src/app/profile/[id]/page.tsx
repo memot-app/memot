@@ -16,7 +16,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 
 //utils
 import { useMyPosts } from '@/hooks/post/getMyPosts';
-import { useAccountNameData } from '@/hooks/account/getAcountData';
+import { useUserNameToAccountData } from '@/hooks/account/getAcountData';
 import { getImageSrcById } from '@/hooks/getImageSrcById';
 
 //types
@@ -57,7 +57,7 @@ export default function Profile() {
   const [countMemos, setCountMemos] = useState(0);
   const [value, setValue] = useState(0);
   const [loading, setLoading] = useState(true);
-  const { account } = useAccountNameData(id);
+  const { account } = useUserNameToAccountData(id);
   const { posts } = useMyPosts(account?.id);
   useEffect(() => {
     const getMemos = async () => {
@@ -136,11 +136,11 @@ export default function Profile() {
                   <div className='text-xl font-bold text-[#8C8C8C]'>{countMemos}</div>
                 </div>
                 <div className='flex flex-col items-center'>
-                  <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followers ?? 0}</div>
+                  <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followerCount}</div>
                   <div className='text-sm text-gray-500'>フォロワー</div>
                 </div>
                 <div className='flex flex-col items-center'>
-                  <div className='text-xl font-bold text-[#8C8C8C]'>{user?.following ?? 0}</div>
+                  <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followCount}</div>
                   <div className='text-sm text-gray-500'>フォロー</div>
                 </div>
               </div>

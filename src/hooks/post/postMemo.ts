@@ -7,14 +7,14 @@ export const usePostMemo = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const postMemo = async (content: string) => {
+  const postMemo = async (content: string, userId: string) => {
     setLoading(true);
     setError(null);
 
     try {
       const { data, error } = await supabase
         .from("Memolog")
-        .insert([{ content}])
+        .insert([{ content, is_public: true, user_id: userId }])
         .select("*")
         .single();
 

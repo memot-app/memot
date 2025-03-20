@@ -5,7 +5,7 @@ import { ReloadWindow } from "iconoir-react";
 
 type ReloadButtonProps = {
   onReload: () => void;
-  isLoading: boolean; // ローディング状態を追加
+  isLoading: boolean;
 };
 
 const ReloadButton: React.FC<ReloadButtonProps> = ({ onReload, isLoading }) => {
@@ -13,15 +13,16 @@ const ReloadButton: React.FC<ReloadButtonProps> = ({ onReload, isLoading }) => {
     <button
       onClick={onReload}
       disabled={isLoading}
-      className={`bg-contentbg hover:bg-zinc-200 w-full py-2 flex items-center pt-5 pb-5 justify-center transition duration-200 ease-in-out ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`w-full py-2 flex items-center pt-5 pb-5 justify-center transition duration-200 ease-in-out hover:bg-gray-300
+        ${isLoading ? "bg-gray-400 text-gray-700 cursor-not-allowed pointer-events-none" : "bg-contentbg hover:bg-gray-300 text-sky-500"}`}
     >
       <ReloadWindow
-        className="text-action text-sky-500 mr-2"
+        className={`mr-2 transition-colors duration-200 ${isLoading ? "text-gray-600" : "text-sky-500"}`}
         height={18}
         width={18}
         strokeWidth={2}
       />
-      <div className="text-base font-normal text-action text-sky-500">
+      <div className={`text-base font-normal transition-colors duration-200 ${isLoading ? "text-gray-700" : "text-sky-500"}`}>
         {isLoading ? "更新中..." : "メモを更新"}
       </div>
     </button>

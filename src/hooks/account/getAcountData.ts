@@ -1,114 +1,108 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import supabase from "@/utils/supabase/client";  // ここでSupabaseクライアントをインポート
 import { Account } from "@/constants/types";
 
-// API レスポンスの型を定義
-interface AccountResponse extends Account {
-  error?: string;
-}
-
-/**
- * 指定したユーザーIDのアカウント情報を取得するカスタムフック
- */
-export const useAccountIdData = (userId: string | undefined) => {
+export const useAccountIdData = (userId: string) => {
   const [account, setAccount] = useState<Account | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!userId) {
-      setError("ユーザーIDが必要です");
-      setLoading(false);
-      return;
-    }
+  const fetchAccountData = useCallback(async () => {
+    if (!userId) return;
+    
+    setLoading(true);
+    setError(null);
 
-    const fetchAccountData = async () => {
-      setLoading(true);
-      setError(null);
+    try {
+      // アカウント情報の取得
+      const { data, error } = await supabase
+        .from("account")
+        .select("id, display_name, user_name, profile_picture, post_count, bio")
+        .eq("id", userId)
+        .single();
 
-      try {
-        const response = await fetch(`/api/account/userId/${userId}`);
-        const data: AccountResponse = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error ?? "データの取得に失敗しました");
-        }
-
-        setAccount({
-          id: data.id,
-          display_name: data.display_name,
-          user_name: data.user_name,
-          profile_picture: data.profile_picture,
-          post_count: data.post_count,
-          bio: data.bio,
-          followCount: data.followCount ?? 0,
-          followerCount: data.followerCount ?? 0,
-        });
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("不明なエラーが発生しました");
-        }
-      } finally {
-        setLoading(false);
+      if (error || !data) {
+        throw new Error("アカウント情報が見つかりません。");
       }
-    };
 
-    fetchAccountData();
+      // フォロー数の取得
+      const { count: followCount } = await supabase
+        .from("follow")
+        .select("*", { count: "exact", head: true })
+        .eq("follow", userId);
+
+      // フォロワー数の取得
+      const { count: followerCount } = await supabase
+        .from("follow")
+        .select("*", { count: "exact", head: true })
+        .eq("follower", userId);
+
+      setAccount({
+        ...data,
+        followCount: followCount || 0,
+        followerCount: followerCount || 0,
+      });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "データの取得に失敗しました。");
+    } finally {
+      setLoading(false);
+    }
   }, [userId]);
 
-  return { account, loading, error };
+  useEffect(() => {
+    fetchAccountData();
+  }, [fetchAccountData]);
+
+  return { account, loading, error, fetchAccountData };
 };
 
 
+export const useUserNameToAccountData = (userName: string | undefined) => {
+  const [userId, setUserId] = useState<string | null>(null);
+  const [loadingUserId, setLoadingUserId] = useState(true);
+  const [errorUserId, setErrorUserId] = useState<string | null>(null);
 
-export const useAccountNameData = (userName: string | undefined) => {
-  const [account, setAccount] = useState<Account | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { account, loading, error, fetchAccountData } = useAccountIdData(userId!);
 
-  useEffect(() => {
-    if (!userName) {
-      setError("ユーザーIDが必要です");
-      setLoading(false);
-      return;
-    }
+  const fetchUserId = useCallback(async () => {
+    if (!userName) return;
 
-    const fetchAccountData = async () => {
-      setLoading(true);
-      setError(null);
+    setLoadingUserId(true);
+    setErrorUserId(null);
 
-      try {
-        const response = await fetch(`/api/account/userName/${userName}`);
-        const data: AccountResponse = await response.json();
+    try {
+      // userName に一致する user_id を取得
+      const { data, error } = await supabase
+        .from("account")
+        .select("id")
+        .eq("user_name", userName)
+        .single();
 
-        if (!response.ok) {
-          throw new Error(data.error ?? "データの取得に失敗しました");
-        }
-
-        setAccount({
-          id: data.id,
-          display_name: data.display_name,
-          user_name: data.user_name,
-          profile_picture: data.profile_picture,
-          post_count: data.post_count,
-          bio: data.bio,
-          followCount: data.followCount ?? 0,
-          followerCount: data.followerCount ?? 0,
-        });
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("不明なエラーが発生しました");
-        }
-      } finally {
-        setLoading(false);
+      if (error || !data) {
+        throw new Error("ユーザー名に一致するデータが見つかりません。");
       }
-    };
 
-    fetchAccountData();
+      // user_id をセット
+      setUserId(data.id);
+    } catch (err: unknown) {
+      setErrorUserId(err instanceof Error ? err.message : "ユーザーIDの取得に失敗しました。");
+    } finally {
+      setLoadingUserId(false);
+    }
   }, [userName]);
 
-  return { account, loading, error };
+  useEffect(() => {
+    fetchUserId();
+  }, [userName, fetchUserId]);  // Add fetchUserId to the dependency array
+
+  // userId が取得できたら useAccountData を実行
+  useEffect(() => {
+    if (userId) {
+      fetchAccountData();
+    }
+  }, [userId, fetchAccountData]);
+
+  return { account, loading: loadingUserId || loading, error: errorUserId || error };
 };

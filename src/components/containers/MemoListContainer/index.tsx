@@ -8,40 +8,53 @@ import { PostCard } from "@/components/cards/PostingCard";
 
 export function MemoListContainer() {
   const [userId, setUserId] = useState<string | null>(null);
-  const { posts: memos, loading, refreshNewPosts } = useFollowedPosts(userId!);
-  const [isRefreshing, setIsRefreshing] = useState(false); // 名前を変更
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
+  // ユーザーIDを取得
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
       if (error) {
         console.error("Failed to get session:", error.message);
-      } else if (session) {
-        setUserId(session.user?.id ?? null);
+      } else if (session?.user?.id) {
+        console.log("User ID:", session.user.id); // デバッグログ
+        setUserId(session.user.id);
       }
-
-      const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-        if (event === "SIGNED_IN") {
-          setUserId(session?.user?.id ?? null);
-        } else if (event === "SIGNED_OUT") {
-          setUserId(null);
-        }
-      });
-
-      return () => authListener.subscription.unsubscribe();
     };
 
     checkSession();
+
+    // 認証状態の変更を監視
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session?.user?.id) {
+        console.log("User Signed In:", session.user.id); // デバッグログ
+        setUserId(session.user.id);
+      } else if (event === "SIGNED_OUT") {
+        console.log("User Signed Out"); // デバッグログ
+        setUserId(null);
+      }
+    });
+
+    return () => authListener.subscription.unsubscribe();
   }, []);
 
+  // ユーザーIDが取得できるまで待つ
+  const { posts: memos, loading, refreshNewPosts } = useFollowedPosts(userId || "");
+
+  // リロード処理
   const handleReload = async () => {
+    if (!userId) {
+      console.warn("User ID is null, skipping reload");
+      return;
+    }
+    console.log("Reloading memos..."); // デバッグログ
     setIsRefreshing(true);
     await refreshNewPosts();
     setIsRefreshing(false);
   };
 
   return (
-    <div className="w-full md:min-w-[640px] bg-white rounded-lg -z-50">
+    <div className="w-full md:min-w-[640px] bg-white rounded-lg">
       {/* リロードボタン */}
       <ReloadButton onReload={handleReload} isLoading={isRefreshing} />
 
