@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import supabase from "@/utils/supabase/client";
 
 export const useDeleteMemo = (id: number, userId: string) => {
-  // userIdを引数として受け取る
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,20 +15,24 @@ export const useDeleteMemo = (id: number, userId: string) => {
     setError(null);
 
     try {
-      // 渡されたuserIdとメモのuser_idが一致するか確認して削除
       const { error } = await supabase
         .from("Memolog")
         .delete()
         .eq("id", id)
-        .eq("user_id", userId); // 引数のuserIdとuser_idが一致する場合のみ削除
+        .eq("user_id", userId);
 
       if (error) {
-        throw error;
+        throw new Error(error.message);
       }
       return true;
-    } catch (error: any) {
-      console.error("メモ削除エラー:", error.message);
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("メモ削除エラー:", error.message);
+        setError(error.message);
+      } else {
+        console.error("予期しないエラーが発生しました");
+        setError("予期しないエラーが発生しました");
+      }
       return false;
     } finally {
       setLoading(false);

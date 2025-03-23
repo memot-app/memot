@@ -5,32 +5,33 @@ import { useFollowedPosts } from "@/hooks/post/getFollowUserPost";
 import supabase from "@/utils/supabase/client";
 import ReloadButton from "@/components/buttons/ReloadButton";
 import { PostCard } from "@/components/cards/PostingCard";
+import { useSelectedTimeDataContext } from "@/context/selectedTimeDataContext";
+import { Post } from "@/constants/types";
 
 export function MemoListContainer() {
   const [userId, setUserId] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { selectedTimeData } = useSelectedTimeDataContext();
 
-  // ユーザーIDを取得
   useEffect(() => {
     const checkSession = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
       if (error) {
         console.error("Failed to get session:", error.message);
       } else if (session?.user?.id) {
-        console.log("User ID:", session.user.id); // デバッグログ
+        console.log("User ID:", session.user.id);
         setUserId(session.user.id);
       }
     };
 
     checkSession();
 
-    // 認証状態の変更を監視
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session?.user?.id) {
-        console.log("User Signed In:", session.user.id); // デバッグログ
+        console.log("User Signed In:", session.user.id);
         setUserId(session.user.id);
       } else if (event === "SIGNED_OUT") {
-        console.log("User Signed Out"); // デバッグログ
+        console.log("User Signed Out");
         setUserId(null);
       }
     });
@@ -38,32 +39,39 @@ export function MemoListContainer() {
     return () => authListener.subscription.unsubscribe();
   }, []);
 
-  // ユーザーIDが取得できるまで待つ
   const { posts: memos, refreshNewPosts } = useFollowedPosts(userId || "");
 
-  // リロード処理
+  const filterMemosByDate = (memos: Post[]) => {
+    if (selectedTimeData === "今日" || selectedTimeData === "") {
+      return memos;
+    }
+    return memos.filter((memo) => {
+      const memoDate = new Date(memo.created_at).getDate() + "日";
+      return memoDate === selectedTimeData;
+    });
+  };
+
   const handleReload = async () => {
     if (!userId) {
       console.warn("User ID is null, skipping reload");
       return;
     }
-    console.log("Reloading memos..."); // デバッグログ
+    console.log("Reloading memos...");
     setIsRefreshing(true);
     await refreshNewPosts();
     setIsRefreshing(false);
   };
 
+  const filteredMemos = filterMemosByDate(memos);
+
   return (
     <div className="w-full md:min-w-[640px] bg-white rounded-lg">
-      {/* リロードボタン */}
       <ReloadButton onReload={handleReload} isLoading={isRefreshing} />
-
-      {/* 投稿リスト */}
       <div className="overflow-hidden rounded-3xl border border-gray-400">
-        {memos.length === 0 ? (
+        {filteredMemos.length === 0 ? (
           <p className="text-center p-4">投稿がありません。</p>
         ) : (
-          memos.map((memo) => (
+          filteredMemos.map((memo) => (
             <PostCard
               key={memo.id}
               title={memo.title}

@@ -59,50 +59,58 @@ export const useAccountIdData = (userId: string) => {
 };
 
 
-export const useUserNameToAccountData = (userName: string | undefined) => {
-  const [userId, setUserId] = useState<string | null>(null);
-  const [loadingUserId, setLoadingUserId] = useState(true);
-  const [errorUserId, setErrorUserId] = useState<string | null>(null);
 
-  const { account, loading, error, fetchAccountData } = useAccountIdData(userId!);
+export const useAccountNameData = (userName: string) => {
+  const [account, setAccount] = useState<Account | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const fetchUserId = useCallback(async () => {
+  const fetchAccountData = useCallback(async () => {
     if (!userName) return;
-
-    setLoadingUserId(true);
-    setErrorUserId(null);
+    
+    setLoading(true);
+    setError(null);
 
     try {
-      // userName に一致する user_id を取得
+      // アカウント情報の取得
       const { data, error } = await supabase
         .from("account")
-        .select("id")
+        .select("id, display_name, user_name, profile_picture, post_count, bio")
         .eq("user_name", userName)
         .single();
 
       if (error || !data) {
-        throw new Error("ユーザー名に一致するデータが見つかりません。");
+        throw new Error("アカウント情報が見つかりません。");
       }
 
-      // user_id をセット
-      setUserId(data.id);
+      // フォロー数の取得
+      const { count: followCount } = await supabase
+        .from("follow")
+        .select("*", { count: "exact", head: true })
+        .eq("follow", data.id);
+
+      // フォロワー数の取得
+      const { count: followerCount } = await supabase
+        .from("follow")
+        .select("*", { count: "exact", head: true })
+        .eq("follower", data.id);
+
+      setAccount({
+        ...data,
+        followCount: followCount || 0,
+        followerCount: followerCount || 0,
+      });
     } catch (err: unknown) {
-      setErrorUserId(err instanceof Error ? err.message : "ユーザーIDの取得に失敗しました。");
+      setError(err instanceof Error ? err.message : "データの取得に失敗しました。");
     } finally {
-      setLoadingUserId(false);
+      setLoading(false);
     }
   }, [userName]);
 
   useEffect(() => {
-    fetchUserId();
-  }, [userName, fetchUserId]);  // Add fetchUserId to the dependency array
+    fetchAccountData();
+  }, [fetchAccountData]);
 
-  // userId が取得できたら useAccountData を実行
-  useEffect(() => {
-    if (userId) {
-      fetchAccountData();
-    }
-  }, [userId, fetchAccountData]);
-
-  return { account, loading: loadingUserId || loading, error: errorUserId || error };
+  return { account, loading, error, fetchAccountData };
 };
+
