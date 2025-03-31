@@ -1,13 +1,14 @@
 "use client"; 
 
 import React, { useState } from "react";
+import { Search } from "iconoir-react";
 
 interface SearchBarProps {
   placeholder?: string;
   onSearch?: (query: string) => void;
 }
 
-export function SearchBar({ placeholder = "検索...", onSearch }: SearchBarProps) {
+export function SearchBar({ placeholder = "検索", onSearch }: SearchBarProps) {
   const [query, setQuery] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +19,9 @@ export function SearchBar({ placeholder = "検索...", onSearch }: SearchBarProp
   };
 
   return (
-    <div className="bg-white border border-gray-500 rounded-lg p-3">
+    <div className="flex items-center bg-white border border-gray-500 rounded-xl p-3">
+      <Search color="gray" height={18} width={18} />
+
       <input
         type="text"
         placeholder={placeholder}
