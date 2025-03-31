@@ -11,7 +11,7 @@ export function NotificationsSection() {
       </div>
 
       {/* 通知一覧（サンプル枠） */}
-      <div className="bg-white border border-gray-500 rounded-lg p-4 h-48 flex justify-center items-center">
+      <div className="bg-white border border-gray-500 rounded-xl p-4 h-48 flex justify-center items-center">
         <p className="text-gray-400">最新の通知</p>
       </div>
     </div>
