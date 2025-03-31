@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/lib/supabase';
+import  supabase  from '@/utils/supabase/client'; // supabaseクライアントをインポート
 import { PostgrestError } from '@supabase/supabase-js';
 
 // 通知データの型をインターフェースとして定義
@@ -50,6 +50,7 @@ export const GetUserNotifications = () => {
       } else if (data) {
         setNotifications(data);
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
     } finally {
       setLoading(false);

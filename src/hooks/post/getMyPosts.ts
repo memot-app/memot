@@ -55,7 +55,7 @@ export const useMyPosts = (userId: string | undefined) => {
             user_id: userId,
             title: account.display_name || "名無しのユーザー",
             content: item.content,
-            path: `/profile/${item.user_id}`,
+            path: `/profile/${account.user_name}`,
             created_at: item.created_at,
             timeAgo: getRelativeTimeString(item.created_at),
             icon_number: account.profile_picture,
