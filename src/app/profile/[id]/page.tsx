@@ -16,7 +16,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 
 //utils
 import { useMyPosts } from '@/hooks/post/getMyPosts';
-import { useUserNameToAccountData } from '@/hooks/account/getAcountData';
+import { useAccountNameData } from '@/hooks/account/getAcountData';
 import { getImageSrcById } from '@/hooks/getImageSrcById';
 
 //types
@@ -57,14 +57,14 @@ export default function Profile() {
   const [countMemos, setCountMemos] = useState(0);
   const [value, setValue] = useState(0);
   const [loading, setLoading] = useState(true);
-  const { account } = useUserNameToAccountData(id);
+  const { account } = useAccountNameData(id);
   const { posts } = useMyPosts(account?.id);
   useEffect(() => {
     const getMemos = async () => {
       try {
         if (!account) return;
         setUser(account);
-        setImage(getImageSrcById(account.profile_picture) || "1");
+        setImage(getImageSrcById(account.profile_picture) || "/images/profileIcon/buta.png");
         setCountMemos(account.post_count);
       } catch (error) {
         console.error("Failed to fetch memos or user data:", error);
