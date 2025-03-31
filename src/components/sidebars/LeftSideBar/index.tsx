@@ -89,7 +89,7 @@ export function LeftSideBar() {
           />
         )}
         <ActionButton path="/" icon={Planet} />
-        <ActionButton path="/" icon={Search} />
+        <ActionButton path="/search" icon={Search} />
         {isLogin ? (
           <PrimaryButton 
             icon={Settings} 
