@@ -15,6 +15,7 @@
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.1",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.6.3",
     "google-one-tap": "^1.0.6",
     "iconoir-react": "^7.10.1",
     "lucide-react": "^0.477.0",
