@@ -7,7 +7,7 @@ export function RightSideBar() {
   return (
     <div className="md:flex flex-col flex-grow p-4 gap-4 bg-transparent border-none shadow-none">
       {/* 検索バー */}
-      <SearchBar />
+      {/* <SearchBar /> */}
 
       {/* ルーム一覧 */}
       {/* <RoomsSection /> */}

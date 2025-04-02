@@ -11,7 +11,8 @@ interface PostSearchProps {
 
 export function PostSearch({ posts }: PostSearchProps) {
   return (
-    <div className="bg-white rounded-lg p-4 space-y-4">
+    <div className="bg-white rounded-lg p-5 space-y-4">
+      <p className="text-gray-800 text-xl font-bold">投稿</p>
       {posts.length === 0 ? (
         <div className="text-gray-500 text-center">該当する投稿はありません。</div>
       ) : (
