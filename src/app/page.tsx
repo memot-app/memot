@@ -2,6 +2,8 @@
 import React from 'react';
 import Link from "next/link";
 import Image from 'next/image';
+import Lptext from "@/components/ui/lptext";
+import Lpimage from "@/components/ui/lpimage";
 
 const DocumentPage = () => {
   return (
@@ -34,6 +36,10 @@ const DocumentPage = () => {
             快適にご利用いただけるよう、皆さんのご意見をお待ちしています。<br />
             フィードバックは、それぞれのプラットフォームやDiscordでお気軽にお寄せください！
           </p>
+          <div className='flex items-center'>
+          <Lpimage/>
+          <Lptext/>
+          </div>
         </div>
       </div>
     </div>
