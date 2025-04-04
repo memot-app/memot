@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import Lptext from "@/components/ui/lptext";
 import Lpimage from "@/components/ui/lpimage";
+import Lprelease from "@/components/ui/lprelease";
 
 export default function LpPage() {
   return (
@@ -37,6 +38,8 @@ export default function LpPage() {
           </div>
         </main>
       </div>
+
+    {/*サービス概要*/}
      <div className='space-y-16'>
         <div className='flex items-center gap-20 '>
           <Lpimage image={"/images/Group_623.png"}/>
@@ -50,7 +53,9 @@ export default function LpPage() {
         <Lpimage image={"/images/Group_623.png"}/>
           <Lptext title_num={"03"} title={"情報の種の場"} text={`あなたの日常の一言や小さな出来事が、家族や友人、そして新たな出会いの会話のきっかけとなる空間です。直後のチャットではなく、間をおいた共有が自然なつながりを育みます。`}/>
         </div>
+        <Lprelease/>
       </div>
+
       <footer className="relative w-full bg-white pt-8">
         <div className="absolute bottom-0 left-0 w-full h-full pointer-events-none overflow-hidden">
           <svg
