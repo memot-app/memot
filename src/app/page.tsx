@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import Image from 'next/image';
+import Lptext from "@/components/ui/lptext";
+import Lpimage from "@/components/ui/lpimage";
 
 export default function LpPage() {
   return (
@@ -34,6 +36,20 @@ export default function LpPage() {
             </div>
           </div>
         </main>
+      </div>
+     <div className='space-y-16'>
+        <div className='flex items-center gap-20 '>
+          <Lpimage image={"/images/Group_623.png"}/>
+          <Lptext title_num={"01"} title={"影響力のない場"} text={`フォロワーの数やいいねの表示、インプレッションなどの評価指標がないため、みんなそれぞれの日常として投稿ができます。`}/>
+        </div>
+        <div className='flex items-center gap-20 transform translate-x-8'>
+          <Lptext title_num={"02"} title={"独り言の場"} text={`返信やDM機能を設けず、純粋に自分の日常を記録・共有する独り言として利用でき、余計なストレスを軽減します。`}/>
+          <Lpimage image={"/images/Group_623.png"}/>
+        </div>
+        <div className='flex items-center gap-20'>
+        <Lpimage image={"/images/Group_623.png"}/>
+          <Lptext title_num={"03"} title={"情報の種の場"} text={`あなたの日常の一言や小さな出来事が、家族や友人、そして新たな出会いの会話のきっかけとなる空間です。直後のチャットではなく、間をおいた共有が自然なつながりを育みます。`}/>
+        </div>
       </div>
       <footer className="relative w-full bg-white pt-8">
         <div className="absolute bottom-0 left-0 w-full h-full pointer-events-none overflow-hidden">
