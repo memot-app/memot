@@ -29,7 +29,6 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <DocumentProvider initialData={data || null} error={error?.message || null}>
-          <Sidebar />
           {children}
         </DocumentProvider>
       </body>
