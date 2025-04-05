@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import Sidebar from "@/components/ui/Sidebar";
 import { DocumentProvider } from "@/context/DocumentContext";
 import { supabase } from "@/lib/supabase";
 import "./globals.css";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { Noto_Sans_JP } from 'next/font/google'
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const notoSansJp = Noto_Sans_JP({
+  subsets: ['latin'],
+  preload: false,
+  variable: '--font-noto-sans-jp',
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,8 +22,8 @@ export default async function RootLayout({
   const { data, error } = await supabase.from("documents").select("*").single();
 
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="ja">
+      <body className={notoSansJp.variable}>
         <DocumentProvider initialData={data || null} error={error?.message || null}>
           {children}
         </DocumentProvider>
