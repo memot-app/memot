@@ -62,10 +62,10 @@ export default function LpPage() {
                 <Image src={"/images/lp/feature/feature_1.png"} alt="Webut Logo" width={170} height={160} />
               </div>
             </div>
-            <Lptext title_num={"01"} title={"影響力のない場"} text={`フォロワーの数やいいねの表示、インプレッションなどの評価指標がないため、みんなそれぞれの日常として投稿ができます。`}/>
+            <Lptext title_num={"01"} title={"影響力のない場"} text={`フォロワーの数やいいねの表示、インプレッションなどの評価指標がなく、みんなそれぞれの日常として投稿ができます。`}/>
           </div>
           <div className='flex flex-col-reverse items-center gap-10 md:flex-row md:gap-20'>
-            <Lptext title_num={"02"} title={"めもの場"} text={`返信やDM機能を設けず、純粋に自分の日常を記録・共有するめもや独り言として利用でき、余計なストレスを軽減します。`}/>
+            <Lptext title_num={"02"} title={"めもの場"} text={`返信やDM機能を設けず、純粋に自分の日常を記録・共有する自分だけの場所として利用できます。`}/>
             <div className="flex flex-col space-y-8">
               <div className="w-80 h-102 bg-primary rounded-3xl flex items-center justify-center overflow-hidden">
                 <Image src={"/images/lp/feature/feature_2.png"} alt="Webut Logo" width={170} height={160} />
@@ -78,7 +78,7 @@ export default function LpPage() {
                 <Image src={"/images/lp/feature/feature_3.png"} alt="Webut Logo" width={300} height={160}/>
               </div>
             </div>
-            <Lptext title_num={"03"} title={"情報の種の場"} text={`あなたの日常の一言や小さな出来事が、家族や友人、そして新たな出会いの会話のきっかけとなる空間です。めもを通してAIがあなたの暮らしにちょっとした幸せをお届けします。`}/>
+            <Lptext title_num={"03"} title={"情報の種の場"} text={`あなたの日常の一言や小さな出来事が、家族や友人、そして新たな出会いの会話のきっかけとなる場所です。めもを通してAIがあなたの暮らしにちょっとした幸せをお届けします。`}/>
           </div>
         </div>
       </section>
