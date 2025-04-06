@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { DocumentProvider } from "@/context/DocumentContext";
-import { supabase } from "@/lib/supabase";
 import "./globals.css";
 import { Noto_Sans_JP } from 'next/font/google'
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -26,16 +24,12 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
-  // 🔹 サーバーコンポーネント内で Supabase からデータを取得
-  const { data, error } = await supabase.from("documents").select("*").single();
 
   return (
     <html lang="ja" className="scroll-smooth">
       <body className={notoSansJp.variable}>
-        <DocumentProvider initialData={data || null} error={error?.message || null}>
           {children}
           {gaId && <GoogleAnalytics gaId={gaId} />}
-        </DocumentProvider>
       </body>
     </html>
   );
