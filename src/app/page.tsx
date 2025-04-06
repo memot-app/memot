@@ -83,6 +83,10 @@ export default function LpPage() {
           </div>
         </div>
       </section>
+      <section className="flex flex-col mt-24 items-center justify-center w-[80%] h-45 bg-[#F7F4F2] rounded-4xl mx-auto relative">
+        <p className="text-[clamp(1.5rem,5vw,2.8rem)] font-semibold">2025初夏 リリース予定</p>
+        <p className="text-sm whitespace-nowrap  text-black absolute bottom-6 left-1/2 -translate-x-1/2">※IOS・Android・Webで提供予定</p>
+      </section>
       <footer className="relative w-full bg-white pt-8 overflow-hidden">
         <div className="absolute bottom-0 left-0 w-full h-[205px] pointer-events-none">
         <div className="absolute  w-60 h-12">
