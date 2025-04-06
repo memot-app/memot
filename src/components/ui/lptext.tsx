@@ -8,7 +8,7 @@ type lpTextproups = {
 }
 export default function Lptext({title_num,title,text}:lpTextproups){
     return(
-    <div className="w-fit ml-auto space-y-35.5">
+    <div className="w-fit max-w-[500px] space-y-35.5">
         <div className="text-left">
             <h1 className="text-base-text text-5xl font-bold">{title_num}</h1>
             <h2 className="text-base-text text-4xl leading-[2] font-bold">{title}</h2>

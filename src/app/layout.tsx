@@ -22,7 +22,7 @@ export default async function RootLayout({
   const { data, error } = await supabase.from("documents").select("*").single();
 
   return (
-    <html lang="ja">
+    <html lang="ja" className="scroll-smooth">
       <body className={notoSansJp.variable}>
         <DocumentProvider initialData={data || null} error={error?.message || null}>
           {children}
