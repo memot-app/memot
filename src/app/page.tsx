@@ -7,7 +7,7 @@ import Lptext from "@/components/ui/lptext";
 export default function LpPage() {
   return (
     <div>
-      <div className="flex flex-col h-screen bg-bglp">
+      <div className="flex flex-col h-screen min-h-[700px] bg-bglp">
         <header className="flex items-center justify-between px-8 py-4">
           <div className="relative w-40 h-12">
             <Image
@@ -83,8 +83,8 @@ export default function LpPage() {
           </div>
         </div>
       </section>
-      <section className="flex flex-col mt-24 items-center justify-center w-[80%] h-45 bg-[#F7F4F2] rounded-4xl mx-auto relative">
-        <p className="text-[clamp(1.5rem,5vw,2.8rem)] font-semibold">2025初夏 リリース予定</p>
+      <section className="flex flex-col mt-24 items-center justify-center w-[80%] max-w-[900px] h-45 bg-[#F7F4F2] rounded-4xl mx-auto relative">
+        <p className="text-[clamp(2rem,5vw,2.8rem)] font-bold">2025年リリース予定</p>
         <p className="text-sm whitespace-nowrap  text-black absolute bottom-6 left-1/2 -translate-x-1/2">※IOS・Android・Webで提供予定</p>
       </section>
       <footer className="relative w-full bg-white pt-8 overflow-hidden">
@@ -105,7 +105,6 @@ export default function LpPage() {
           <path xmlns="http://www.w3.org/2000/svg" d="M554.387 86.3265C341.631 75.1101 94.4805 161.603 0 204.999H1439.7V40.2597C1439.7 40.2597 1443.5 39.5001 1398.21 13.7211C1337.34 -20.9302 1163.76 17.2262 1031.79 75.3107C899.816 133.395 820.332 100.347 554.387 86.3265Z" fill="#5DB53E"/>
           </svg>
         </div>
-
         {/* ▼ キャラクター画像を並べるエリア */}
         <div className="relative w-full h-[300px] max-w-screen-xl mx-auto">
           <div className="absolute bottom-0 left-[55%] w-60 h-60 md:w-60 md:h-48 md:left-[42%]">
@@ -140,6 +139,9 @@ export default function LpPage() {
               className="object-contain"
             />
           </div>
+        </div>
+        <div className="absolute bottom-2 right-4 text-xs text-white">
+          © 2025 めもっと
         </div>
       </footer>
     </div>
