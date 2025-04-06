@@ -2,10 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Noto_Sans_JP } from 'next/font/google'
 import { GoogleAnalytics } from "@next/third-parties/google";
-import getConfig from "next/config";
-
-const { publicRuntimeConfig } = getConfig();
-const siteUrl = publicRuntimeConfig.siteUrl;
 
 const notoSansJp = Noto_Sans_JP({
   subsets: ['latin'],
@@ -14,9 +10,25 @@ const notoSansJp = Noto_Sans_JP({
 })
 
 export const metadata: Metadata = {
+  metadataBase:
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
+      ? new URL("https://lp.memot.app")
+      : undefined,
   title: "めもっと",
   description: "気取らず、つづる。“めも” を通じて暮らしをそっと分かち合える、めも共有サービス。",
-  openGraph: { images: `${siteUrl}/images/lp/ogp.png` },
+  openGraph: { 
+    title: "めもっと",
+    description: "気取らず、つづる。“めも” を通じて暮らしをそっと分かち合える、めも共有サービス。",
+    images: `/images/lp/ogp.png`, 
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "めもっと",
+    description: "気取らず、つづる。“めも” を通じて暮らしをそっと分かち合える、めも共有サービス。",
+    images: `/images/lp/ogp.png`,
+  },
 };
 
 
