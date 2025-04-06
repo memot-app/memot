@@ -17,7 +17,7 @@ export default function LpPage() {
               className="object-contain"
             />
           </div>
-          <nav className="space-x-6">
+          <nav className="space-x-6 hidden md:block">
             <Link href="#concept" className="font-bold">コンセプト</Link>
             <Link href="#features" className="font-bold">特徴</Link>
           </nav>
@@ -27,7 +27,7 @@ export default function LpPage() {
           <div className="flex flex-col-reverse items-center gap-8 md:flex-row justify-around flex-1">
             <h1 className="font-bold mb-4 leading-relaxed md:mb-12 text-[clamp(2.5rem,10vw,5rem)] md:text-[clamp(2.5rem,6vw,3.75rem)]">
               みんなの日常。<br />
-              わたしの独り言。
+              わたしのめも。
             </h1>
             <div className="relative w-[clamp(300px,60vw,500px)] h-[clamp(300px,60vw,500px)] md:w-[clamp(300px,40vw,500px)] md:h-[clamp(300px,40vw,500px)]rounded-full">
               <Image
@@ -66,7 +66,7 @@ export default function LpPage() {
             <Lptext title_num={"01"} title={"影響力のない場"} text={`フォロワーの数やいいねの表示、インプレッションなどの評価指標がないため、みんなそれぞれの日常として投稿ができます。`}/>
           </div>
           <div className='flex flex-col-reverse items-center gap-10 md:flex-row md:gap-20'>
-            <Lptext title_num={"02"} title={"独り言の場"} text={`返信やDM機能を設けず、純粋に自分の日常を記録・共有する独り言として利用でき、余計なストレスを軽減します。`}/>
+            <Lptext title_num={"02"} title={"めもの場"} text={`返信やDM機能を設けず、純粋に自分の日常を記録・共有するめもや独り言として利用でき、余計なストレスを軽減します。`}/>
             <div className="flex flex-col space-y-8">
               <div className="w-80 h-102 bg-primary rounded-3xl flex items-center justify-center overflow-hidden">
                 <Image src={"/images/lp/feature/feature_2.png"} alt="Webut Logo" width={170} height={160} />
@@ -79,7 +79,7 @@ export default function LpPage() {
                 <Image src={"/images/lp/feature/feature_3.png"} alt="Webut Logo" width={300} height={160}/>
               </div>
             </div>
-            <Lptext title_num={"03"} title={"情報の種の場"} text={`あなたの日常の一言や小さな出来事が、家族や友人、そして新たな出会いの会話のきっかけとなる空間です。直後のチャットではなく、間をおいた共有が自然なつながりを育みます。`}/>
+            <Lptext title_num={"03"} title={"情報の種の場"} text={`あなたの日常の一言や小さな出来事が、家族や友人、そして新たな出会いの会話のきっかけとなる空間です。めもを通してAIがあなたの暮らしにちょっとした幸せをお届けします。`}/>
           </div>
         </div>
       </section>
