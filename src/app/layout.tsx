@@ -15,7 +15,7 @@ const notoSansJp = Noto_Sans_JP({
 
 export const metadata: Metadata = {
   title: "めもっと",
-  description: "気取らず、つづる。“めも”を通じて暮らしをそっと分かち合える、めも共有サービス。",
+  description: "気取らず、つづる。“めも” を通じて暮らしをそっと分かち合える、めも共有サービス。",
   openGraph: { images: `${siteUrl}/images/lp/ogp.png` },
 };
 
