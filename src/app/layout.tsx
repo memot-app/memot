@@ -3,6 +3,8 @@ import "./globals.css";
 import React from "react";
 import { LeftSideBar } from "@/components/sidebars/LeftSideBar";
 import { RightSideBar } from "@/components/sidebars/RightSideBar";
+import { UserProvider } from "@/context/userProvider";
+import { NotificationProvider } from "@/context/notification/fetchNotification";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,22 +17,26 @@ export default function Layout({
   return (
     <html lang="ja">
       <body>
-        <div className="flex justify-center bg-contentbg">
-          {/* Left Sidebar (固定) */}
-          <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 left-0 h-full p-4 bg-contentbg">
-            <LeftSideBar />
-          </div>
+        <UserProvider>
+          <NotificationProvider>
+            <div className="flex justify-center bg-contentbg">
+              {/* Left Sidebar (固定) */}
+              <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 left-0 h-full p-4 bg-contentbg">
+                <LeftSideBar />
+              </div>
 
-          {/* メインコンテンツ（スクロール可能） */}
-          <div className="flex flex-col w-full md:w-[50%] max-w-3xl ml-auto mr-auto">
-            {children}
-          </div>
+              {/* メインコンテンツ（スクロール可能） */}
+              <div className="flex flex-col w-full md:w-[50%] max-w-3xl ml-auto mr-auto">
+                {children}
+              </div>
 
-          {/* Right Sidebar (固定) */}
-          <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 right-0 h-full p-4 bg-contentbg">
-            <RightSideBar />
-          </div>
-        </div>
+              {/* Right Sidebar (固定) */}
+              <div className="hidden md:block w-[25%] max-w-[300px] fixed top-0 right-0 h-full p-4 bg-contentbg">
+                <RightSideBar />
+              </div>
+            </div>
+          </NotificationProvider>
+        </UserProvider>
       </body>
     </html>
   );
