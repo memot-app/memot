@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Planet, Settings, LogIn, Search } from "iconoir-react";
+import { useRouter, usePathname } from "next/navigation";
+import { MultiBubble, Settings, LogIn, Search } from "iconoir-react";
 import Image from "next/image";
 
 // components
@@ -11,7 +12,7 @@ import { PrimaryButton } from "@/components/buttons/PrimaryButton";
 
 // modals
 import { AccountModal } from "@/components/modals/AccountModal";
-import SettingsModal from "@/components/modals/SettingsModal";
+
 
 // utils
 import supabase from "@/utils/supabase/client";
@@ -19,11 +20,12 @@ import supabase from "@/utils/supabase/client";
 // hooks
 import { useAccountIdData } from "@/hooks/account/getAcountData";
 export function LeftSideBar() {
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const router = useRouter(); 
+  const pathname = usePathname();
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const [isActive, setIsActive] = useState(false);
+  const isSettingPage = pathname === "/setting";
 
   // `userId` が存在する場合のみ `useAccountIdData` を呼び出す
   const { account: userData, loading: isUserLoading } = useAccountIdData(userId!) || { account: null, loading: false };
@@ -60,14 +62,8 @@ export function LeftSideBar() {
     checkSession();
   }, []);
 
-  const openSettingsModal = () => {
-    setIsSettingsModalOpen(true);
-    setIsActive(true);
-  };
-
-  const closeSettingsModal = () => {
-    setIsSettingsModalOpen(false);
-    setIsActive(false);
+  const handleSettingsClick = () => {
+    router.push("/setting");
   };
 
   const openAccountModal = () => setIsAccountModalOpen(true);
@@ -88,16 +84,14 @@ export function LeftSideBar() {
             icon_number={userData?.profile_picture ?? 1}
           />
         )}
-        <ActionButton path="/" icon={Planet} />
+        <ActionButton path="/" icon={MultiBubble} />
         <ActionButton path="/search" icon={Search} />
         {isLogin ? (
           <PrimaryButton 
             icon={Settings} 
-            onClick={openSettingsModal} 
+            onClick={handleSettingsClick}
             hideTextOnSmallScreen={true} 
-            isModalOpen={isSettingsModalOpen} 
-            isActive={isActive} 
-            setIsActive={setIsActive} 
+            isActive={isSettingPage}
           />
         ) : (
           <PrimaryButton 
@@ -107,9 +101,6 @@ export function LeftSideBar() {
           />
         )}
       </div>
-
-      {/* モーダル */}
-      <SettingsModal isOpen={isSettingsModalOpen} onClose={closeSettingsModal} setIsActive={setIsActive} />
       <AccountModal isOpen={isAccountModalOpen} onClose={closeAccountModal} onLogin={() => setIsLogin(true)} />
     </div>
   );
