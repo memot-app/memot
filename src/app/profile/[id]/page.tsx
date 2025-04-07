@@ -18,6 +18,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 import { useMyPosts } from '@/hooks/post/getMyPosts';
 import { useAccountNameData } from '@/hooks/account/getAcountData';
 import { getImageSrcById } from '@/hooks/getImageSrcById';
+import supabase from "@/utils/supabase/client";
 
 //types
 import { Account } from '@/constants/types';
@@ -53,6 +54,7 @@ function a11yProps(index: number) {
 export default function Profile() {
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<Account | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null); 
   const [image, setImage] = useState<string>("/images/profileIcon/buta.png");
   const [countMemos, setCountMemos] = useState(0);
   const [value, setValue] = useState(0);
@@ -60,6 +62,14 @@ export default function Profile() {
   const { account } = useAccountNameData(id);
   const { posts } = useMyPosts(account?.id);
   useEffect(() => {
+    const fetchSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error("セッション取得エラー:", error.message);
+        return;
+      }
+      setCurrentUserId(session?.user?.id || null);
+    };
     const getMemos = async () => {
       try {
         if (!account) return;
@@ -72,6 +82,7 @@ export default function Profile() {
         setLoading(false);
       }
     };
+    fetchSession();
     getMemos();
   }, [id, account, posts]);
 
@@ -135,14 +146,18 @@ export default function Profile() {
                   <Edit color="#5DB53E" height={30} width={30}/>
                   <div className='text-xl font-bold text-[#8C8C8C]'>{countMemos}</div>
                 </div>
-                <div className='flex flex-col items-center'>
-                  <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followerCount}</div>
-                  <div className='text-sm text-gray-500'>フォロワー</div>
-                </div>
-                <div className='flex flex-col items-center'>
-                  <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followCount}</div>
-                  <div className='text-sm text-gray-500'>フォロー</div>
-                </div>
+                {currentUserId === user?.id && (
+                  <>
+                    <div className='flex flex-col items-center'>
+                      <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followerCount}</div>
+                      <div className='text-sm text-gray-500'>フォロワー</div>
+                    </div>
+                    <div className='flex flex-col items-center'>
+                      <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followCount}</div>
+                      <div className='text-sm text-gray-500'>フォロー</div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
             <ArrowBox>{user?.bio || "一言メッセージはありません。"}</ArrowBox>
