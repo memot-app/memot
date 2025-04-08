@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { WarningTriangleSolid } from 'iconoir-react';
 import supabase from '@/utils/supabase/client';
+import { ReturnButton } from '@/components/buttons/ReturnButton';
 
 export default function SettingsPage (){
   const [userEmail, setUserEmail] = useState<string>('');
@@ -39,9 +40,11 @@ export default function SettingsPage (){
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6">アカウント設定</h1>
-
+    <div className="max-w-3xl">
+      <div className='flex items-center mt-10 mb-5'>
+          <ReturnButton />
+          <div className="text-xl font-bold">アカウント設定</div>
+      </div>
       <div className="flex items-center space-x-4 mb-6">
         {userAvatar && (
           <Image

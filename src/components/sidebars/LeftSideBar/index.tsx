@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { MultiBubble, Settings, LogIn, Search } from "iconoir-react";
+import { MultiBubble, LogIn, Search } from "iconoir-react";
 import Image from "next/image";
 
 // components
@@ -20,12 +19,9 @@ import supabase from "@/utils/supabase/client";
 // hooks
 import { useAccountIdData } from "@/hooks/account/getAcountData";
 export function LeftSideBar() {
-  const router = useRouter(); 
-  const pathname = usePathname();
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const isSettingPage = pathname === "/setting";
 
   // `userId` が存在する場合のみ `useAccountIdData` を呼び出す
   const { account: userData, loading: isUserLoading } = useAccountIdData(userId!) || { account: null, loading: false };
@@ -62,10 +58,6 @@ export function LeftSideBar() {
     checkSession();
   }, []);
 
-  const handleSettingsClick = () => {
-    router.push("/setting");
-  };
-
   const openAccountModal = () => setIsAccountModalOpen(true);
   const closeAccountModal = () => setIsAccountModalOpen(false);
 
@@ -87,12 +79,7 @@ export function LeftSideBar() {
         <ActionButton path="/" icon={MultiBubble} />
         <ActionButton path="/search" icon={Search} />
         {isLogin ? (
-          <PrimaryButton 
-            icon={Settings} 
-            onClick={handleSettingsClick}
-            hideTextOnSmallScreen={true} 
-            isActive={isSettingPage}
-          />
+          null
         ) : (
           <PrimaryButton 
             icon={LogIn} 

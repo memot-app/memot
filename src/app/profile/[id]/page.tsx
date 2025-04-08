@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import {useParams} from 'next/navigation';
 import Image from 'next/image';
+import { Settings } from "iconoir-react";
 
 //packages
 import { Edit } from 'iconoir-react';
@@ -13,6 +14,9 @@ import { PostCard } from '@/components/cards/PostingCard';
 import { ReturnButton } from '@/components/buttons/ReturnButton';
 import ArrowBox from '@/components/boxes/ArrowBox';
 import LoadingScreen from '@/components/LoadingScreen';
+import { PrimaryButton } from "@/components/buttons/PrimaryButton";
+import SettingsModal from "@/components/modals/SettingsModal";
+import { FloatingInputBox } from "@/components/boxes/FloatingInputBox";
 
 //utils
 import { useMyPosts } from '@/hooks/post/getMyPosts';
@@ -61,6 +65,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const { account } = useAccountNameData(id);
   const { posts } = useMyPosts(account?.id);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   useEffect(() => {
     const fetchSession = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
@@ -85,6 +90,11 @@ export default function Profile() {
     fetchSession();
     getMemos();
   }, [id, account, posts]);
+
+  const handleSettingsClick = () => {
+    // router.push("/setting");
+    setIsSettingsModalOpen(true);
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -132,7 +142,7 @@ export default function Profile() {
 
   return (
     <div className="flex justify-center h-full bg-contentbg">
-      <div className="w-full md:w-1/2 bg-white md:min-w-[640px]">
+      <div className="w-full md:w-1/2 bg-white md:min-w-full">
         <div className='max-h-[40vh]'>
           <div className='flex items-center mt-10 mb-5'>
             <ReturnButton />
@@ -156,6 +166,12 @@ export default function Profile() {
                       <div className='text-xl font-bold text-[#8C8C8C]'>{user?.followCount}</div>
                       <div className='text-sm text-gray-500'>フォロー</div>
                     </div>
+                    <PrimaryButton 
+                      icon={Settings} 
+                      onClick={handleSettingsClick}
+                      hideTextOnSmallScreen={true} 
+                      isActive={false}
+                    />
                   </>
                 )}
               </div>
@@ -208,6 +224,13 @@ export default function Profile() {
           ))}
         </div>
       </div>
+      <FloatingInputBox />
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        setIsActive={setIsSettingsModalOpen}
+      />
     </div>
+    
   );
 }
