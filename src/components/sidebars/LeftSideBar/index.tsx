@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { MultiBubble, LogIn, Search } from "iconoir-react";
+import { HomeSimpleDoor, LogIn, Search } from "iconoir-react";
 import Image from "next/image";
 
 // components
@@ -76,7 +76,7 @@ export function LeftSideBar() {
             icon_number={userData?.profile_picture ?? 1}
           />
         )}
-        <ActionButton path="/" icon={MultiBubble} />
+        <ActionButton path="/" icon={HomeSimpleDoor} />
         <ActionButton path="/search" icon={Search} />
         {isLogin ? (
           null
