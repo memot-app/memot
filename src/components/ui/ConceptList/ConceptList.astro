@@ -1,0 +1,17 @@
+---
+import type { PolymorphicProps } from "~/types";
+
+type Props = PolymorphicProps<"div">;
+
+const { as: Tag = "div", class: className, ...props } = Astro.props;
+---
+
+<Tag
+  class:list={[
+    "px-12 py-24 grid content-between rounded-[68px] border-[5px] border-border-secondary",
+    className,
+  ]}
+  {...props}
+>
+  <slot />
+</Tag>

@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { prepareLinkOptions } from "./utils";
+
+interface Props extends HTMLAttributes<"a"> {}
+
+const { href, ...props } = Astro.props;
+
+const linkOptions = prepareLinkOptions(href);
+---
+
+<a href={href} {...linkOptions} {...props}>
+  <slot />
+</a>

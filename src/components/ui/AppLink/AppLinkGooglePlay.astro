@@ -1,0 +1,24 @@
+---
+import { Image } from "astro:assets";
+import type { ComponentProps } from "astro/types";
+import GooglePlayBadgeJP from "~/assets/googleplay-badge-web-color-jp.svg";
+import { SITE } from "~/constants/metadata";
+import Link from "../Link/Link.astro";
+
+interface Props extends ComponentProps<typeof Link> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<Link
+  href={SITE.appUrl.google_play}
+  class:list={["hover:opacity-80 transition", className]}
+  {...props}
+>
+  <Image
+    class="size-full"
+    src={GooglePlayBadgeJP}
+    alt="Google Playで手に入れる"
+    inferSize
+  />
+</Link>

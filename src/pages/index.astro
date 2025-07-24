@@ -1,0 +1,393 @@
+---
+import { Image } from "astro:assets";
+import CalendarFri from "~/assets/calendar-fri.svg";
+import CalendarMon from "~/assets/calendar-mon.svg";
+import CalendarSat from "~/assets/calendar-sat.svg";
+import CalendarSun from "~/assets/calendar-sun.svg";
+import CalendarThu from "~/assets/calendar-thu.svg";
+import CalendarTue from "~/assets/calendar-tue.svg";
+import CalendarWed from "~/assets/calendar-wed.svg";
+import NoteLocked from "~/assets/note-locked.svg";
+import Screen1_1 from "~/assets/screen1-1.png";
+import Screen1_1_msg1 from "~/assets/screen1-1-msg1.png";
+import Screen1_1_msg2 from "~/assets/screen1-1-msg2.png";
+import Screen1_1_msg3 from "~/assets/screen1-1-msg3.png";
+import Screen1_1_msg4 from "~/assets/screen1-1-msg4.png";
+import Screen1_2 from "~/assets/screen1-2.png";
+import Screen2_1 from "~/assets/screen2-1.png";
+import Screen2_2 from "~/assets/screen2-2.png";
+import Screen3 from "~/assets/screen3.png";
+import Screen4_1 from "~/assets/screen4-1.png";
+import Screen4_1_msg1 from "~/assets/screen4-1-msg1.png";
+import Screen4_1_msg2 from "~/assets/screen4-1-msg2.png";
+import Screen4_2 from "~/assets/screen4-2.png";
+import Screen4_2_msg1 from "~/assets/screen4-2-msg1.png";
+import Screen4_2_msg2 from "~/assets/screen4-2-msg2.png";
+import StrikeThroughDM from "~/assets/strikethrough-dm.svg";
+import StrikeThroughLike from "~/assets/strikethrough-like.svg";
+import StrikeThroughReply from "~/assets/strikethrough-reply.svg";
+import StrikeThroughRepost from "~/assets/strikethrough-repost.svg";
+import AppLinkAppStore from "~/components/ui/AppLink/AppLinkAppStore.astro";
+import AppLinkGooglePlay from "~/components/ui/AppLink/AppLinkGooglePlay.astro";
+import AppLinkWeb from "~/components/ui/AppLink/AppLinkWeb.astro";
+import BrandIcon from "~/components/ui/Brand/BrandIcon.astro";
+import ConceptList from "~/components/ui/ConceptList/ConceptList.astro";
+import ConceptListItem from "~/components/ui/ConceptList/ConceptListItem.astro";
+import RoundCornerContainer from "~/components/ui/Container/RoundCornerContainer.astro";
+import FeatureDisplay from "~/components/ui/FeatureDisplay/FeatureDisplay.astro";
+import FeatureDisplayImage from "~/components/ui/FeatureDisplay/FeatureDisplayImage.astro";
+import FeatureDisplayText from "~/components/ui/FeatureDisplay/FeatureDisplayText.astro";
+import FeatureList from "~/components/ui/FeatureList/FeatureList.astro";
+import FeatureListItem from "~/components/ui/FeatureList/FeatureListItem.astro";
+import Footer from "~/components/ui/Footer/Footer.astro";
+import Header from "~/components/ui/Header/Header.astro";
+import RootLayout from "~/layouts/RootLayout.astro";
+---
+
+<RootLayout>
+  <!-- ヘッダー -->
+  <Header class="py-[54px] px-[51px] bg-bg-primary" />
+
+  <!-- メインコンテンツ -->
+  <main class="min-h-screen bg-bg-secondary">
+    <!-- ヒーローセクション -->
+    <section class="bg-bg-primary">
+      <div
+        class="mx-auto w-[1000px] h-[1030px] flex flex-col justify-between pt-[62px] pb-[116px]"
+      >
+        <h1 class="text-hero text-text-primary text-center">
+          <p>みんなの日常。</p>
+          <p>わたしの独り言。</p>
+        </h1>
+        <div class="flex justify-between items-center">
+          <!-- 左: 投稿画面 -->
+          <div class="relative flex items-center">
+            <Image
+              src={Screen1_1}
+              width={Screen1_1.width}
+              height={Screen1_1.height}
+              alt="アプリの投稿画面"
+            />
+            <!-- メッセージ -->
+            <div class="absolute -right-60 grid grid-cols-12">
+              <Image
+                class="col-start-1 col-span-9"
+                src={Screen1_1_msg1}
+                width={Screen1_1_msg1.width}
+                height={Screen1_1_msg1.height}
+                alt="投稿「久しぶりに新宿に行った」"
+              />
+              <Image
+                class="col-start-2 col-span-10"
+                src={Screen1_1_msg2}
+                width={Screen1_1_msg2.width}
+                height={Screen1_1_msg2.height}
+                alt="投稿「新宿のカフェでリラックス」"
+              />
+              <Image
+                class="col-start-3 col-span-11"
+                src={Screen1_1_msg3}
+                width={Screen1_1_msg3.width}
+                height={Screen1_1_msg3.height}
+                alt="投稿「この季節はうどんを食べたくなる」"
+              />
+              <Image
+                class="col-start-4 col-span-12"
+                src={Screen1_1_msg4}
+                width={Screen1_1_msg4.width}
+                height={Screen1_1_msg4.height}
+                alt="投稿「この季節はうどんを食べたくなるな。おいしい店ないかな」"
+              />
+            </div>
+          </div>
+          <!-- 右: おすすめ画面 -->
+          <div class="relative flex items-center">
+            <!-- メッセージ -->
+            <div class="absolute left-0">{/* ここにメッセージ？ */}</div>
+            <Image
+              src={Screen1_2}
+              width={Screen1_2.width}
+              height={Screen1_2.height}
+              alt="アプリのおすすめ画面"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- イントロダクションセクション -->
+    <section
+      class="h-[1440px] bg-bg-secondary grid place-content-center gap-y-[64px]"
+    >
+      <div class="mx-auto w-[624px] h-[780px] grid content-between">
+        <h2 class="text-intro text-text-secondary text-center">
+          <p>期待を生むのではなく</p>
+          <p>ありのままの自分を届ける。</p>
+        </h2>
+        <!-- 画像ギャラリー -->
+        <div class="flex items-center justify-center gap-x-[80px]">
+          <Image
+            src={Screen2_1}
+            width={Screen2_1.width}
+            height={Screen2_1.height}
+            alt="アプリの日記画面"
+          />
+          <Image
+            src={Screen2_2}
+            width={Screen2_2.width}
+            height={Screen2_2.height}
+            alt="アプリのユーザー設定画面"
+          />
+        </div>
+      </div>
+      <!-- 特徴 -->
+      <div class="w-[964px] grid gap-y-6">
+        <h3 class="text-intro text-[2rem] text-text-secondary text-center">
+          めもっとの特徴は？
+        </h3>
+        <!-- 3つの特徴 -->
+        <FeatureList>
+          <FeatureListItem number={1}>疲れないSNS</FeatureListItem>
+          <FeatureListItem number={2}>日常を静かに共有</FeatureListItem>
+          <FeatureListItem number={3}>日記で毎日を振り返る</FeatureListItem>
+        </FeatureList>
+      </div>
+    </section>
+
+    <!-- コンセプトセクション -->
+    <RoundCornerContainer
+      class="bg-theme text-white pt-[70px] pb-[102px] grid gap-y-[50px]"
+    >
+      <div>
+        <h2 class="text-concept text-center py-[28px]">しずかで疲れない空間</h2>
+        <p class="text-concept-sub text-center">
+          他人の評価に縛られず、“今”をメモできる場所。気軽に、気ままに、自分のためのメモをどうぞ。
+        </p>
+      </div>
+      <!-- コンセプト枠 -->
+      <ConceptList class="mx-auto w-[1310px] h-[1480px]">
+        <!-- 1 -->
+        <ConceptListItem
+          item={{ texts: ["期待を生むことなく", "静かに共有。"] }}
+        >
+          <Image
+            class="self-start"
+            src={StrikeThroughDM}
+            width={StrikeThroughDM.width}
+            height={StrikeThroughDM.height}
+            alt="DMに打ち消し線"
+          />
+          <Image
+            class="self-end"
+            src={StrikeThroughReply}
+            width={StrikeThroughReply.width}
+            height={StrikeThroughReply.height}
+            alt="リプライに打ち消し線"
+          />
+          <Image
+            class="self-start"
+            src={StrikeThroughRepost}
+            width={StrikeThroughRepost.width}
+            height={StrikeThroughRepost.height}
+            alt="リポストに打ち消し線"
+          />
+          <Image
+            class="self-end"
+            src={StrikeThroughLike}
+            width={StrikeThroughLike.width}
+            height={StrikeThroughLike.height}
+            alt="いいねに打ち消し線"
+          />
+        </ConceptListItem>
+        <!-- 2 -->
+        <ConceptListItem
+          item={{ texts: ["残るのは1週間だけ。", "過去のことは気にしない。"] }}
+          imagesWrapperClass="gap-y-[24px]"
+        >
+          <div class="flex items-center justify-center gap-x-[20px]">
+            <Image
+              src={CalendarMon}
+              width={CalendarMon.width}
+              height={CalendarMon.height}
+              alt="カレンダー月曜日"
+            />
+            <Image
+              src={CalendarTue}
+              width={CalendarTue.width}
+              height={CalendarTue.height}
+              alt="カレンダー火曜日"
+            />
+            <Image
+              src={CalendarWed}
+              width={CalendarWed.width}
+              height={CalendarWed.height}
+              alt="カレンダー水曜日"
+            />
+          </div>
+          <div class="flex items-center justify-center gap-x-[20px]">
+            <Image
+              src={CalendarThu}
+              width={CalendarThu.width}
+              height={CalendarThu.height}
+              alt="カレンダー木曜日"
+            />
+            <Image
+              src={CalendarFri}
+              width={CalendarFri.width}
+              height={CalendarFri.height}
+              alt="カレンダー金曜日"
+            />
+            <Image
+              src={CalendarSat}
+              width={CalendarSat.width}
+              height={CalendarSat.height}
+              alt="カレンダー土曜日"
+            />
+            <Image
+              src={CalendarSun}
+              width={CalendarSun.width}
+              height={CalendarSun.height}
+              alt="カレンダー日曜日"
+            />
+          </div>
+        </ConceptListItem>
+        <!-- 3 -->
+        <ConceptListItem
+          item={{ texts: ["自分だけが見える", "めもアプリとしても。"] }}
+        >
+          <Image
+            src={NoteLocked}
+            width={NoteLocked.width}
+            height={NoteLocked.height}
+            alt="ロックされたノート"
+          />
+        </ConceptListItem>
+      </ConceptList>
+    </RoundCornerContainer>
+
+    <!-- アイキャッチ/バンパーセクション -->
+    <section
+      class="relative mx-auto w-[1200px] h-[760px] flex justify-between pt-[50px]"
+    >
+      <h3 class="text-bumper text-text-tertiary text-start">
+        <p>独り言。</p>
+        <p>買い物のメモ。</p>
+        <p>趣味のこと。</p>
+        <p>気軽にめもして共有。</p>
+      </h3>
+      <Image
+        class="absolute right-0 -top-[210px]"
+        src={Screen3}
+        width={Screen3.width}
+        height={Screen3.height}
+        alt="アプリの日記画面"
+      />
+    </section>
+
+    <!-- フィーチャーセクション -->
+    <section
+      class="rounded-t-[100px] shadow-theme-glow py-[132px] grid gap-y-[110px]"
+    >
+      <h2 class="text-feature text-center">
+        <span
+          class="text-transparent bg-clip-text bg-linear-to-r from-theme-gradient to-theme"
+          >AIがつながる新たな体験</span
+        >
+      </h2>
+      <div class="grid gap-y-[165px]">
+        <!-- 1 -->
+        <FeatureDisplay class="mx-auto w-[1280px] h-[624px]">
+          <FeatureDisplayText
+            slot="left"
+            head="自動日記"
+            headSub="〜自分から自分へ〜"
+            body={[
+              "返信やDM機能を設けず、純粋に",
+              "自分の日常を記録・共有する独り言として",
+              "利用でき、余計なストレスを軽減します。",
+            ]}
+          />
+          <FeatureDisplayImage
+            slot="right"
+            messageImages={[
+              {
+                ...Screen4_1_msg1,
+                alt: "投稿「今日久しぶりに新宿にきた」",
+              },
+              {
+                ...Screen4_1_msg2,
+                alt: "投稿「この季節はうどんを食べたくなるな。おいしい店ないかな」",
+              },
+            ]}
+            displayImage={{
+              ...Screen4_1,
+              alt: "アプリの自動日記画面",
+            }}
+          />
+        </FeatureDisplay>
+        <!-- 2 -->
+        <FeatureDisplay class="mx-auto w-[1280px] h-[624px]">
+          <FeatureDisplayText
+            slot="right"
+            head="感情レター"
+            headSub="〜自分から他人へ〜"
+            body={[
+              "返信やDM機能を設けず、純粋に",
+              "自分の日常を記録・共有する独り言として",
+              "利用でき、余計なストレスを軽減します。",
+            ]}
+          />
+          <FeatureDisplayImage
+            slot="left"
+            messageImages={[
+              {
+                ...Screen4_2_msg1,
+                alt: "投稿「今日久しぶりに新宿にきた」",
+              },
+              {
+                ...Screen4_2_msg2,
+                alt: "投稿「この季節はうどんを食べたくなるな。おいしい店ないかな」",
+              },
+            ]}
+            displayImage={{
+              ...Screen4_2,
+              alt: "アプリの感情レターを送る画面",
+            }}
+          />
+        </FeatureDisplay>
+      </div>
+    </section>
+
+    <!-- クロージングセクション -->
+    <section class="bg-bg-secondary font-zen-kaku-gothic-new py-[150px]">
+      <div class="mx-auto max-w-[1220px] grid gap-y-[100px]">
+        <div class="flex items-center gap-x-[144px]">
+          <h2 class="text-closing text-text-primary text-start">
+            <p>儚い”めも”から。</p>
+            <p>
+              “もっと”<span class="text-[4.75rem] text-theme">自分らしさ</span
+              >を。
+            </p>
+          </h2>
+          <BrandIcon class="h-[165px]" />
+        </div>
+        <!-- アプリのリンク -->
+        <div class="grid gap-y-[30px]">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-x-[35px]">
+              <AppLinkAppStore class="h-[86px]" />
+              <AppLinkGooglePlay class="h-[86px]" />
+            </div>
+            <AppLinkWeb class="h-[96px]" />
+          </div>
+          <small class="text-xl text-text-tertiary font-bold"
+            >※iOS・Android・Webで提供予定。</small
+          >
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- フッター -->
+  <Footer />
+</RootLayout>

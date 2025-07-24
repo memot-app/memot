@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+
+@theme {
+  /* color */
+  --color-theme: #5db53e;
+  --color-theme-gradient: #345329;
+  --color-theme-border: #418a24;
+  --color-text-primary: #000000;
+  --color-text-secondary: #2b2b2b;
+  --color-text-tertiary: #404040;
+  --color-text-quaternary: #8c8c8c;
+  --color-bg-primary: #f7f4f2;
+  --color-bg-secondary: #ffffff;
+  --color-border-primary: #505050;
+  --color-border-secondary: #ccc;
+
+  /* typography */
+  --text-hero: 4rem;
+  --text-hero--font-weight: 700;
+  --text-hero--line-height: normal;
+  --text-hero--letter-spacing: normal;
+  --text-intro: 3rem;
+  --text-intro--font-weight: 700;
+  --text-intro--line-height: 5.75rem;
+  --text-intro--letter-spacing: normal;
+  --text-concept: 4.75rem;
+  --text-concept--font-weight: 700;
+  --text-concept--line-height: 5.75rem;
+  --text-concept--letter-spacing: normal;
+  --text-concept-sub: 1.5rem;
+  --text-concept-sub--font-weight: 500;
+  --text-concept-sub--line-height: 180%;
+  --text-concept-sub--letter-spacing: normal;
+  --text-bumper: 3rem;
+  --text-bumper--font-weight: 700;
+  --text-bumper--line-height: 195%;
+  --text-bumper--letter-spacing: normal;
+  --text-feature: 4.75rem;
+  --text-feature--font-weight: 700;
+  --text-feature--line-height: 5.75rem;
+  --text-feature--letter-spacing: normal;
+  --text-feature-head: 4rem;
+  --text-feature-head--font-weight: 700;
+  --text-feature-head--line-height: 5.75rem;
+  --text-feature-head--letter-spacing: normal;
+  --text-feature-head-sub: 2rem;
+  --text-feature-head-sub--font-weight: 900;
+  --text-feature-head-sub--line-height: 4rem;
+  --text-feature-head-sub--letter-spacing: normal;
+  --text-feature-body: 1.625rem;
+  --text-feature-body--font-weight: 700;
+  --text-feature-body--line-height: 3.75rem;
+  --text-feature-body--letter-spacing: normal;
+  --text-closing: 4rem;
+  --text-closing--font-weight: 700;
+  --text-closing--line-height: 2;
+  --text-closing--letter-spacing: normal;
+  --text-footer-link: 1.25rem;
+  --text-footer-link--font-weight: 600;
+  --text-footer-link--line-height: 200%;
+  --text-footer-link--letter-spacing: normal;
+  --text-copyright: 1rem;
+  --text-copyright--font-weight: 500;
+  --text-copyright--line-height: normal;
+  --text-copyright--letter-spacing: normal;
+
+  /* font */
+  --font-zen-kaku-gothic-new: 'Zen Kaku Gothic New', sans-serif;
+
+  /* radius */
+  --radius-3_5xl: 1.75rem;
+
+  /* shadow */
+  --shadow-theme-glow: 0px 0px 44px 20px var(--color-theme);
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+}
