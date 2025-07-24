@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+import type { HTMLAttributes } from "astro/types";
+import FooterDisplay from "~/assets/footer-display.png";
+import { SITE } from "~/constants/metadata";
+import BrandLogoFull from "../Brand/BrandLogoFull.astro";
+import FooterLink from "./FooterLink.astro";
+
+interface Props extends HTMLAttributes<"footer"> {}
+
+const { class: className, ...props } = Astro.props;
+
+const today = new Date();
+---
+
+<footer class:list={["h-[600px] grid content-end", className]} {...props}>
+  <div class="flex items-center justify-between">
+    <section class="mx-auto w-[500px] h-[360px] grid content-stretch">
+      <BrandLogoFull class="h-[88px] w-fit" />
+      <div class="mt-[16px] w-[384px] h-px bg-border-secondary"></div>
+      <ul class="px-[8px]">
+        {
+          SITE.sitemap.map((item) => (
+            <li>
+              <FooterLink href={item.url}>{item.title}</FooterLink>
+            </li>
+          ))
+        }
+      </ul>
+      <small class="self-end text-copyright text-text-quaternary">
+        &copy; {today.getFullYear()}{" "}{SITE.title}
+      </small>
+    </section>
+    <section>
+      <Image
+        src={FooterDisplay}
+        width={FooterDisplay.width}
+        height={FooterDisplay.height}
+        alt="アプリの使用イメージ"
+      />
+    </section>
+  </div>
+</footer>
+
+<style>
+  footer {
+    background-image: url("/src/assets/footer-bg.svg");
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+  }
+</style>

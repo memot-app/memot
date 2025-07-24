@@ -1,0 +1,15 @@
+---
+import type { PolymorphicProps } from "~/types";
+
+export type Slot = "left" | "right";
+
+type Props = PolymorphicProps<"div">;
+
+const { as: Tag = "div", class: className, ...props } = Astro.props;
+---
+
+<Tag class:list={["flex items-center justify-between", className]} {...props}>
+  <slot name="left" />
+  <slot />
+  <slot name="right" />
+</Tag>

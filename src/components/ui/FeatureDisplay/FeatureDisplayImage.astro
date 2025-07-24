@@ -1,0 +1,91 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import type { PolymorphicProps } from "~/types";
+import type { Slot } from "./FeatureDisplay.astro";
+
+interface ImageProps extends ImageMetadata {
+  alt: string;
+}
+
+interface CustomProps {
+  /**
+   * 配置するスロット
+   * @see Slot
+   * @default 要素の順番に従う
+   */
+  slot?: Slot;
+  messageImages: ImageProps[];
+  displayImage: ImageProps;
+}
+
+type Props = PolymorphicProps<"div", CustomProps>;
+
+const {
+  as: Tag = "div",
+  messageImages,
+  displayImage,
+  class: className,
+  ...props
+} = Astro.props;
+
+/**
+ * 配列の画像の高さを合計する関数
+ * @param images 画像の配列
+ * @returns 画像の高さの合計
+ */
+const calculateTotalImageHeight = (images: ImageProps[]): number => {
+  let totalHeight = 0;
+  for (let i = 0; i < images.length; i++) {
+    totalHeight += images[i].height;
+  }
+  return totalHeight;
+};
+
+const dummyMessageHeight = calculateTotalImageHeight(messageImages);
+---
+
+<Tag
+  class:list={[
+    "size-[624px] flex items-center justify-center gap-x-[50px] bg-feature-box-image",
+    className,
+  ]}
+  {...props}
+>
+  <div class="grid gap-y-[18px]">
+    {
+      messageImages.map((image) => (
+        <Image
+          src={image}
+          width={image.width}
+          height={image.height}
+          alt={image.alt}
+        />
+      ))
+    }
+    <div
+      style={{
+        height: `${dummyMessageHeight}px`,
+      }}
+    >
+      {/* メッセージ分上に移動 */}
+    </div>
+  </div>
+  <div>
+    <Image
+      src={displayImage}
+      width={displayImage.width}
+      height={displayImage.height}
+      alt={displayImage.alt}
+    />
+  </div>
+</Tag>
+
+<style>
+  .bg-feature-box-image {
+    background-image: url("/src/assets/bg-feature-box.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+</style>

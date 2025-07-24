@@ -1,0 +1,44 @@
+---
+import type { PolymorphicProps } from "~/types";
+import type { Slot } from "./FeatureDisplay.astro";
+
+interface CustomProps {
+  /**
+   * 配置するスロット
+   * @see Slot
+   * @default 要素の順番に従う
+   */
+  slot?: Slot;
+  head: string;
+  headSub: string;
+  body: string[];
+}
+
+type Props = PolymorphicProps<"div", CustomProps>;
+
+const {
+  as: Tag = "div",
+  head,
+  headSub,
+  body,
+  class: className,
+  ...props
+} = Astro.props;
+---
+
+<Tag class:list={[className]} {...props}>
+  <h4 class="text-feature-head-sub text-text-secondary">{headSub}</h4>
+  <div class="grid gap-y-[40px]">
+    <h3 class="text-feature-head text-text-secondary">{head}</h3>
+    <p class="text-feature-body text-text-secondary">
+      {
+        body.map((line) => (
+          <>
+            {line}
+            <br />
+          </>
+        ))
+      }
+    </p>
+  </div>
+</Tag>
