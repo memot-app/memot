@@ -20,7 +20,7 @@ This section guides you through submitting an enhancement suggestion for Memot, 
 
 ### Pull Request Process
 
-1.  Fork the repo and create your branch from `main`.
+1.  Fork the repo and create your branch from `develop`.
 2.  If you've added code that should be tested, add tests.
 3.  Ensure the test suite passes (`pnpm test`).
 4.  Make sure your code lints (`pnpm check`).
@@ -32,7 +32,7 @@ Please refer to the [README.md](./README.md#getting-started) for instructions on
 
 ## Code Style
 
-This project uses [Biome](https://biomejs.dev/) for code formatting and linting. Please run `pnpm fix` before committing your changes to ensure your code adheres to the project's style.
+This project uses [Astro](https://docs.astro.build/en/reference/cli-reference/) for type checking and [Biome](https://biomejs.dev/) for code formatting and linting. Also, we have `lefthook` configured to automatically check and format your code on every commit. Therefore, you do not need to run the checking and formatting commands manually.
 
 ## Commit Messages
 
@@ -41,7 +41,7 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0
 Example:
 
 ```
-feat: Add user authentication feature
+feat: add user authentication feature
 
 This feature allows users to sign up and log in to the application.
 ```

@@ -63,14 +63,14 @@ Open [http://localhost:4321](http://localhost:4321) in your browser to see the r
 
 ## Available Commands
 
-| Command        | Description                                                   |
-| -------------- | ------------------------------------------------------------- |
-| `pnpm dev`     | Starts the development server.                                |
-| `pnpm build`   | Builds the application for production.                        |
-| `pnpm preview` | Previews the production build locally.                        |
-| `pnpm test`    | Runs tests using Vitest.                                      |
-| `pnpm check`   | Runs all checks (Astro and Biome).                            |
-| `pnpm fix`     | Automatically fixes linting and formatting issues with Biome. |
+| Command        | Description                                                                                           |
+| -------------- | ----------------------------------------------------------------------------------------------------- |
+| `pnpm dev`     | Starts the development server.                                                                        |
+| `pnpm build`   | Builds the application for production.                                                                |
+| `pnpm preview` | Previews the production build locally.                                                                |
+| `pnpm test`    | Runs tests using Vitest.                                                                              |
+| `pnpm check`   | Runs all checks (Astro and Biome).                                                                    |
+| `pnpm fix`     | Automatically fixes linting and formatting issues with Biome. Note that Astro files are not included. |
 
 ## Contributing
 
