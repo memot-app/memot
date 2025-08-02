@@ -1,6 +1,6 @@
 import { getViteConfig } from 'astro/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { defineConfig, mergeConfig } from 'vitest/config';
+import { defineConfig, mergeConfig, type ViteUserConfig } from 'vitest/config';
 
 export default defineConfig(async (env) => {
   const astroViteConfigFn = getViteConfig({
@@ -20,5 +20,5 @@ export default defineConfig(async (env) => {
       globals: true,
       environment: 'happy-dom',
     },
-  });
+  } satisfies ViteUserConfig);
 });
