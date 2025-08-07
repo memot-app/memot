@@ -15,7 +15,7 @@
   --color-border-secondary: #ccc;
 
   /* typography */
-  --text-hero: 4rem;
+  --text-hero: 3.5rem;
   --text-hero--font-weight: 700;
   --text-hero--line-height: normal;
   --text-hero--letter-spacing: normal;
@@ -69,6 +69,9 @@
 
   /* radius */
   --radius-3_5xl: 1.75rem;
+
+  /* height */
+  --height-header: 96px;
 
   /* shadow */
   --shadow-theme-glow: 0px 0px 44px 20px var(--color-theme);

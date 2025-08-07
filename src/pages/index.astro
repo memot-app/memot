@@ -46,14 +46,19 @@ import RootLayout from "~/layouts/RootLayout.astro";
 
 <RootLayout>
   <!-- ヘッダー -->
-  <Header class="py-[54px] px-[51px] bg-bg-primary" />
+  <div class="h-header bg-bg-primary">
+    {/* ヘッダー背景 */}
+  </div>
+  <Header
+    class="z-10 fixed top-0 inset-x-0 h-header m-[16px] px-[42px] rounded-[32px] bg-bg-primary/50 backdrop-blur-2xl"
+  />
 
   <!-- メインコンテンツ -->
   <main class="min-h-screen bg-bg-secondary">
     <!-- ヒーローセクション -->
     <section class="bg-bg-primary">
       <div
-        class="mx-auto w-[1000px] h-[1030px] flex flex-col justify-between pt-[62px] pb-[116px]"
+        class="mx-auto w-[1000px] h-[1000px] flex flex-col justify-between pt-[64px] pb-[100px]"
       >
         <h1 class="text-hero text-text-primary text-center">
           <p>みんなの日常。</p>
