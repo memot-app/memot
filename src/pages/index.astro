@@ -9,10 +9,6 @@ import CalendarTue from "~/assets/calendar-tue.svg";
 import CalendarWed from "~/assets/calendar-wed.svg";
 import NoteLocked from "~/assets/note-locked.svg";
 import Screen1_1 from "~/assets/screen1-1.png";
-import Screen1_1_msg1 from "~/assets/screen1-1-msg1.png";
-import Screen1_1_msg2 from "~/assets/screen1-1-msg2.png";
-import Screen1_1_msg3 from "~/assets/screen1-1-msg3.png";
-import Screen1_1_msg4 from "~/assets/screen1-1-msg4.png";
 import Screen1_2 from "~/assets/screen1-2.png";
 import Screen2_1 from "~/assets/screen2-1.png";
 import Screen2_2 from "~/assets/screen2-2.png";
@@ -41,6 +37,7 @@ import FeatureList from "~/components/ui/FeatureList/FeatureList.astro";
 import FeatureListItem from "~/components/ui/FeatureList/FeatureListItem.astro";
 import Footer from "~/components/ui/Footer/Footer.astro";
 import Header from "~/components/ui/Header/Header.astro";
+import MessageCard from "~/components/MessageCard.astro";
 import RootLayout from "~/layouts/RootLayout.astro";
 ---
 
@@ -64,51 +61,51 @@ import RootLayout from "~/layouts/RootLayout.astro";
           <p>みんなの日常。</p>
           <p>わたしの独り言。</p>
         </h1>
-        <div class="flex justify-between items-center">
+        <div
+          class="grid grid-cols-1 md:grid-cols-[auto_minmax(clamp(220px,28vw,320px),1fr)_auto] items-center gap-x-[clamp(16px,4vw,40px)] gap-y-8"
+        >
           <!-- 左: 投稿画面 -->
-          <div class="relative flex items-center">
+          <div class="relative flex items-center justify-center">
             <Image
               src={Screen1_1}
               width={Screen1_1.width}
               height={Screen1_1.height}
               alt="アプリの投稿画面"
             />
-            <!-- メッセージ -->
-            <div class="absolute -right-60 grid grid-cols-12">
-              <Image
-                class="col-start-1 col-span-9"
-                src={Screen1_1_msg1}
-                width={Screen1_1_msg1.width}
-                height={Screen1_1_msg1.height}
-                alt="投稿「久しぶりに新宿に行った」"
-              />
-              <Image
-                class="col-start-2 col-span-10"
-                src={Screen1_1_msg2}
-                width={Screen1_1_msg2.width}
-                height={Screen1_1_msg2.height}
-                alt="投稿「新宿のカフェでリラックス」"
-              />
-              <Image
-                class="col-start-3 col-span-11"
-                src={Screen1_1_msg3}
-                width={Screen1_1_msg3.width}
-                height={Screen1_1_msg3.height}
-                alt="投稿「この季節はうどんを食べたくなる」"
-              />
-              <Image
-                class="col-start-4 col-span-12"
-                src={Screen1_1_msg4}
-                width={Screen1_1_msg4.width}
-                height={Screen1_1_msg4.height}
-                alt="投稿「この季節はうどんを食べたくなるな。おいしい店ないかな」"
-              />
-            </div>
           </div>
+
+          <!-- 中央: メッセージ（左揃え・等間隔・中央列） -->
+          <div
+            class="w-[clamp(220px,70vw,320px)] justify-self-center md:justify-self-stretch flex flex-col items-start gap-[clamp(8px,1.8vw,16px)] text-[clamp(0.9rem,1.8vw,1rem)]"
+          >
+            <MessageCard
+              message="久しぶりに新宿に行った"
+              rotateX={25}
+              rotateY={30}
+              rotateZ={-5}
+            />
+            <MessageCard
+              message="新宿のカフェでリラックス"
+              rotateX={25}
+              rotateY={30}
+              rotateZ={-5}
+            />
+            <MessageCard
+              message="この季節はうどんを食べたくなる"
+              rotateX={25}
+              rotateY={30}
+              rotateZ={-5}
+            />
+            <MessageCard
+              message="この季節はうどんを食べたくなるな。おいしい店ないかなaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaあああああああ"
+              rotateX={25}
+              rotateY={30}
+              rotateZ={-5}
+            />
+          </div>
+
           <!-- 右: おすすめ画面 -->
-          <div class="relative flex items-center">
-            <!-- メッセージ -->
-            <div class="absolute left-0">{/* ここにメッセージ？ */}</div>
+          <div class="relative flex items-center justify-center">
             <Image
               src={Screen1_2}
               width={Screen1_2.width}
