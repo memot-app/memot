@@ -15,7 +15,7 @@
   --color-border-secondary: #ccc;
 
   /* typography */
-  --text-hero: 3.5rem;
+  --text-hero: 3.5rem; /* 元は4rem */
   --text-hero--font-weight: 700;
   --text-hero--line-height: normal;
   --text-hero--letter-spacing: normal;
