@@ -301,16 +301,18 @@ import RootLayout from "~/layouts/RootLayout.astro";
 
     <!-- アイキャッチ/バンパーセクション -->
     <section
-      class="relative mx-auto max-w-screen-xl w-full flex flex-col-reverse lg:flex-row justify-center items-center py-24 px-4 gap-y-8"
+      class="relative mx-auto max-w-screen-xl w-full flex flex-col-reverse lg:flex-row justify-center lg:justify-between items-start lg:items-center py-24 px-8 gap-y-8 -mt-24"
     >
-      <h3 class="text-bumper text-text-tertiary text-center lg:text-start">
+      <h3
+        class="text-bumper text-text-tertiary text-start text-[clamp(1.5rem,5vw,2.25rem)]"
+      >
         <p>独り言。</p>
         <p>買い物のメモ。</p>
         <p>趣味のこと。</p>
         <p>気軽にめもして共有。</p>
       </h3>
       <Image
-        class="w-[clamp(320px,90vw,600px)]"
+        class="w-[clamp(280px,75vw,520px)]"
         src={Screen3}
         width={Screen3.width}
         height={Screen3.height}
