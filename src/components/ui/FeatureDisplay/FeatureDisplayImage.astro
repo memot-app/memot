@@ -47,15 +47,16 @@ const dummyMessageHeight = calculateTotalImageHeight(messageImages);
 
 <Tag
   class:list={[
-    "size-[624px] flex items-center justify-center gap-x-[50px] bg-feature-box-image",
+    "inline-flex flex-row items-center justify-center gap-x-4 md:gap-x-6 p-4 md:p-6 bg-feature-box-image rounded-3xl",
     className,
   ]}
   {...props}
 >
-  <div class="grid gap-y-[18px]">
+  <div class="grid gap-y-2">
     {
       messageImages.map((image) => (
         <Image
+          class="w-[clamp(100px,25vw,180px)] h-auto"
           src={image}
           width={image.width}
           height={image.height}
@@ -63,16 +64,10 @@ const dummyMessageHeight = calculateTotalImageHeight(messageImages);
         />
       ))
     }
-    <div
-      style={{
-        height: `${dummyMessageHeight}px`,
-      }}
-    >
-      {/* メッセージ分上に移動 */}
-    </div>
   </div>
-  <div>
+  <div class="flex justify-center items-center">
     <Image
+      class="w-[clamp(120px,30vw,220px)] h-auto"
       src={displayImage}
       width={displayImage.width}
       height={displayImage.height}

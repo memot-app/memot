@@ -26,11 +26,21 @@ const {
 } = Astro.props;
 ---
 
-<Tag class:list={[className]} {...props}>
-  <h4 class="text-feature-head-sub text-text-secondary">{headSub}</h4>
-  <div class="grid gap-y-[40px]">
-    <h3 class="text-feature-head text-text-secondary">{head}</h3>
-    <p class="text-feature-body text-text-secondary">
+<Tag class:list={["w-full max-w-lg text-center lg:text-left", className]} {...props}>
+  <h4
+    class="text-feature-head-sub text-text-secondary text-[clamp(1.125rem,4vw,1.5rem)]"
+  >
+    {headSub}
+  </h4>
+  <div class="grid gap-y-6 md:gap-y-10 mt-4">
+    <h3
+      class="text-feature-head text-text-secondary text-[clamp(2rem,8vw,3rem)]"
+    >
+      {head}
+    </h3>
+    <p
+      class="text-feature-body text-text-secondary text-[clamp(1rem,4vw,1.25rem)] leading-loose"
+    >
       {
         body.map((line) => (
           <>
