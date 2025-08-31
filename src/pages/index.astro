@@ -129,7 +129,9 @@ import RootLayout from "~/layouts/RootLayout.astro";
       class="bg-bg-secondary py-24 px-4 grid place-content-center gap-y-16"
     >
       <div class="mx-auto max-w-3xl w-full grid content-between gap-y-12">
-        <h2 class="text-intro text-text-secondary text-center">
+        <h2
+          class="text-intro text-text-secondary text-center text-[clamp(1.25rem,6vw,2.25rem)]"
+        >
           <p>期待を生むのではなく</p>
           <p>ありのままの自分を届ける。</p>
         </h2>
@@ -175,12 +177,12 @@ import RootLayout from "~/layouts/RootLayout.astro";
     >
       <div class="max-w-4xl mx-auto">
         <h2
-          class="text-concept text-center py-4 text-[clamp(2rem,8vw,3rem)]"
+          class="text-concept text-center py-4 text-[clamp(1.5rem,7vw,3rem)]"
         >
           しずかで疲れない空間
         </h2>
         <p
-          class="text-concept-sub text-center max-w-prose mx-auto text-[clamp(1rem,4vw,1.125rem)]"
+          class="text-concept-sub text-center mx-auto text-[clamp(1rem,3.5vw,1.5rem)]"
         >
           他人の評価に縛られず、“今”をメモできる場所。気軽に、気ままに、自分のためのメモをどうぞ。
         </p>
@@ -397,33 +399,33 @@ import RootLayout from "~/layouts/RootLayout.astro";
 
     <!-- クロージングセクション -->
     <section class="bg-bg-secondary font-zen-kaku-gothic-new py-24 md:py-36 px-4">
-      <div class="mx-auto max-w-screen-lg w-full grid gap-y-24">
+      <div class="mx-auto max-w-screen-lg w-full grid gap-y-8">
         <div
-          class="flex flex-col md:flex-row items-center justify-center gap-x-16 gap-y-8"
+          class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-x-12 gap-y-8"
         >
           <h2
-            class="text-closing text-text-primary text-center md:text-start text-[clamp(2rem,8vw,3rem)]"
+            class="text-closing text-text-primary text-center md:text-start text-[clamp(1.75rem,7vw,2.75rem)]"
           >
             <p>儚い”めも”から。</p>
             <p>
               “もっと”<span
-                class="text-[clamp(2.5rem,10vw,4.75rem)] text-theme"
+                class="text-[clamp(2.25rem,9vw,4.25rem)] text-theme"
                 >自分らしさ</span
               >を。
             </p>
           </h2>
-          <BrandIcon class="h-[clamp(100px,25vw,165px)]" />
+          <BrandIcon class="h-[clamp(80px,22vw,140px)]" />
         </div>
         <!-- アプリのリンク -->
         <div class="grid gap-y-8">
           <div
-            class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-y-6"
+            class="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-between"
           >
-            <div class="flex items-center gap-x-clamp(1rem,5vw,2.25rem)">
-              <AppLinkAppStore class="h-clamp(4rem,15vw,5.5rem)" />
-              <AppLinkGooglePlay class="h-clamp(4rem,15vw,5.5rem)" />
+            <div class="flex flex-row items-center gap-x-3">
+              <AppLinkAppStore class="h-[2.75rem] md:h-[4rem]" />
+              <AppLinkGooglePlay class="h-[2.75rem] md:h-[4rem]" />
             </div>
-            <AppLinkWeb class="h-clamp(5rem,18vw,6rem)" />
+            <AppLinkWeb class="h-[3.25rem] md:h-[4rem]" />
           </div>
           <small
             class="text-base md:text-xl text-text-tertiary font-bold text-center md:text-left"
