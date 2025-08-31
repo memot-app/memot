@@ -135,17 +135,17 @@ import RootLayout from "~/layouts/RootLayout.astro";
         </h2>
         <!-- 画像ギャラリー -->
         <div
-          class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-clamp(2rem,8vw,5rem)"
+          class="flex flex-row items-center justify-center gap-4 md:gap-8"
         >
           <Image
-            class="w-[clamp(240px,70vw,280px)]"
+            class="w-[clamp(140px,40vw,260px)]"
             src={Screen2_1}
             width={Screen2_1.width}
             height={Screen2_1.height}
             alt="アプリの日記画面"
           />
           <Image
-            class="w-[clamp(240px,70vw,280px)]"
+            class="w-[clamp(140px,40vw,260px)]"
             src={Screen2_2}
             width={Screen2_2.width}
             height={Screen2_2.height}
@@ -174,40 +174,47 @@ import RootLayout from "~/layouts/RootLayout.astro";
       class="bg-theme text-white py-16 md:py-24 px-4 grid gap-y-12"
     >
       <div class="max-w-4xl mx-auto">
-        <h2 class="text-concept text-center py-4">しずかで疲れない空間</h2>
-        <p class="text-concept-sub text-center max-w-prose mx-auto">
+        <h2
+          class="text-concept text-center py-4 text-[clamp(2rem,8vw,3rem)]"
+        >
+          しずかで疲れない空間
+        </h2>
+        <p
+          class="text-concept-sub text-center max-w-prose mx-auto text-[clamp(1rem,4vw,1.125rem)]"
+        >
           他人の評価に縛られず、“今”をメモできる場所。気軽に、気ままに、自分のためのメモをどうぞ。
         </p>
       </div>
       <!-- コンセプト枠 -->
-      <ConceptList class="mx-auto max-w-screen-xl w-full">
+      <ConceptList class="mx-auto max-w-screen-xl w-full grid gap-y-20">
         <!-- 1 -->
         <ConceptListItem
           item={{ texts: ["期待を生むことなく", "静かに共有。"] }}
+          imagesWrapperClass="gap-4"
         >
           <Image
-            class="self-start w-[clamp(100px,30vw,200px)]"
+            class="w-[clamp(100px,20vw,130px)]"
             src={StrikeThroughDM}
             width={StrikeThroughDM.width}
             height={StrikeThroughDM.height}
             alt="DMに打ち消し線"
           />
           <Image
-            class="self-end w-[clamp(100px,30vw,200px)]"
+            class="w-[clamp(100px,30vw,230px)]"
             src={StrikeThroughReply}
             width={StrikeThroughReply.width}
             height={StrikeThroughReply.height}
             alt="リプライに打ち消し線"
           />
           <Image
-            class="self-start w-[clamp(100px,30vw,200px)]"
+            class="w-[clamp(100px,30vw,230px)]"
             src={StrikeThroughRepost}
             width={StrikeThroughRepost.width}
             height={StrikeThroughRepost.height}
             alt="リポストに打ち消し線"
           />
           <Image
-            class="self-end w-[clamp(100px,30vw,200px)]"
+            class="w-[clamp(100px,25vw,180px)]"
             src={StrikeThroughLike}
             width={StrikeThroughLike.width}
             height={StrikeThroughLike.height}
@@ -217,55 +224,59 @@ import RootLayout from "~/layouts/RootLayout.astro";
         <!-- 2 -->
         <ConceptListItem
           item={{ texts: ["残るのは1週間だけ。", "過去のことは気にしない。"] }}
-          imagesWrapperClass="gap-y-6"
+          imagesWrapperClass="grid justify-items-center gap-y-2 md:gap-y-4"
         >
-          <div class="flex items-center justify-center gap-x-clamp(0.5rem,3vw,1.25rem)">
+          <div
+            class="flex items-center justify-center gap-x-3"
+          >
             <Image
-              class="w-full"
+              class="w-[clamp(40px,10vw,100px)]"
               src={CalendarMon}
               width={CalendarMon.width}
               height={CalendarMon.height}
               alt="カレンダー月曜日"
             />
             <Image
-              class="w-full"
+              class="w-[clamp(40px,10vw,100px)]"
               src={CalendarTue}
               width={CalendarTue.width}
               height={CalendarTue.height}
               alt="カレンダー火曜日"
             />
             <Image
-              class="w-full"
+              class="w-[clamp(40px,10vw,100px)]"
               src={CalendarWed}
               width={CalendarWed.width}
               height={CalendarWed.height}
               alt="カレンダー水曜日"
             />
           </div>
-          <div class="flex items-center justify-center gap-x-clamp(0.5rem,3vw,1.25rem)">
+          <div
+            class="flex items-center justify-center gap-x-3"
+          >
             <Image
-              class="w-full"
+              class="w-[clamp(40px,10vw,100px)]"
               src={CalendarThu}
               width={CalendarThu.width}
               height={CalendarThu.height}
               alt="カレンダー木曜日"
             />
             <Image
-              class="w-full"
+              class="w-[clamp(40px,10vw,100px)]"
               src={CalendarFri}
               width={CalendarFri.width}
               height={CalendarFri.height}
               alt="カレンダー金曜日"
             />
             <Image
-              class="w-full"
+              class="w-[clamp(40px,10vw,100px)]"
               src={CalendarSat}
               width={CalendarSat.width}
               height={CalendarSat.height}
               alt="カレンダー土曜日"
             />
             <Image
-              class="w-full"
+              class="w-[clamp(40px,10vw,100px)]"
               src={CalendarSun}
               width={CalendarSun.width}
               height={CalendarSun.height}
@@ -278,7 +289,7 @@ import RootLayout from "~/layouts/RootLayout.astro";
           item={{ texts: ["自分だけが見える", "めもアプリとしても。"] }}
         >
           <Image
-            class="w-[clamp(160px,50vw,240px)]"
+            class="w-[clamp(140px,40vw,220px)]"
             src={NoteLocked}
             width={NoteLocked.width}
             height={NoteLocked.height}
