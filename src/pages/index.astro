@@ -50,20 +50,23 @@ import RootLayout from "~/layouts/RootLayout.astro";
   <!-- メインコンテンツ -->
   <main class="min-h-screen bg-bg-secondary">
     <!-- ヒーローセクション -->
-    <section class="bg-bg-primary">
+    <section class="bg-bg-primary pt-16 pb-24 md:pt-24 md:pb-32">
       <div
-        class="mx-auto w-[1000px] h-[1000px] flex flex-col justify-between pt-[64px] pb-[100px]"
+        class="mx-auto max-w-screen-xl w-full flex flex-col justify-between gap-y-16 md:gap-y-20 px-4"
       >
         <h1 class="text-hero text-text-primary text-center">
           <p>みんなの日常。</p>
           <p>わたしの独り言。</p>
         </h1>
         <div
-          class="grid grid-cols-1 md:grid-cols-[auto_minmax(clamp(220px,28vw,320px),1fr)_auto] items-center gap-x-[clamp(16px,4vw,40px)] gap-y-8"
+          class="grid grid-cols-2 md:flex md:flex-row items-center justify-center gap-y-4 md:gap-y-0 md:gap-x-clamp(0.5rem,3vw,2.5rem)"
         >
-          <!-- 左: 投稿画面 -->
-          <div class="relative flex items-center justify-center">
+          <!-- 左上: 投稿画面 -->
+          <div
+            class="col-start-1 row-start-1 flex justify-center items-center md:w-auto"
+          >
             <Image
+              class="w-[clamp(140px,40vw,200px)] md:w-[clamp(100px,28vw,360px)]"
               src={Screen1_1}
               width={Screen1_1.width}
               height={Screen1_1.height}
@@ -71,39 +74,46 @@ import RootLayout from "~/layouts/RootLayout.astro";
             />
           </div>
 
-          <!-- 中央: メッセージ（左揃え・等間隔・中央列） -->
+          <!-- 右上: メッセージ -->
           <div
-            class="w-[clamp(220px,70vw,320px)] justify-self-center md:justify-self-stretch flex flex-col items-start gap-[clamp(8px,1.8vw,16px)] text-[clamp(0.9rem,1.8vw,1rem)]"
+            class="col-start-2 row-start-1 flex items-center w-full md:w-auto"
           >
-            <MessageCard
-              message="久しぶりに新宿に行った"
-              rotateX={25}
-              rotateY={30}
-              rotateZ={-5}
-            />
-            <MessageCard
-              message="新宿のカフェでリラックス"
-              rotateX={25}
-              rotateY={30}
-              rotateZ={-5}
-            />
-            <MessageCard
-              message="この季節はうどんを食べたくなる"
-              rotateX={25}
-              rotateY={30}
-              rotateZ={-5}
-            />
-            <MessageCard
-              message="この季節はうどんを食べたくなるな。おいしい店ないかなaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaあああああああ"
-              rotateX={25}
-              rotateY={30}
-              rotateZ={-5}
-            />
+            <div
+              class="w-full md:w-[clamp(120px,34vw,400px)] justify-self-center flex flex-col items-start gap-2 md:gap-4 text-[clamp(0.75rem,1.8vw,1rem)] z-10"
+            >
+              <MessageCard
+                message="久しぶりに新宿に行った"
+                rotateX={25}
+                rotateY={30}
+                rotateZ={-5}
+              />
+              <MessageCard
+                message="新宿のカフェでリラックス"
+                rotateX={25}
+                rotateY={30}
+                rotateZ={-5}
+              />
+              <MessageCard
+                message="この季節はうどんを食べたくなる"
+                rotateX={25}
+                rotateY={30}
+                rotateZ={-5}
+              />
+              <MessageCard
+                message="この季節はうどんを食べたくなるな。おいしい店ないかな"
+                rotateX={25}
+                rotateY={30}
+                rotateZ={-5}
+              />
+            </div>
           </div>
 
-          <!-- 右: おすすめ画面 -->
-          <div class="relative flex items-center justify-center">
+          <!-- 右下: おすすめ画面 -->
+          <div
+            class="col-start-2 row-start-2 flex justify-center items-center -mt-16 md:mt-0 md:w-auto"
+          >
             <Image
+              class="w-[clamp(140px,40vw,200px)] md:w-[clamp(100px,28vw,360px)]"
               src={Screen1_2}
               width={Screen1_2.width}
               height={Screen1_2.height}
@@ -116,22 +126,26 @@ import RootLayout from "~/layouts/RootLayout.astro";
 
     <!-- イントロダクションセクション -->
     <section
-      class="h-[1440px] bg-bg-secondary grid place-content-center gap-y-[64px]"
+      class="bg-bg-secondary py-24 px-4 grid place-content-center gap-y-16"
     >
-      <div class="mx-auto w-[624px] h-[780px] grid content-between">
+      <div class="mx-auto max-w-3xl w-full grid content-between gap-y-12">
         <h2 class="text-intro text-text-secondary text-center">
           <p>期待を生むのではなく</p>
           <p>ありのままの自分を届ける。</p>
         </h2>
         <!-- 画像ギャラリー -->
-        <div class="flex items-center justify-center gap-x-[80px]">
+        <div
+          class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-clamp(2rem,8vw,5rem)"
+        >
           <Image
+            class="w-[clamp(240px,70vw,280px)]"
             src={Screen2_1}
             width={Screen2_1.width}
             height={Screen2_1.height}
             alt="アプリの日記画面"
           />
           <Image
+            class="w-[clamp(240px,70vw,280px)]"
             src={Screen2_2}
             width={Screen2_2.width}
             height={Screen2_2.height}
@@ -140,8 +154,10 @@ import RootLayout from "~/layouts/RootLayout.astro";
         </div>
       </div>
       <!-- 特徴 -->
-      <div class="w-[964px] grid gap-y-6">
-        <h3 class="text-intro text-[2rem] text-text-secondary text-center">
+      <div class="w-full max-w-4xl mx-auto grid gap-y-6">
+        <h3
+          class="text-intro text-[clamp(1.5rem,5vw,2rem)] text-text-secondary text-center"
+        >
           めもっとの特徴は？
         </h3>
         <!-- 3つの特徴 -->
@@ -155,43 +171,43 @@ import RootLayout from "~/layouts/RootLayout.astro";
 
     <!-- コンセプトセクション -->
     <RoundCornerContainer
-      class="bg-theme text-white pt-[70px] pb-[102px] grid gap-y-[50px]"
+      class="bg-theme text-white py-16 md:py-24 px-4 grid gap-y-12"
     >
-      <div>
-        <h2 class="text-concept text-center py-[28px]">しずかで疲れない空間</h2>
-        <p class="text-concept-sub text-center">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-concept text-center py-4">しずかで疲れない空間</h2>
+        <p class="text-concept-sub text-center max-w-prose mx-auto">
           他人の評価に縛られず、“今”をメモできる場所。気軽に、気ままに、自分のためのメモをどうぞ。
         </p>
       </div>
       <!-- コンセプト枠 -->
-      <ConceptList class="mx-auto w-[1310px] h-[1480px]">
+      <ConceptList class="mx-auto max-w-screen-xl w-full">
         <!-- 1 -->
         <ConceptListItem
           item={{ texts: ["期待を生むことなく", "静かに共有。"] }}
         >
           <Image
-            class="self-start"
+            class="self-start w-[clamp(100px,30vw,200px)]"
             src={StrikeThroughDM}
             width={StrikeThroughDM.width}
             height={StrikeThroughDM.height}
             alt="DMに打ち消し線"
           />
           <Image
-            class="self-end"
+            class="self-end w-[clamp(100px,30vw,200px)]"
             src={StrikeThroughReply}
             width={StrikeThroughReply.width}
             height={StrikeThroughReply.height}
             alt="リプライに打ち消し線"
           />
           <Image
-            class="self-start"
+            class="self-start w-[clamp(100px,30vw,200px)]"
             src={StrikeThroughRepost}
             width={StrikeThroughRepost.width}
             height={StrikeThroughRepost.height}
             alt="リポストに打ち消し線"
           />
           <Image
-            class="self-end"
+            class="self-end w-[clamp(100px,30vw,200px)]"
             src={StrikeThroughLike}
             width={StrikeThroughLike.width}
             height={StrikeThroughLike.height}
@@ -201,48 +217,55 @@ import RootLayout from "~/layouts/RootLayout.astro";
         <!-- 2 -->
         <ConceptListItem
           item={{ texts: ["残るのは1週間だけ。", "過去のことは気にしない。"] }}
-          imagesWrapperClass="gap-y-[24px]"
+          imagesWrapperClass="gap-y-6"
         >
-          <div class="flex items-center justify-center gap-x-[20px]">
+          <div class="flex items-center justify-center gap-x-clamp(0.5rem,3vw,1.25rem)">
             <Image
+              class="w-full"
               src={CalendarMon}
               width={CalendarMon.width}
               height={CalendarMon.height}
               alt="カレンダー月曜日"
             />
             <Image
+              class="w-full"
               src={CalendarTue}
               width={CalendarTue.width}
               height={CalendarTue.height}
               alt="カレンダー火曜日"
             />
             <Image
+              class="w-full"
               src={CalendarWed}
               width={CalendarWed.width}
               height={CalendarWed.height}
               alt="カレンダー水曜日"
             />
           </div>
-          <div class="flex items-center justify-center gap-x-[20px]">
+          <div class="flex items-center justify-center gap-x-clamp(0.5rem,3vw,1.25rem)">
             <Image
+              class="w-full"
               src={CalendarThu}
               width={CalendarThu.width}
               height={CalendarThu.height}
               alt="カレンダー木曜日"
             />
             <Image
+              class="w-full"
               src={CalendarFri}
               width={CalendarFri.width}
               height={CalendarFri.height}
               alt="カレンダー金曜日"
             />
             <Image
+              class="w-full"
               src={CalendarSat}
               width={CalendarSat.width}
               height={CalendarSat.height}
               alt="カレンダー土曜日"
             />
             <Image
+              class="w-full"
               src={CalendarSun}
               width={CalendarSun.width}
               height={CalendarSun.height}
@@ -255,6 +278,7 @@ import RootLayout from "~/layouts/RootLayout.astro";
           item={{ texts: ["自分だけが見える", "めもアプリとしても。"] }}
         >
           <Image
+            class="w-[clamp(160px,50vw,240px)]"
             src={NoteLocked}
             width={NoteLocked.width}
             height={NoteLocked.height}
@@ -266,16 +290,16 @@ import RootLayout from "~/layouts/RootLayout.astro";
 
     <!-- アイキャッチ/バンパーセクション -->
     <section
-      class="relative mx-auto w-[1200px] h-[760px] flex justify-between pt-[50px]"
+      class="relative mx-auto max-w-screen-xl w-full flex flex-col-reverse lg:flex-row justify-center items-center py-24 px-4 gap-y-8"
     >
-      <h3 class="text-bumper text-text-tertiary text-start">
+      <h3 class="text-bumper text-text-tertiary text-center lg:text-start">
         <p>独り言。</p>
         <p>買い物のメモ。</p>
         <p>趣味のこと。</p>
         <p>気軽にめもして共有。</p>
       </h3>
       <Image
-        class="absolute right-0 -top-[210px]"
+        class="w-[clamp(320px,90vw,600px)]"
         src={Screen3}
         width={Screen3.width}
         height={Screen3.height}
@@ -285,7 +309,7 @@ import RootLayout from "~/layouts/RootLayout.astro";
 
     <!-- フィーチャーセクション -->
     <section
-      class="rounded-t-[100px] shadow-theme-glow py-[132px] grid gap-y-[110px]"
+      class="rounded-t-[60px] md:rounded-t-[100px] shadow-theme-glow py-24 md:py-32 px-4 grid gap-y-20 md:gap-y-28"
     >
       <h2 class="text-feature text-center">
         <span
@@ -293,9 +317,9 @@ import RootLayout from "~/layouts/RootLayout.astro";
           >AIがつながる新たな体験</span
         >
       </h2>
-      <div class="grid gap-y-[165px]">
+      <div class="grid gap-y-20 md:gap-y-40">
         <!-- 1 -->
-        <FeatureDisplay class="mx-auto w-[1280px] h-[624px]">
+        <FeatureDisplay class="mx-auto max-w-screen-xl w-full">
           <FeatureDisplayText
             slot="left"
             head="自動日記"
@@ -325,7 +349,7 @@ import RootLayout from "~/layouts/RootLayout.astro";
           />
         </FeatureDisplay>
         <!-- 2 -->
-        <FeatureDisplay class="mx-auto w-[1280px] h-[624px]">
+        <FeatureDisplay class="mx-auto max-w-screen-xl w-full">
           <FeatureDisplayText
             slot="right"
             head="感情レター"
@@ -358,28 +382,35 @@ import RootLayout from "~/layouts/RootLayout.astro";
     </section>
 
     <!-- クロージングセクション -->
-    <section class="bg-bg-secondary font-zen-kaku-gothic-new py-[150px]">
-      <div class="mx-auto max-w-[1220px] grid gap-y-[100px]">
-        <div class="flex items-center gap-x-[144px]">
-          <h2 class="text-closing text-text-primary text-start">
+    <section class="bg-bg-secondary font-zen-kaku-gothic-new py-24 md:py-36 px-4">
+      <div class="mx-auto max-w-screen-lg w-full grid gap-y-24">
+        <div
+          class="flex flex-col md:flex-row items-center justify-center gap-x-16 gap-y-8"
+        >
+          <h2 class="text-closing text-text-primary text-center md:text-start">
             <p>儚い”めも”から。</p>
             <p>
-              “もっと”<span class="text-[4.75rem] text-theme">自分らしさ</span
+              “もっと”<span
+                class="text-[clamp(2.5rem,10vw,4.75rem)] text-theme"
+                >自分らしさ</span
               >を。
             </p>
           </h2>
-          <BrandIcon class="h-[165px]" />
+          <BrandIcon class="h-[clamp(100px,25vw,165px)]" />
         </div>
         <!-- アプリのリンク -->
-        <div class="grid gap-y-[30px]">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-x-[35px]">
-              <AppLinkAppStore class="h-[86px]" />
-              <AppLinkGooglePlay class="h-[86px]" />
+        <div class="grid gap-y-8">
+          <div
+            class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-y-6"
+          >
+            <div class="flex items-center gap-x-clamp(1rem,5vw,2.25rem)">
+              <AppLinkAppStore class="h-clamp(4rem,15vw,5.5rem)" />
+              <AppLinkGooglePlay class="h-clamp(4rem,15vw,5.5rem)" />
             </div>
-            <AppLinkWeb class="h-[96px]" />
+            <AppLinkWeb class="h-clamp(5rem,18vw,6rem)" />
           </div>
-          <small class="text-xl text-text-tertiary font-bold"
+          <small
+            class="text-base md:text-xl text-text-tertiary font-bold text-center md:text-left"
             >※iOS・Android・Webで提供予定。</small
           >
         </div>
