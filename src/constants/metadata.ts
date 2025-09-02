@@ -21,16 +21,16 @@ export const SITE = {
   /** @todo 実際のURLにする */
   sitemap: [
     {
-      title: '使い方',
-      url: `${WEBAPP_URL}/#usage`,
+      title: 'coming',
+      url: `${WEBAPP_URL}/#めもっと`,
     },
     {
-      title: '利用規約',
-      url: `${WEBAPP_URL}/#terms`,
+      title: 'in',
+      url: `${WEBAPP_URL}/#是非`,
     },
     {
-      title: 'プライバシーポリシー',
-      url: `${WEBAPP_URL}/#privacy`,
+      title: '2025',
+      url: `${WEBAPP_URL}/#使ってね！`,
     },
   ],
 } as const;
