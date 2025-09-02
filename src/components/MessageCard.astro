@@ -17,15 +17,14 @@ const {
 ---
 
 <div
-  class={`inline-flex justify-center items-center px-[17.282px] py-[11.522px] bg-white border-[2.304px] border-black shadow-[-5px_5px_0_0_#404040] ${className}`}
+  class={`inline-block px-4 py-3 bg-white border-[2.304px] border-black shadow-[-5px_5px_0_0_#404040] max-w-[200px] ${className}`}
   style={`
     border-radius: 2.88px 17.282px 17.282px 17.282px;
     transform: rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg);
     transform-style: preserve-3d;
-    gap: 5.761px;
   `}
 >
-  <span class="text-black font-medium text-sm leading-tight">
+  <span class="text-black font-medium text-sm leading-tight break-words block">
     {message}
   </span>
 </div>
