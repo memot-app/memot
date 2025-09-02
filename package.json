@@ -10,9 +10,9 @@
     "test": "vitest",
     "check:astro": "astro check --minimumFailingSeverity=warning",
     "check:biome": "biome check . --error-on-warnings",
-    "check": "pnpm run --parallel \"/^check:.*/\"",
+    "check": "npm run --parallel \"/^check:.*/\"",
     "fix:biome": "biome check . --error-on-warnings --write",
-    "fix": "pnpm run fix:biome"
+    "fix": "npm run fix:biome"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.4.1",
