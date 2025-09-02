@@ -28,15 +28,15 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
 
 <Tag
   class:list={[
-    "relative flex justify-center items-center p-2 md:p-4 rounded-3xl gradient-background drop-shadow-hard w-[clamp(320px,100%,500px)] min-h-[clamp(400px,60vh,600px)]",
+    "relative flex justify-center items-center p-2 md:p-4 px-4 rounded-3xl gradient-background drop-shadow-hard w-full lg:w-[clamp(320px,100%,500px)] min-h-[clamp(400px,60vh,600px)]",
     className,
   ]}
   {...props}
 >
-  <div class="flex justify-center relative w-full">
+  <div class="relative inline-flex items-end">
     <video
       id={uniqueId}
-      class="w-[clamp(220px,60%,280px)] h-auto max-h-[500px] rounded-2xl"
+      class="w-[clamp(220px,60%,280px)] h-auto max-h-[500px] rounded-[2.5rem] border-4 border-gray-300 overflow-hidden"
       poster={videoPoster}
       preload="metadata"
       muted
@@ -49,14 +49,14 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
     <!-- 再生/一時停止ボタン（動画の右外側、下端） -->
     <button
       id={`control-${uniqueId}`}
-      class="absolute bottom-0 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-200"
+      class="absolute -right-16 w-14 h-14 bg-white rounded-full flex items-center justify-center hover:shadow-lg transition-shadow duration-200"
     >
       <!-- 再生アイコン -->
-      <svg id={`play-icon-${uniqueId}`} class="w-4 h-4 text-gray-800 ml-0.5" fill="currentColor" viewBox="0 0 24 24" style="display: none;">
+      <svg id={`play-icon-${uniqueId}`} class="w-6 h-6 text-gray-800 ml-0.5" fill="currentColor" viewBox="0 0 24 24" style="display: none;">
         <path d="M8 5v14l11-7z"/>
       </svg>
       <!-- 一時停止アイコン -->
-      <svg id={`pause-icon-${uniqueId}`} class="w-4 h-4 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
+      <svg id={`pause-icon-${uniqueId}`} class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
       </svg>
     </button>
@@ -65,11 +65,15 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
 
 <style>
   .gradient-background {
-    background: linear-gradient(135deg, #86efac 0%, #4ade80 50%, #22c55e 100%);
+    background-color: #5db53e;
+    background-image: radial-gradient(at 10% 20%, #b9e68f 0px, transparent 50%),
+      radial-gradient(at 80% 0%, #9fd467 0px, transparent 50%),
+      radial-gradient(at 70% 20%, #ffffff 0px, transparent 40%),
+      radial-gradient(at 20% 90%, #5db53e 0px, transparent 50%);
   }
   
   .drop-shadow-hard {
-    box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 20px 20px 0px 0px rgba(0, 0, 0, 0.8);
   }
 </style>
 
