@@ -39,7 +39,6 @@ import Footer from "~/components/ui/Footer/Footer.astro";
 import Header from "~/components/ui/Header/Header.astro";
 import HeaderBackground from "~/components/ui/Header/HeaderBackground.astro";
 import RootLayout from "~/layouts/RootLayout.astro";
-import SimpleVideoPlayer from "~/components/ui/SimpleVideoPlayer.astro";
 
 import DaylogMovie from "~/assets/daylog-prototype.mp4";
 import MemotPv from "~/assets/memotPV-v1.1.mp4";
@@ -209,8 +208,15 @@ import Letter from "~/assets/letter.mp4";
       <h2 class="text-feature text-center text-[clamp(1.5rem,10vw,2.3rem)]">
         プロモーションビデオ
       </h2>
-      <div class="flex justify-center">
-        <SimpleVideoPlayer videoSrc={MemotPv} videoPoster="" />
+      <div class="w-full max-w-4xl mx-auto">
+        <div class="relative w-full h-0 pt-[56.25%] rounded-2xl overflow-hidden">
+          <iframe
+            class="absolute top-0 left-0 w-full h-full"
+            src="https://drive.google.com/file/d/1IqjMCetumwwDYq3DIPfyvr5PzkiFaFVG/preview"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+          ></iframe>
+        </div>
       </div>
     </section>
 
@@ -457,3 +463,51 @@ import Letter from "~/assets/letter.mp4";
   <!-- フッター -->
   <Footer />
 </RootLayout>
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // FeatureDisplay animation
+      const featureSections = document.querySelectorAll(".feature-display-section");
+      featureSections.forEach((section) => {
+        gsap.from(section, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section as HTMLElement,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+
+      // MessageCard animation
+      const messageCardContainers = document.querySelectorAll(
+        '[id^="message-card-container"]',
+      );
+      messageCardContainers.forEach((container) => {
+        const cards = container.querySelectorAll(".message-card");
+        if (cards.length > 0) {
+          gsap.from(cards, {
+            opacity: 0,
+            y: -30,
+            duration: 0.8,
+            ease: "power2.out",
+            stagger: 0.2,
+            scrollTrigger: {
+              trigger: container as HTMLElement,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          });
+        }
+      });
+    });
+  }
+</script>
