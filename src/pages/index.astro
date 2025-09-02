@@ -39,8 +39,11 @@ import Footer from "~/components/ui/Footer/Footer.astro";
 import Header from "~/components/ui/Header/Header.astro";
 import HeaderBackground from "~/components/ui/Header/HeaderBackground.astro";
 import RootLayout from "~/layouts/RootLayout.astro";
+import SimpleVideoPlayer from "~/components/ui/SimpleVideoPlayer.astro";
 
 import DaylogMovie from "~/assets/daylog-prototype.mp4";
+import MemotPv from "~/assets/memotPV-v1.1.mp4";
+import Letter from "~/assets/letter.mp4";
 ---
 
 <RootLayout>
@@ -122,36 +125,14 @@ import DaylogMovie from "~/assets/daylog-prototype.mp4";
               class="flex flex-col items-end gap-2 md:gap-4 text-[clamp(0.75rem,1.8vw,1rem)]"
             >
               <MessageCard
-                message="久しぶりに新宿に行った"
+                message={`来週、久しぶりに新宿に行くんだね、楽しみだね！新宿ってお店がいっぱいあって迷っちゃうよね。もし時間があったら、
+                新宿御苑でゆっくり散歩するのもおすすめだよ。美味しいランチのお店もたくさんあるから、ぜひ探してみてね！ 
+                もし何か辛いことがあったとしても、美味しいものを食べたり、自然の中でゆっくり過ごしたりすると、少し心が軽くなることもあるよ。焦らず、あなたのペースでいこう！応援してるよ💪`}
                 rotateX={-30}
                 rotateY={35}
                 rotateZ={12}
                 shadowDirection="bottom-right"
                 class="-mr-9 message-card"
-              />
-              <MessageCard
-                message="新宿のカフェでリラックス"
-                rotateX={-30}
-                rotateY={35}
-                rotateZ={12}
-                shadowDirection="bottom-right"
-                class="-mr-6 message-card"
-              />
-              <MessageCard
-                message="この季節はうどんを食べたくなる"
-                rotateX={-30}
-                rotateY={35}
-                rotateZ={12}
-                shadowDirection="bottom-right"
-                class="-mr-3 message-card"
-              />
-              <MessageCard
-                message="この季節はうどんを食べたくなるな。おいしい店ないかな"
-                rotateX={-30}
-                rotateY={35}
-                rotateZ={12}
-                shadowDirection="bottom-right"
-                class="mr-0 message-card"
               />
             </div>
           </div>
@@ -216,6 +197,16 @@ import DaylogMovie from "~/assets/daylog-prototype.mp4";
           <FeatureListItem number={2}>日常を静かに共有</FeatureListItem>
           <FeatureListItem number={3}>日記で毎日を振り返る</FeatureListItem>
         </FeatureList>
+      </div>
+    </section>
+
+    <!-- プロモーションビデオセクション -->
+    <section class="bg-bg-secondary py-16 md:py-24 px-4 grid gap-y-8 md:gap-y-12 feature-display-section">
+      <h2 class="text-feature text-center text-[clamp(1.5rem,10vw,2.3rem)]">
+        プロモーションビデオ
+      </h2>
+      <div class="flex justify-center">
+        <SimpleVideoPlayer videoSrc={MemotPv} videoPoster="" />
       </div>
     </section>
 
@@ -409,7 +400,7 @@ import DaylogMovie from "~/assets/daylog-prototype.mp4";
           />
           <FeatureDisplayImage
             slot="right-video"
-            videoSrc={DaylogMovie}
+            videoSrc={Letter}
             videoPoster=""
           />
           <FeatureDisplayDescription
@@ -466,48 +457,3 @@ import DaylogMovie from "~/assets/daylog-prototype.mp4";
   <!-- フッター -->
   <Footer />
 </RootLayout>
-<!-- <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-
-    document.addEventListener("DOMContentLoaded", () => {
-      // FeatureDisplay animation
-      const featureSections = document.querySelectorAll(".feature-display-section");
-      featureSections.forEach((section) => {
-        gsap.from(section, {
-          opacity: 0,
-          y: 50,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section as HTMLElement,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        });
-      });
-
-      // MessageCard animation
-      const messageCardContainer = document.querySelector(
-        "#message-card-container",
-      );
-      if (messageCardContainer) {
-        gsap.from(".message-card", {
-          opacity: 0,
-          y: -30,
-          duration: 0.8,
-          ease: "power2.out",
-          stagger: 0.2,
-          scrollTrigger: {
-            trigger: messageCardContainer,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        });
-      }
-    });
-  }
-</script> -->

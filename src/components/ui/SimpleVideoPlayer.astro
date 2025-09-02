@@ -1,0 +1,25 @@
+---
+// src/components/ui/SimpleVideoPlayer.astro
+export interface Props {
+  videoSrc: string;
+  videoPoster?: string;
+  class?: string;
+}
+
+const { videoSrc, videoPoster, class: className } = Astro.props;
+---
+
+<div class:list={["w-full max-w-4xl mx-auto", className]}>
+  <div class="relative w-full h-0 pt-[50%]">
+    <video
+      class="absolute top-0 left-0 w-full h-full object-cover rounded-2xl"
+      src={videoSrc}
+      poster={videoPoster}
+      controls
+      preload="metadata"
+      playsinline
+    >
+      お使いのブラウザは動画をサポートしていません。
+    </video>
+  </div>
+</div>
