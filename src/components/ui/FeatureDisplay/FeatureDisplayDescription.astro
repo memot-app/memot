@@ -1,0 +1,29 @@
+---
+import type { PolymorphicProps } from "~/types";
+
+interface CustomProps {
+  body: string[];
+}
+
+type Props = PolymorphicProps<"div", CustomProps>;
+
+const {
+  as: Tag = "div",
+  body,
+  class: className,
+  ...props
+} = Astro.props;
+---
+
+<Tag class:list={["text-center md:text-left", className]} {...props}>
+  <p class="text-feature-body text-text-secondary text-[clamp(1rem,4vw,1.25rem)] leading-loose">
+    {
+      body.map((line) => (
+        <>
+          {line}
+          <br />
+        </>
+      ))
+    }
+  </p>
+</Tag>

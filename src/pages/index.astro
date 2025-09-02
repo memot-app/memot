@@ -30,13 +30,17 @@ import ConceptList from "~/components/ui/ConceptList/ConceptList.astro";
 import ConceptListItem from "~/components/ui/ConceptList/ConceptListItem.astro";
 import RoundCornerContainer from "~/components/ui/Container/RoundCornerContainer.astro";
 import FeatureDisplay from "~/components/ui/FeatureDisplay/FeatureDisplay.astro";
-import FeatureDisplayText from "~/components/ui/FeatureDisplay/FeatureDisplayText.astro";
+import FeatureDisplayImage from "~/components/ui/FeatureDisplay/FeatureDisplayImage.astro";
+import FeatureDisplayTitle from "~/components/ui/FeatureDisplay/FeatureDisplayTitle.astro";
+import FeatureDisplayDescription from "~/components/ui/FeatureDisplay/FeatureDisplayDescription.astro";
 import FeatureList from "~/components/ui/FeatureList/FeatureList.astro";
 import FeatureListItem from "~/components/ui/FeatureList/FeatureListItem.astro";
 import Footer from "~/components/ui/Footer/Footer.astro";
 import Header from "~/components/ui/Header/Header.astro";
 import HeaderBackground from "~/components/ui/Header/HeaderBackground.astro";
 import RootLayout from "~/layouts/RootLayout.astro";
+
+import DaylogMovie from "~/assets/daylog-prototype.mp4";
 ---
 
 <RootLayout>
@@ -333,25 +337,38 @@ import RootLayout from "~/layouts/RootLayout.astro";
       </h2>
       <div class="grid gap-y-20 md:gap-y-40">
         <!-- 1 -->
-        <FeatureDisplay class="mx-auto max-w-screen-xl w-full">
-          <FeatureDisplayText
-            slot="left"
+        <FeatureDisplay class="mx-auto max-w-screen-xl w-full" leftOffset={true}>
+          <FeatureDisplayTitle
+            slot="left-title"
             head="自動日記"
             headSub="〜自分から自分へ〜"
+          />
+          <FeatureDisplayImage
+            slot="left-video"
+            videoSrc={DaylogMovie}
+            videoPoster=""
+          />
+          <FeatureDisplayDescription
+            slot="left-description"
             body={[
               "返信やDM機能を設けず、純粋に",
               "自分の日常を記録・共有する独り言として",
               "利用でき、余計なストレスを軽減します。",
             ]}
           />
-        </FeatureDisplay>
-        <!-- 2 -->
-        <FeatureDisplay class="mx-auto max-w-screen-xl w-full">
-          <FeatureDisplay class="mx-auto max-w-screen-xl w-full lg:flex-row-reverse">
-          <FeatureDisplayText
-            slot="left"
+          
+          <FeatureDisplayTitle
+            slot="right-title"
             head="感情レター"
             headSub="〜自分から他人へ〜"
+          />
+          <FeatureDisplayImage
+            slot="right-video"
+            videoSrc={DaylogMovie}
+            videoPoster=""
+          />
+          <FeatureDisplayDescription
+            slot="right-description"
             body={[
               "返信やDM機能を設けず、純粋に",
               "自分の日常を記録・共有する独り言として",
@@ -363,7 +380,7 @@ import RootLayout from "~/layouts/RootLayout.astro";
     </section>
 
     <!-- クロージングセクション -->
-    <section class="bg-bg-secondary font-zen-kaku-gothic-new py-24 md:py-36 px-10">
+    <section class="bg-bg-secondary py-24 md:py-36 px-10">
       <div class="mx-auto max-w-screen-lg w-full grid gap-y-8">
         <div
           class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-x- gap-y-8"

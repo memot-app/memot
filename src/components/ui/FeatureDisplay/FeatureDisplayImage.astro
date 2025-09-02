@@ -1,12 +1,6 @@
 ---
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
 import type { PolymorphicProps } from "~/types";
 import type { Slot } from "./FeatureDisplay.astro";
-
-interface ImageProps extends ImageMetadata {
-  alt: string;
-}
 
 interface CustomProps {
   /**
@@ -15,72 +9,135 @@ interface CustomProps {
    * @default 要素の順番に従う
    */
   slot?: Slot;
-  messageImages?: ImageProps[];
-  displayImage: ImageProps;
+  videoSrc: string;
+  videoPoster?: string;
 }
 
 type Props = PolymorphicProps<"div", CustomProps>;
 
 const {
   as: Tag = "div",
-  messageImages,
-  displayImage,
+  videoSrc,
+  videoPoster,
   class: className,
   ...props
 } = Astro.props;
 
-/**
- * 配列の画像の高さを合計する関数
- * @param images 画像の配列
- * @returns 画像の高さの合計
- */
-const calculateTotalImageHeight = (images: ImageProps[]): number => {
-  let totalHeight = 0;
-  for (let i = 0; i < images.length; i++) {
-    totalHeight += images[i].height;
-  }
-  return totalHeight;
-};
-
-const dummyMessageHeight = calculateTotalImageHeight(messageImages ?? []);
+const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
 <Tag
   class:list={[
-    "inline-flex flex-row items-center justify-center gap-x-4 md:gap-x-6 p-4 md:p-6 bg-feature-box-image rounded-3xl",
+    "relative flex justify-center items-center p-2 md:p-4 rounded-3xl gradient-background drop-shadow-hard w-[clamp(320px,100%,500px)] min-h-[clamp(400px,60vh,600px)]",
     className,
   ]}
   {...props}
 >
-  <div class="grid gap-y-2">
-    {
-      messageImages?.map((image) => (
-        <Image
-          class="w-[clamp(100px,25vw,180px)] h-auto"
-          src={image}
-          width={image.width}
-          height={image.height}
-          alt={image.alt}
-        />
-      ))
-    }
-  </div>
-  <div class="flex justify-center items-center">
-    <Image
-      class="w-[clamp(120px,30vw,220px)] h-auto"
-      src={displayImage}
-      width={displayImage.width}
-      height={displayImage.height}
-      alt={displayImage.alt}
-    />
+  <div class="flex justify-center relative w-full">
+    <video
+      id={uniqueId}
+      class="w-[clamp(220px,60%,280px)] h-auto max-h-[500px] rounded-2xl"
+      poster={videoPoster}
+      preload="metadata"
+      muted
+      playsinline
+    >
+      <source src={videoSrc} type="video/mp4" />
+      お使いのブラウザは動画をサポートしていません。
+    </video>
+    
+    <!-- 再生/一時停止ボタン（動画の右外側、下端） -->
+    <button
+      id={`control-${uniqueId}`}
+      class="absolute bottom-0 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-shadow duration-200"
+    >
+      <!-- 再生アイコン -->
+      <svg id={`play-icon-${uniqueId}`} class="w-4 h-4 text-gray-800 ml-0.5" fill="currentColor" viewBox="0 0 24 24" style="display: none;">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      <!-- 一時停止アイコン -->
+      <svg id={`pause-icon-${uniqueId}`} class="w-4 h-4 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+      </svg>
+    </button>
   </div>
 </Tag>
 
 <style>
-  .bg-feature-box-image {
-    background-image: url("/src/assets/bg-feature-box.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  .gradient-background {
+    background: linear-gradient(135deg, #86efac 0%, #4ade80 50%, #22c55e 100%);
+  }
+  
+  .drop-shadow-hard {
+    box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 0.2);
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const video = entry.target as HTMLVideoElement;
+          
+          if (video && !video.hasAttribute('data-played')) {
+            video.play().catch(() => {
+              console.log('Auto-play was prevented');
+            });
+            
+            video.addEventListener('ended', () => {
+              video.setAttribute('data-played', 'true');
+              updatePlayPauseButton(video.id, false);
+            });
+          }
+        }
+      });
+    }, {
+      threshold: 0.5
+    });
+
+    function updatePlayPauseButton(videoId: string, isPlaying: boolean) {
+      const playIcon = document.getElementById(`play-icon-${videoId}`);
+      const pauseIcon = document.getElementById(`pause-icon-${videoId}`);
+      
+      if (playIcon && pauseIcon) {
+        if (isPlaying) {
+          playIcon.style.display = 'none';
+          pauseIcon.style.display = 'block';
+        } else {
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
+        }
+      }
+    }
+
+    const videos = document.querySelectorAll('video[id*="video-"]');
+    videos.forEach(video => {
+      observer.observe(video);
+      
+      const controlButton = document.getElementById(`control-${video.id}`);
+      if (controlButton) {
+        controlButton.addEventListener('click', () => {
+          const videoElement = video as HTMLVideoElement;
+          
+          if (videoElement.paused) {
+            videoElement.play();
+            updatePlayPauseButton(video.id, true);
+          } else {
+            videoElement.pause();
+            updatePlayPauseButton(video.id, false);
+          }
+        });
+      }
+
+      // 動画の再生状態変更を監視
+      video.addEventListener('play', () => {
+        updatePlayPauseButton(video.id, true);
+      });
+      
+      video.addEventListener('pause', () => {
+        updatePlayPauseButton(video.id, false);
+      });
+    });
+  });
+</script>
