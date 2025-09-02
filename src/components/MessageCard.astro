@@ -29,14 +29,14 @@ const borderRadius =
 ---
 
 <div
-  class={`inline-block px-[clamp(0.75rem,2vw,1.25rem)] py-[clamp(0.5rem,1.5vw,1rem)] bg-white border-[2.304px] border-black ${shadowClass} max-w-[clamp(100px,25vw,280px)] ${className}`}
+  class={`inline-block px-[clamp(0.75rem,1.2vw,1.25rem)] py-[clamp(0.5rem,1.2vw,1rem)] bg-white border-[2.304px] border-black ${shadowClass} max-w-[clamp(100px,25vw,280px)] ${className}`}
   style={`
     border-radius: ${borderRadius};
     transform: rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg);
     transform-style: preserve-3d;
   `}
 >
-  <span class="text-black font-medium text-[clamp(0.75rem,1.5vw,0.95rem)] leading-7 break-words block">
+  <span class="text-black font-medium text-[clamp(0.75rem,1.2vw,0.95rem)] leading-7 break-words block">
     {message}
   </span>
 </div>
