@@ -1,7 +1,5 @@
 ---
-import { Image } from "astro:assets";
 import type { ComponentProps } from "astro/types";
-import WebappBadgeJP from "~/assets/webapp-badge-color-jp.svg";
 import { SITE } from "~/constants/metadata";
 import Link from "../Link/Link.astro";
 
@@ -12,13 +10,11 @@ const { class: className, ...props } = Astro.props;
 
 <Link
   href={SITE.appUrl.web}
-  class:list={["hover:opacity-80 transition", className]}
+  class:list={[
+    "group relative inline-flex items-center justify-center rounded-full bg-theme px-4 py-4 text-base md:px-8 md:text-xl font-bold text-white transition-all duration-200 ease-in-out border-b-4 border-green-700 hover:translate-y-1 hover:border-b-0",
+    className,
+  ]}
   {...props}
 >
-  <Image
-    class="size-full"
-    src={WebappBadgeJP}
-    alt="Webアプリをはじめる"
-    inferSize
-  />
+  <span>2025年リリース予定</span>
 </Link>

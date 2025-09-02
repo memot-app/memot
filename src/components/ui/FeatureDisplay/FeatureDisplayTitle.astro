@@ -1,0 +1,27 @@
+---
+import type { PolymorphicProps } from "~/types";
+
+interface CustomProps {
+  head: string;
+  headSub: string;
+}
+
+type Props = PolymorphicProps<"div", CustomProps>;
+
+const {
+  as: Tag = "div",
+  head,
+  headSub,
+  class: className,
+  ...props
+} = Astro.props;
+---
+
+<Tag class:list={["text-center md:text-left", className]} {...props}>
+  <h4 class="text-feature-head-sub text-text-secondary text-[clamp(1.125rem,4vw,1.5rem)]">
+    {headSub}
+  </h4>
+  <h3 class="text-feature-head text-text-secondary text-[clamp(2rem,8vw,3rem)] mt-2">
+    {head}
+  </h3>
+</Tag>

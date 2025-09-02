@@ -10,12 +10,14 @@ const { class: className, ...props } = Astro.props;
 
 <header
   class:list={[
-    "flex items-center justify-between",
-    "z-10 fixed top-0 inset-x-0 h-header m-[16px] px-[42px] rounded-[32px] bg-bg-primary/50 backdrop-blur-2xl",
+    "z-10 fixed top-0 inset-x-0 h-header",
+    "bg-bg-primary/50 backdrop-blur-2xl",
     className,
   ]}
   {...props}
 >
-  <BrandLogoFull class="h-[45px]" />
-  <AppLinkWeb class="h-[48px]" />
+  <div class="mx-auto max-w-screen-xl h-full flex items-center justify-between px-6 sm:px-8">
+    <BrandLogoFull class="h-[40px] md:h-[55px]" />
+    <AppLinkWeb class="h-[44px] md:h-[48px]" />
+  </div>
 </header>

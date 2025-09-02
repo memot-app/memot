@@ -1,6 +1,6 @@
 const SITE_URL = import.meta.env.SITE;
 /** @todo 実際のURLにする */
-const WEBAPP_URL = 'https://github.com/memot-app';
+const WEBAPP_URL = 'https://lp.memot.app';
 
 export const SITE = {
   title: 'めもっと',

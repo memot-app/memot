@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import type { HTMLAttributes } from "astro/types";
-import FooterDisplay from "~/assets/footer-display.png";
+import FooterDisplay from "~/assets/ui/footer-web.png";
 import { SITE } from "~/constants/metadata";
 import BrandLogoFull from "../Brand/BrandLogoFull.astro";
 import FooterLink from "./FooterLink.astro";
@@ -13,12 +13,16 @@ const { class: className, ...props } = Astro.props;
 const today = new Date();
 ---
 
-<footer class:list={["h-[600px] grid content-end", className]} {...props}>
-  <div class="flex items-center justify-between">
-    <section class="mx-auto w-[500px] h-[360px] grid content-stretch">
-      <BrandLogoFull class="h-[88px] w-fit" />
-      <div class="mt-[16px] w-[384px] h-px bg-border-secondary"></div>
-      <ul class="px-[8px]">
+<footer class:list={["pt-24 overflow-hidden", className]} {...props}>
+  <div
+    class="mx-auto max-w-screen-xl w-full flex flex-col md:flex-row items-center md:items-end justify-center gap-12 md:gap-16 lg:gap-32 xl:gap-80 px-6 sm:px-10 md:px-14 lg:px-20"
+  >
+    <section
+      class="flex flex-col items-center md:items-start gap-6 pb-6 text-center md:text-left"
+    >
+      <BrandLogoFull class="h-16 w-auto" />
+      <div class="w-full max-w-xs h-px bg-border-secondary"></div>
+      <ul class="flex flex-col items-center md:items-start gap-2">
         {
           SITE.sitemap.map((item) => (
             <li>
@@ -27,12 +31,13 @@ const today = new Date();
           ))
         }
       </ul>
-      <small class="self-end text-copyright text-text-quaternary">
+      <small class="text-copyright text-text-quaternary">
         &copy; {today.getFullYear()}{" "}{SITE.title}
       </small>
     </section>
-    <section>
+    <section class="w-full md:w-auto flex justify-center md:justify-end">
       <Image
+        class="w-[clamp(280px,70vw,480px)] -mb-24"
         src={FooterDisplay}
         width={FooterDisplay.width}
         height={FooterDisplay.height}

@@ -15,68 +15,93 @@
   --color-border-secondary: #ccc;
 
   /* typography */
-  --text-hero: 3.5rem;
+  --text-hero: 1.75rem; /* 28px */
   --text-hero--font-weight: 700;
   --text-hero--line-height: normal;
   --text-hero--letter-spacing: normal;
-  --text-intro: 3rem;
+
+  --text-intro: 1.5rem; /* 24px */
   --text-intro--font-weight: 700;
-  --text-intro--line-height: 5.75rem;
+  --text-intro--line-height: 1.7;
   --text-intro--letter-spacing: normal;
-  --text-concept: 4.75rem;
+
+  --text-concept: 2.5rem; /* 40px */
   --text-concept--font-weight: 700;
-  --text-concept--line-height: 5.75rem;
+  --text-concept--line-height: 1.5;
   --text-concept--letter-spacing: normal;
-  --text-concept-sub: 1.5rem;
+
+  --text-concept-sub: 1rem; /* 16px */
   --text-concept-sub--font-weight: 500;
-  --text-concept-sub--line-height: 180%;
+  --text-concept-sub--line-height: 1.8;
   --text-concept-sub--letter-spacing: normal;
-  --text-bumper: 3rem;
+
+  --text-bumper: 1.5rem; /* 24px */
   --text-bumper--font-weight: 700;
-  --text-bumper--line-height: 195%;
+  --text-bumper--line-height: 1.95;
   --text-bumper--letter-spacing: normal;
-  --text-feature: 4.75rem;
+
+  --text-feature: 2.5rem; /* 40px */
   --text-feature--font-weight: 700;
-  --text-feature--line-height: 5.75rem;
+  --text-feature--line-height: 1.5;
   --text-feature--letter-spacing: normal;
-  --text-feature-head: 4rem;
+
+  --text-feature-head: 2rem; /* 32px */
   --text-feature-head--font-weight: 700;
-  --text-feature-head--line-height: 5.75rem;
+  --text-feature-head--line-height: 1.5;
   --text-feature-head--letter-spacing: normal;
-  --text-feature-head-sub: 2rem;
+
+  --text-feature-head-sub: 1.125rem; /* 18px */
   --text-feature-head-sub--font-weight: 900;
-  --text-feature-head-sub--line-height: 4rem;
+  --text-feature-head-sub--line-height: 1.5;
   --text-feature-head-sub--letter-spacing: normal;
-  --text-feature-body: 1.625rem;
+
+  --text-feature-body: 1rem; /* 16px */
   --text-feature-body--font-weight: 700;
-  --text-feature-body--line-height: 3.75rem;
+  --text-feature-body--line-height: 2;
   --text-feature-body--letter-spacing: normal;
-  --text-closing: 4rem;
+
+  --text-closing: 2rem; /* 32px */
   --text-closing--font-weight: 700;
-  --text-closing--line-height: 2;
+  --text-closing--line-height: 1.8;
   --text-closing--letter-spacing: normal;
-  --text-footer-link: 1.25rem;
+
+  --text-footer-link: 0.875rem; /* 14px */
   --text-footer-link--font-weight: 600;
-  --text-footer-link--line-height: 200%;
+  --text-footer-link--line-height: 2;
   --text-footer-link--letter-spacing: normal;
-  --text-copyright: 1rem;
+
+  --text-copyright: 0.75rem; /* 12px */
   --text-copyright--font-weight: 500;
   --text-copyright--line-height: normal;
   --text-copyright--letter-spacing: normal;
-
-  /* font */
-  --font-zen-kaku-gothic-new: 'Zen Kaku Gothic New', sans-serif;
 
   /* radius */
   --radius-3_5xl: 1.75rem;
 
   /* height */
-  --height-header: 96px;
+  --height-header: 80px;
 
   /* shadow */
   --shadow-theme-glow: 0px 0px 44px 20px var(--color-theme);
 }
 
+@media (min-width: 768px) {
+  @theme {
+    --text-hero: 2.625rem;
+    --text-intro: 2.25rem;
+    --text-concept: 3.5625rem;
+    --text-concept-sub: 1.125rem;
+    --text-bumper: 2.25rem;
+    --text-feature: 3.5625rem;
+    --text-feature-head: 3rem;
+    --text-feature-head-sub: 1.5rem;
+    --text-feature-body: 1.21875rem;
+    --text-closing: 3rem;
+    --text-footer-link: 0.9375rem;
+  }
+}
+
 body {
   font-family: 'Noto Sans JP', sans-serif;
+  overflow-x: hidden;
 }

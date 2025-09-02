@@ -14,15 +14,10 @@
     "fix:biome": "biome check . --error-on-warnings --write",
     "fix": "pnpm run fix:biome"
   },
-  "engines": {
-    "node": ">=22",
-    "npm": "⚠️ Please use pnpm instead of npm.",
-    "pnpm": ">=10"
-  },
   "dependencies": {
     "@astrojs/sitemap": "^3.4.1",
-    "@astrojs/vercel": "^8.2.3",
     "@tailwindcss/vite": "^4.1.11",
+    "gsap": "^3.12.5",
     "astro": "^5.13.1",
     "tailwindcss": "^4.1.11"
   },

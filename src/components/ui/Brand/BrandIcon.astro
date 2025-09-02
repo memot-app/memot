@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import type { ComponentProps } from "astro/types";
-import MemotIconColor from "~/assets/memot-icon-color.svg";
+import MemotIconColor from "~/assets/brand/memot-app-icon.png";
 import { SITE } from "~/constants/metadata";
 import Link from "../Link/Link.astro";
 
@@ -10,15 +10,11 @@ interface Props extends ComponentProps<typeof Link> {}
 const { class: className, ...props } = Astro.props;
 ---
 
-<Link
-  href={SITE.appUrl.web}
-  class:list={["hover:opacity-80 transition", className]}
-  {...props}
->
+<div class:list={[className]} {...props}>
   <Image
     class="size-full"
     src={MemotIconColor}
     alt="めもっとのアイコン。にっこりと微笑む薄緑色のスライムのようなキャラクターが描かれています。"
     inferSize
   />
-</Link>
+</div>
