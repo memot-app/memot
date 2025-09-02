@@ -21,17 +21,22 @@ const shadowClass =
   shadowDirection === "bottom-left"
     ? "shadow-[-5px_5px_0_0_#404040]"
     : "shadow-[5px_5px_0_0_#404040]";
+
+const borderRadius =
+  shadowDirection === "bottom-left"
+    ? "2.88px 17.282px 17.282px 17.282px"
+    : "17.282px 2.88px 17.282px 17.282px";
 ---
 
 <div
-  class={`inline-block px-4 py-3 bg-white border-[2.304px] border-black ${shadowClass} max-w-[200px] ${className}`}
+  class={`inline-block px-[clamp(0.75rem,2vw,1.25rem)] py-[clamp(0.5rem,1.5vw,1rem)] bg-white border-[2.304px] border-black ${shadowClass} max-w-[clamp(100px,25vw,280px)] ${className}`}
   style={`
-    border-radius: 2.88px 17.282px 17.282px 17.282px;
+    border-radius: ${borderRadius};
     transform: rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg);
     transform-style: preserve-3d;
   `}
 >
-  <span class="text-black font-medium text-sm leading-tight break-words block">
+  <span class="text-black font-medium text-[clamp(0.75rem,1.5vw,0.95rem)] leading-tight break-words block">
     {message}
   </span>
 </div>
