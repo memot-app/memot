@@ -22,8 +22,6 @@ const posts = Object.entries(modules)
   })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-// タグフィルターを削除し、すべてのタグを表示
-
 function getMonthName(month: number) {
   return `${month + 1}月`;
 }
@@ -40,7 +38,7 @@ let lastMonth: string | null = null;
     {/* コンテナの最大幅を広げてコンテンツエリアを確保 */}
     <section class="mx-auto max-w-4xl w-full sm:px-4">
       <header class="text-center space-y-2 mb-16">
-        <h1 class="text-4xl md:text-5xl font-bold">おしらせ</h1>
+        <h1 class="text-4xl md:text-5xl font-bold news-title">おしらせ</h1>
       </header>
 
       <div id="timeline" class="relative">
@@ -49,6 +47,7 @@ let lastMonth: string | null = null;
           class="pointer-events-none absolute inset-y-0 left-0 w-[96px] md:w-[128px]"
         >
           <div
+            id="timeline-rail"
             class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[3px] bg-text-tertiary"
           >
           </div>
@@ -80,7 +79,7 @@ let lastMonth: string | null = null;
             return (
               <>
                 {isNewMonth && (
-                  <div class="grid grid-cols-[96px_1fr] md:grid-cols-[128px_1fr] gap-x-4 md:gap-x-8 mb-4">
+                  <div class="timeline-month grid grid-cols-[96px_1fr] md:grid-cols-[128px_1fr] gap-x-4 md:gap-x-8 mb-4">
                     <div class="flex justify-center py-2">
                       <span class="bg-text-tertiary text-white font-bold text-base md:text-2xl px-5 py-1.5 rounded-full z-10">
                         {currentMonthName}
@@ -89,7 +88,7 @@ let lastMonth: string | null = null;
                   </div>
                 )}
 
-                <div class="grid grid-cols-[96px_1fr] md:grid-cols-[128px_1fr] gap-x-4 py-10 md:py-12 ">
+                <div class="timeline-item grid grid-cols-[96px_1fr] md:grid-cols-[128px_1fr] gap-x-4 py-10 md:py-12 ">
                   {/* 左側: タイムライン（先端に丸い縁）と中央の大きな日付 */}
                   <div class="relative h-full">
                     {/* マスク: 日付の上下に余白を広めに確保（96px）し、背後のレールを隠す */}
@@ -135,12 +134,16 @@ let lastMonth: string | null = null;
 
                   {/* 右側: コンテンツカード */}
                   <div>
-                    <a href={p.url} class="group block w-full">
-                      <div class="relative bg-theme text-white p-5 pr-3 md:p-6 md:pr-6 rounded-l-3xl rounded-r-none sm:rounded-3xl flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 shadow-lg will-change-transform transform-gpu transition-transform duration-200 ease-in-out group-hover:translate-y-1 overflow-hidden min-h-[120px] sm:min-h-[148px] -mr-4 sm:mr-0">
-                        {/* 下線（カード内部、角丸に合わせて配置） */}
-                        <div class="absolute left-0 right-0 bottom-0 h-2 md:h-2.5 bg-green-700 transition-opacity duration-200 ease-in-out group-hover:opacity-0" />
-
-                        <div class:list={["flex-1 min-w-0 flex flex-col gap-2", (!p.excerpt && (vtags.length === 0 || vtags.length > -1)) && "justify-center"]}>
+                    <a href={p.url} class="group relative inline-flex w-full">
+                      <div class="w-full bg-theme text-white p-5 pr-3 md:p-6 md:pr-6 rounded-l-3xl rounded-r-none sm:rounded-3xl flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 shadow-lg will-change-transform transform-gpu transition-all duration-200 ease-in-out border-b-10 border-green-700 group-hover:translate-y-1 group-hover:border-transparent overflow-hidden min-h-[120px] sm:min-h-[148px]">
+                        <div
+                          class:list={[
+                            "flex-1 min-w-0 flex flex-col gap-2",
+                            !p.excerpt &&
+                              (vtags.length === 0 || vtags.length > -1) &&
+                              "justify-center",
+                          ]}
+                        >
                           {vtags.length > 0 && (
                             <div class="flex flex-wrap gap-2 items-center mb-2">
                               {vtags.map((t) => (
@@ -160,7 +163,7 @@ let lastMonth: string | null = null;
                           )}
                         </div>
                         <div class="shrink-0 w-full sm:w-auto mt-3 sm:mt-0">
-                          <div class="relative w-full sm:w-[220px] aspect-[16/9] rounded-l-lg rounded-r-none md:rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                          <div class="relative w-full sm:w-[220px] aspect-[16/9] rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                             {p.image ? (
                               <img
                                 src={p.image}
@@ -189,3 +192,65 @@ let lastMonth: string | null = null;
   </main>
   <Footer />
 </RootLayout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+
+    function initAnimations() {
+      // For debugging
+      console.log("GSAP animation script started (news page).");
+
+      const title = document.querySelector(".news-title");
+      const rail = document.querySelector("#timeline-rail");
+      const items = gsap.utils.toArray(
+        ".timeline-month, .timeline-item"
+      ) as Element[];
+
+      if (!title || !rail || items.length === 0) {
+        return;
+      }
+
+      // Kill previous animations on this element before creating new ones
+      // This is important for astro:after-swap
+      const targets = [title, rail].filter(Boolean) as Element[];
+      gsap.killTweensOf([...targets, ...items]);
+
+      // Set initial states
+      if (title) gsap.set(title, { opacity: 0, y: 30 });
+      if (rail) gsap.set(rail, { scaleY: 0, transformOrigin: "top" });
+      gsap.set(items, { opacity: 0, y: 40 });
+
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out", duration: 1 },
+        delay: 0.1,
+      });
+
+      tl.to(title, { opacity: 1, y: 0 }).to(
+        rail,
+        { scaleY: 1, duration: 1.2 },
+        "-=0.7"
+      );
+
+      items.forEach((item) => {
+        gsap.to(item, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", initAnimations);
+    document.addEventListener("astro:after-swap", initAnimations);
+  }
+</script>
