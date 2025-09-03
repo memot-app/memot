@@ -12,88 +12,179 @@ type Frontmatter = {
   image?: string;
 };
 
-const modules = import.meta.glob('./*.mdx', { eager: true });
+const modules = import.meta.glob("./*.mdx", { eager: true });
 const posts = Object.entries(modules)
   .map(([path, mod]) => {
     const frontmatter = (mod as any).frontmatter as Frontmatter;
-    const file = path.split('/').pop() || '';
-    const slug = file.replace(/\.mdx$/, '');
+    const file = path.split("/").pop() || "";
+    const slug = file.replace(/\.mdx$/, "");
     return { url: `/news/${slug}/`, ...frontmatter };
   })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-// フィルター用のタグを限定（表示用に使用）
-const allowedTags = ['お知らせ', 'ブログ'] as const;
-const allowedTagSet = new Set(allowedTags);
+// タグフィルターを削除し、すべてのタグを表示
 
-function formatDateStr(dateStr: string) {
-  const d = new Date(dateStr);
-  return {
-    yyyy: d.getFullYear(),
-    mm: String(d.getMonth() + 1).padStart(2, '0'),
-    dd: String(d.getDate()).padStart(2, '0'),
-  };
+function getMonthName(month: number) {
+  return `${month + 1}月`;
 }
 
+let lastMonth: string | null = null;
 ---
 
 <RootLayout>
   <HeaderBackground />
   <Header />
-  <main class="bg-bg-secondary pt-28 pb-24 min-h-[calc(100vh-var(--height-header))]">
-    <section class="mx-auto max-w-4xl w-full px-4 space-y-12">
-      <header class="text-center space-y-2">
+  <main
+    class="bg-bg-secondary pt-18 pb-24 min-h-[calc(100vh-var(--height-header))]"
+  >
+    {/* コンテナの最大幅を広げてコンテンツエリアを確保 */}
+    <section class="mx-auto max-w-4xl w-full sm:px-4">
+      <header class="text-center space-y-2 mb-16">
         <h1 class="text-4xl md:text-5xl font-bold">おしらせ</h1>
       </header>
-      <ul id="news-list" class="space-y-7">
-        {posts.map((p, i) => {
-          const { yyyy, mm, dd } = formatDateStr(p.date);
-          const vtags = (p.tags ?? []).filter((t) => allowedTagSet.has(t as any));
-          return (
-            <li>
-              <a href={p.url} class="block group">
-                <div class="relative grid grid-cols-[88px_1fr_auto] items-start gap-4 md:gap-6 p-4 md:p-6 rounded-2xl border border-gray-200 bg-white hover:shadow-xl transition-shadow">
-                  <!-- 左: 日付バッジ（ポップ） -->
-                  <div class="w-[88px] shrink-0 flex flex-col items-center justify-center rounded-2xl bg-bg-primary border border-gray-200 py-3">
-                    <div class="text-[10px] tracking-widest text-text-quaternary">{yyyy}</div>
-                    <div class="text-3xl md:text-4xl font-extrabold text-text-primary leading-none">{mm}</div>
-                    <div class="text-xl md:text-2xl font-extrabold text-text-primary leading-none">{dd}</div>
-                  </div>
 
-                  <!-- 中央: テキスト -->
-                  <div class="min-w-0 flex-1 flex flex-col gap-2">
-                    {vtags.length > 0 && (
-                      <div class="flex flex-wrap gap-2 items-center">
-                        {vtags.map((t) => (
-                          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-theme text-white">{t}</span>
-                        ))}
+      <div id="timeline" class="relative">
+        {/* グローバルのレール（左カラム幅に追従） */}
+        <div
+          class="pointer-events-none absolute inset-y-0 left-0 w-[96px] md:w-[128px]"
+        >
+          <div
+            class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[3px] bg-text-tertiary"
+          >
+          </div>
+        </div>
+        {/* タイムライン両端のカバー（最初/最後の線を消す） */}
+        <div
+          class="pointer-events-none absolute left-0 right-0 top-0 h-40 md:h-48 bg-bg-secondary"
+        >
+        </div>
+        <div
+          class="pointer-events-none absolute left-0 right-0 bottom-0 h-14 md:h-20 bg-bg-secondary"
+        >
+        </div>
+        {
+          posts.map((p, i) => {
+            const d = new Date(p.date);
+            const day = d.getDate();
+            const currentMonthName = getMonthName(d.getMonth());
+
+            const isNewMonth = lastMonth !== currentMonthName;
+            if (isNewMonth) {
+              lastMonth = currentMonthName;
+            }
+
+            const vtags = p.tags ?? [];
+            const isFirst = i === 0;
+            const isLast = i === posts.length - 1;
+
+            return (
+              <>
+                {isNewMonth && (
+                  <div class="grid grid-cols-[96px_1fr] md:grid-cols-[128px_1fr] gap-x-4 md:gap-x-8 mb-4">
+                    <div class="flex justify-center py-2">
+                      <span class="bg-text-tertiary text-white font-bold text-base md:text-2xl px-5 py-1.5 rounded-full z-10">
+                        {currentMonthName}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                <div class="grid grid-cols-[96px_1fr] md:grid-cols-[128px_1fr] gap-x-4 py-10 md:py-12 ">
+                  {/* 左側: タイムライン（先端に丸い縁）と中央の大きな日付 */}
+                  <div class="relative h-full">
+                    {/* マスク: 日付の上下に余白を広めに確保（96px）し、背後のレールを隠す */}
+                    <div
+                      class="absolute left-1/2 -translate-x-1/2"
+                      style="top: calc(50% - 48px); height: 96px; width: 14px; background: var(--color-bg-secondary);"
+                    />
+                    {/* 先頭調整: 一番上は上側の線を完全に消す */}
+                    {isFirst && (
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2"
+                        style="top: 0; height: calc(50% + 48px); width: 14px; background: var(--color-bg-secondary);"
+                      />
+                    )}
+                    {/* 末尾調整: 一番下は下側の線を完全に消す */}
+                    {isLast && (
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2"
+                        style="top: calc(50% - 48px); bottom: 0; width: 14px; background: var(--color-bg-secondary);"
+                      />
+                    )}
+                    {/* 先端の円（上側）- 最初の要素では非表示 */}
+                    {!isFirst && (
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2 bg-text-tertiary"
+                        style="top: calc(50% - 48px); width: 12px; height: 12px; border-radius: 9999px; border: 2px solid white;"
+                      />
+                    )}
+                    {/* 先端の円（下側）- 最後の要素では非表示 */}
+                    {!isLast && (
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2 bg-text-tertiary"
+                        style="top: calc(50% + 48px - 12px); width: 12px; height: 12px; border-radius: 9999px; border: 2px solid white;"
+                      />
+                    )}
+                    {/* 日付（中央） */}
+                    <div class="absolute inset-0 flex items-center justify-center">
+                      <div class="font-black text-text-tertiary text-3xl md:text-4xl leading-none">
+                        {day}日
                       </div>
-                    )}
-                    <h3 class="text-base md:text-xl font-bold text-text-secondary group-hover:underline decoration-2 underline-offset-4 line-clamp-2">{p.title}</h3>
-                    {p.excerpt && (
-                      <p class="text-sm md:text-base text-text-tertiary line-clamp-2">{p.excerpt}</p>
-                    )}
-                  </div>
-
-                  <!-- 右: サムネイル -->
-                  <div class="hidden sm:block shrink-0">
-                    <div class="relative w-[150px] md:w-[200px] aspect-[16/9] rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
-                      {p.image ? (
-                        <img src={p.image} alt={p.title} class="absolute inset-0 w-full h-full object-cover" />
-                      ) : (
-                        <img src="/og-image.png" alt="thumbnail" class="absolute inset-0 w-full h-full object-cover" />
-                      )}
                     </div>
                   </div>
 
-                  <!-- デコレーション（水玉） -->
-                  <div class="pointer-events-none absolute -top-3 -left-3 size-7 rounded-full bg-theme"></div>
+                  {/* 右側: コンテンツカード */}
+                  <div>
+                    <a href={p.url} class="group block w-full">
+                      <div class="relative bg-theme text-white p-5 pr-3 md:p-6 md:pr-6 rounded-l-3xl rounded-r-none sm:rounded-3xl flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 shadow-lg will-change-transform transform-gpu transition-transform duration-200 ease-in-out group-hover:translate-y-1 overflow-hidden min-h-[120px] sm:min-h-[148px] -mr-4 sm:mr-0">
+                        {/* 下線（カード内部、角丸に合わせて配置） */}
+                        <div class="absolute left-0 right-0 bottom-0 h-2 md:h-2.5 bg-green-700 transition-opacity duration-200 ease-in-out group-hover:opacity-0" />
+
+                        <div class:list={["flex-1 min-w-0 flex flex-col gap-2", (!p.excerpt && (vtags.length === 0 || vtags.length > -1)) && "justify-center"]}>
+                          {vtags.length > 0 && (
+                            <div class="flex flex-wrap gap-2 items-center mb-2">
+                              {vtags.map((t) => (
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-white text-theme">
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          <h3 class="font-bold text-lg md:text-xl mb-3 md:mb-4">
+                            {p.title}
+                          </h3>
+                          {p.excerpt && (
+                            <p class="text-sm opacity-90 line-clamp-3">
+                              {p.excerpt}
+                            </p>
+                          )}
+                        </div>
+                        <div class="shrink-0 w-full sm:w-auto mt-3 sm:mt-0">
+                          <div class="relative w-full sm:w-[220px] aspect-[16/9] rounded-l-lg rounded-r-none md:rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                            {p.image ? (
+                              <img
+                                src={p.image}
+                                alt={p.title}
+                                class="absolute inset-0 w-full h-full object-cover"
+                              />
+                            ) : (
+                              <img
+                                src="/og-image.png"
+                                alt="thumbnail"
+                                class="absolute inset-0 w-full h-full object-cover"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
                 </div>
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+              </>
+            );
+          })
+        }
+      </div>
     </section>
   </main>
   <Footer />
