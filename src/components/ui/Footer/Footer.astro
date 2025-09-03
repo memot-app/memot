@@ -13,7 +13,13 @@ const { class: className, ...props } = Astro.props;
 const today = new Date();
 ---
 
-<footer class:list={["pt-24 overflow-hidden", className]} {...props}>
+<footer
+  class:list={[
+    "pt-24 overflow-hidden bg-[url('/src/assets/footer-bg.svg')] bg-cover bg-top bg-no-repeat",
+    className,
+  ]}
+  {...props}
+>
   <div
     class="mx-auto max-w-screen-xl w-full flex flex-col md:flex-row items-center md:items-end justify-center gap-12 md:gap-16 lg:gap-32 xl:gap-80 px-6 sm:px-10 md:px-14 lg:px-20"
   >
@@ -35,7 +41,10 @@ const today = new Date();
         &copy; {today.getFullYear()}{" "}{SITE.title}
       </small>
     </section>
-    <section class="w-full md:w-auto flex justify-center md:justify-end">
+    <section
+      id="footer-image-section"
+      class="w-full md:w-auto flex justify-center md:justify-end will-change-transform"
+    >
       <Image
         class="w-[clamp(280px,70vw,480px)] -mb-24"
         src={FooterDisplay}
@@ -47,11 +56,62 @@ const today = new Date();
   </div>
 </footer>
 
-<style>
-  footer {
-    background-image: url("/src/assets/footer-bg.svg");
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+    const el = document.getElementById("footer-image-section");
+    if (el) {
+      const reduced = window.matchMedia?.(
+        "(prefers-reduced-motion: reduce)"
+      )?.matches;
+      if (!reduced) {
+        const triggerTarget = el.parentElement || el;
+        const tl = gsap.timeline({
+          paused: true,
+          defaults: { force3D: true },
+          onComplete: () => {
+            (el as HTMLElement).style.willChange = "auto";
+          },
+        });
+
+        // より強い飛び出し（下から + オーバーシュート）
+        tl.fromTo(
+          el,
+          { y: 200, scale: 0.88 },
+          { y: 0, scale: 1.08, duration: 0.7, ease: "power3.out" }
+        )
+        ScrollTrigger.create({
+          trigger: triggerTarget,
+          start: "top 90%",
+          toggleActions: "play none none none",
+          once: true,
+          onEnter: () => tl.play(),
+          invalidateOnRefresh: true,
+        });
+
+        // 画像/ウィンドウロード時にレイアウト確定後の再計測
+        const img = el.querySelector("img");
+        if (img && !(img as HTMLImageElement).complete) {
+          img.addEventListener(
+            "load",
+            () => {
+              ScrollTrigger.refresh();
+            },
+            { once: true }
+          );
+        } else {
+          // すでにロード済みでも一度リフレッシュ
+          ScrollTrigger.refresh();
+        }
+        window.addEventListener("load", () => ScrollTrigger.refresh(), {
+          once: true,
+        });
+      } else {
+        (el as HTMLElement).style.transform = "none";
+      }
+    }
   }
-</style>
+</script>

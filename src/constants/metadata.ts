@@ -14,23 +14,19 @@ export const SITE = {
   releaseDate: '2025年',
   /** @todo 実際のURLにする */
   appUrl: {
-    web: WEBAPP_URL,
+    web: '/',
     app_store: 'https://www.apple.com/jp/app-store',
     google_play: 'https://play.google.com/store/games?hl=ja',
   },
   /** @todo 実際のURLにする */
   sitemap: [
     {
-      title: 'coming',
-      url: `${WEBAPP_URL}/#めもっと`,
+      title: 'お知らせ',
+      url: `/news`,
     },
     {
-      title: 'in',
-      url: `${WEBAPP_URL}/#是非`,
-    },
-    {
-      title: '2025',
-      url: `${WEBAPP_URL}/#使ってね！`,
+      title: '',
+      url: `/#是非`,
     },
   ],
 } as const;

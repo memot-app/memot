@@ -36,7 +36,7 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
   <div class="flex flex-col items-center gap-4">
     <video
       id={uniqueId}
-      class="w-[clamp(200px,60%,280px)] h-auto max-h-[500px] rounded-[2.5rem] border-4 border-gray-300 overflow-hidden"
+      class="w-[clamp(200px,60%,280px)] rounded-[3rem] border-4 border-gray-300 overflow-hidden"
       poster={videoPoster}
       preload="metadata"
       muted
@@ -45,19 +45,30 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
       <source src={videoSrc} type="video/mp4" />
       お使いのブラウザは動画をサポートしていません。
     </video>
-    
+
     <!-- 再生/一時停止ボタン（動画の下） -->
     <button
       id={`control-${uniqueId}`}
-      class="absolute flex items-center bottom-6 left-1/2 transform -translate-x-1/2 gap-2 px-4 py-2 bg-white rounded-full hover:shadow-lg transition-shadow duration-200 text-sm font-medium text-gray-800"
+      class="flex items-center justify-center gap-2 px-4 py-2 bg-white rounded-full hover:shadow-lg transition-shadow duration-200 text-sm font-medium text-gray-800 mx-auto"
     >
       <!-- 再生アイコン -->
-      <svg id={`play-icon-${uniqueId}`} class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24" style="display: none;">
-        <path d="M8 5v14l11-7z"/>
+      <svg
+        id={`play-icon-${uniqueId}`}
+        class="w-4 h-4 ml-0.5"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        style="display: none;"
+      >
+        <path d="M8 5v14l11-7z"></path>
       </svg>
       <!-- 一時停止アイコン -->
-      <svg id={`pause-icon-${uniqueId}`} class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+      <svg
+        id={`pause-icon-${uniqueId}`}
+        class="w-4 h-4"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
       </svg>
       <span id={`button-text-${uniqueId}`}>もう一度再生する</span>
     </button>
@@ -67,67 +78,71 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
 <style>
   .gradient-background {
     background-color: #5db53e;
-    background-image: radial-gradient(at 10% 20%, #b9e68f 0px, transparent 50%),
+    background-image:
+      radial-gradient(at 10% 20%, #b9e68f 0px, transparent 50%),
       radial-gradient(at 80% 0%, #9fd467 0px, transparent 50%),
       radial-gradient(at 70% 20%, #ffffff 0px, transparent 40%),
       radial-gradient(at 20% 90%, #5db53e 0px, transparent 50%);
   }
-  
+
   .drop-shadow-hard {
     box-shadow: 20px 20px 0px 0px rgba(0, 0, 0, 0.8);
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const video = entry.target as HTMLVideoElement;
-          
-          if (video && !video.hasAttribute('data-played')) {
-            video.play().catch(() => {
-              console.log('Auto-play was prevented');
-            });
-            
-            video.addEventListener('ended', () => {
-              video.setAttribute('data-played', 'true');
-              updatePlayPauseButton(video.id, false);
-            });
+  document.addEventListener("DOMContentLoaded", () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const video = entry.target as HTMLVideoElement;
+
+            if (video && !video.hasAttribute("data-played")) {
+              video.play().catch(() => {
+                console.log("Auto-play was prevented");
+              });
+
+              video.addEventListener("ended", () => {
+                video.setAttribute("data-played", "true");
+                updatePlayPauseButton(video.id, false);
+              });
+            }
           }
-        }
-      });
-    }, {
-      threshold: 0.5
-    });
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
 
     function updatePlayPauseButton(videoId: string, isPlaying: boolean) {
       const playIcon = document.getElementById(`play-icon-${videoId}`);
       const pauseIcon = document.getElementById(`pause-icon-${videoId}`);
       const buttonText = document.getElementById(`button-text-${videoId}`);
-      
+
       if (playIcon && pauseIcon && buttonText) {
         if (isPlaying) {
-          playIcon.style.display = 'none';
-          pauseIcon.style.display = 'block';
-          buttonText.textContent = '一時停止';
+          playIcon.style.display = "none";
+          pauseIcon.style.display = "block";
+          buttonText.textContent = "一時停止";
         } else {
-          playIcon.style.display = 'block';
-          pauseIcon.style.display = 'none';
-          buttonText.textContent = 'もう一度再生する';
+          playIcon.style.display = "block";
+          pauseIcon.style.display = "none";
+          buttonText.textContent = "もう一度再生する";
         }
       }
     }
 
     const videos = document.querySelectorAll('video[id*="video-"]');
-    videos.forEach(video => {
+    videos.forEach((video) => {
       observer.observe(video);
-      
+
       const controlButton = document.getElementById(`control-${video.id}`);
       if (controlButton) {
-        controlButton.addEventListener('click', () => {
+        controlButton.addEventListener("click", () => {
           const videoElement = video as HTMLVideoElement;
-          
+
           if (videoElement.paused) {
             videoElement.play();
             updatePlayPauseButton(video.id, true);
@@ -139,11 +154,11 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
       }
 
       // 動画の再生状態変更を監視
-      video.addEventListener('play', () => {
+      video.addEventListener("play", () => {
         updatePlayPauseButton(video.id, true);
       });
-      
-      video.addEventListener('pause', () => {
+
+      video.addEventListener("pause", () => {
         updatePlayPauseButton(video.id, false);
       });
     });

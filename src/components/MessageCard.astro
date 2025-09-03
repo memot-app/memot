@@ -1,4 +1,4 @@
---- 
+---
 export interface Props {
   message: string;
   rotateX?: number;
@@ -6,6 +6,7 @@ export interface Props {
   rotateZ?: number;
   shadowDirection?: "bottom-left" | "bottom-right";
   class?: string;
+  enableTextAnimation?: boolean;
 }
 
 const {
@@ -15,6 +16,7 @@ const {
   rotateZ = 0,
   shadowDirection = "bottom-left",
   class: className = "",
+  enableTextAnimation = false,
 } = Astro.props;
 
 const shadowClass =
@@ -26,6 +28,9 @@ const borderRadius =
   shadowDirection === "bottom-left"
     ? "2.88px 17.282px 17.282px 17.282px"
     : "17.282px 2.88px 17.282px 17.282px";
+
+// ユニークなIDを生成
+const cardId = `message-card-${Math.random().toString(36).substr(2, 9)}`;
 ---
 
 <div
@@ -35,8 +40,14 @@ const borderRadius =
     transform: rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg);
     transform-style: preserve-3d;
   `}
+  data-card-id={cardId}
+  data-enable-text-animation={enableTextAnimation}
+  data-message={message}
 >
-  <span class="text-black font-medium text-[clamp(0.75rem,1.2vw,0.95rem)] leading-7 break-words block">
+  <span
+    class="text-black font-medium text-[clamp(0.75rem,1.2vw,0.95rem)] leading-7 break-words block message-text"
+    style={enableTextAnimation ? "opacity: 0;" : ""}
+  >
     {message}
   </span>
 </div>
