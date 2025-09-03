@@ -6,32 +6,52 @@ import Footer from "~/components/ui/Footer/Footer.astro";
 
 interface Props {
   title: string;
-  date: string; // ISO string or yyyy-mm-dd
+  date: string | Date; // ISO string or yyyy-mm-dd or Date
   tags?: string[];
   image?: string; // public path optional
   description?: string;
 }
 
-const { title, date, tags = [], image, description } = Astro.props as Props;
+// MDXのレイアウトに渡るpropsは、環境により frontmatter 配下になる場合があるため
+// 直接値が無ければ frontmatter をフォールバックとして参照する
+const __p = Astro.props as any;
+const __fm = (__p?.frontmatter ?? {}) as Partial<Props>;
+const title = (__p.title ?? __fm.title ?? '') as string;
+const date = (__p.date ?? __fm.date ?? '') as string | Date;
+const tags = ((__p.tags ?? __fm.tags) ?? []) as string[];
+const image = (__p.image ?? __fm.image) as string | undefined;
+const description = (__p.description ?? __fm.description) as string | undefined;
 
-const d = new Date(date);
-const yyyy = d.getFullYear();
-const mm = String(d.getMonth() + 1).padStart(2, '0');
-const dd = String(d.getDate()).padStart(2, '0');
-
-const TAG_CLASS_MAP: Record<string, string> = {
-  'プレスリリース': 'press',
-  'お知らせ': 'notice',
-  'イベント': 'event',
-  '実績': 'achievement',
-  'メディア掲載': 'media',
-  'ブログ': 'blog',
-  '導入事例': 'case',
-};
-
-function tagClass(tag: string) {
-  return TAG_CLASS_MAP[tag] ?? 'bg-gray-100 text-gray-700';
+function parseFrontmatterDate(input: string | Date) {
+  let y = NaN, m = NaN, d = NaN;
+  if (input instanceof Date) {
+    y = input.getUTCFullYear();
+    m = input.getUTCMonth() + 1;
+    d = input.getUTCDate();
+  } else if (typeof input === 'string') {
+    const m1 = input.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+    if (m1) {
+      y = Number(m1[1]);
+      m = Number(m1[2]);
+      d = Number(m1[3]);
+    } else {
+      const dt = new Date(input);
+      if (!Number.isNaN(dt.getTime())) {
+        y = dt.getUTCFullYear();
+        m = dt.getUTCMonth() + 1;
+        d = dt.getUTCDate();
+      }
+    }
+  }
+  if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) {
+    return { yyyy: '', mm: '', dd: '', iso: '', valid: false } as const;
+  }
+  const mm = String(m).padStart(2, '0');
+  const dd = String(d).padStart(2, '0');
+  return { yyyy: String(y), mm, dd, iso: `${y}-${mm}-${dd}`, valid: true } as const;
 }
+
+const dateInfo = parseFrontmatterDate(date);
 ---
 
 <RootLayout>
@@ -40,15 +60,21 @@ function tagClass(tag: string) {
   <main class="bg-bg-secondary pt-28 pb-20 min-h-[calc(100vh-var(--height-header))]">
     <section class="container-news">
       <header class="news-hero">
-        {tags.length > 0 && (
+        {tags && tags.length > 0 && (
           <div class="news-hero__tags">
             {tags.map((t) => (
-              <span class:list={["chip", tagClass(t)]}>{t}</span>
+              <span class:list={["chip", (t)]}>{t}</span>
             ))}
           </div>
         )}
-        <h1 class="news-hero__title"><span class="hash">#</span>{title}</h1>
-        <p class="news-hero__meta"><time datetime={`${yyyy}-${mm}-${dd}`}>{yyyy}/{mm}/{dd}</time></p>
+        <h1 class="news-hero__title"><span class="hash"></span>{title}</h1>
+        <p class="news-hero__meta">
+          {dateInfo.valid ? (
+            <time datetime={dateInfo.iso}>{dateInfo.yyyy}/{dateInfo.mm}/{dateInfo.dd}</time>
+          ) : (
+            <span>{typeof date === 'string' ? date : ''}</span>
+          )}
+        </p>
         {description && <p class="news-hero__desc">{description}</p>}
       </header>
 
@@ -95,9 +121,9 @@ function tagClass(tag: string) {
     line-height: 1.2;
   }
   .news-hero__title .hash {
+    text-align: start;
     margin-right: 0.25em;
     color: var(--color-theme);
-    text-shadow: 0 0 24px color-mix(in oklab, var(--color-theme) 30%, transparent);
   }
   .news-hero__meta { color: var(--color-text-quaternary); font-size: 0.9rem; }
   .news-hero__desc { color: var(--color-text-secondary); margin-top: 0.25rem; }
@@ -115,16 +141,11 @@ function tagClass(tag: string) {
   .chip {
     display: inline-flex; align-items: center; gap: 0.25rem;
     padding: 0.25rem 0.625rem; border-radius: 9999px;
-    border: 1px solid rgba(0,0,0,0.08);
-    background: #fff; color: #374151; font-size: 0.75rem; font-weight: 700;
+    border: 1px solid #418a24; /* theme border */
+    background: #5DB53E; /* theme */
+    color: #ffffff; font-size: 0.75rem; font-weight: 700;
   }
-  .chip.press { background: #f3e8ff; color: #7c3aed; }
-  .chip.notice { background: #dcfce7; color: #15803d; }
-  .chip.event { background: #ffedd5; color: #c2410c; }
-  .chip.achievement { background: #f3f4f6; color: #374151; }
-  .chip.media { background: #dbeafe; color: #1d4ed8; }
-  .chip.blog { background: #fce7f3; color: #be185d; }
-  .chip.case { background: #e0e7ff; color: #3730a3; }
+  .chip--primary { background: #5DB53E; color: #ffffff; border-color: #418a24; }
 
   /* 記事本文（Markdown） */
   .rich-article {
@@ -139,13 +160,8 @@ function tagClass(tag: string) {
     font-size: clamp(1.75rem, 4.6vw, 2.25rem); font-weight: 900; color: var(--color-text-secondary);
   }
   .rich-article h2 {
-    position: relative; padding-left: 0.9rem; margin-top: 2rem; margin-bottom: 0.75rem;
+    position: relative; margin-top: 2rem; margin-bottom: 0.75rem;
     font-size: clamp(1.35rem, 3.4vw, 1.75rem); font-weight: 800; color: var(--color-text-secondary);
-  }
-  .rich-article h2::before {
-    content: ""; position: absolute; left: 0; top: 0.25rem; bottom: 0.25rem; width: 6px; border-radius: 9999px;
-    background: linear-gradient(180deg, var(--color-theme), var(--color-theme-gradient));
-    box-shadow: 0 0 0 2px #fff;
   }
   .rich-article h3 { margin-top: 1.25rem; margin-bottom: 0.5rem; font-size: clamp(1.1rem, 2.6vw, 1.35rem); font-weight: 700; }
   .rich-article h4 { margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.05rem; font-weight: 600; }
