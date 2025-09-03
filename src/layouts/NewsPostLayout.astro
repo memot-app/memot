@@ -115,7 +115,7 @@ const dateInfo = parseFrontmatterDate(date);
   .news-hero__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .news-hero__title {
     font-size: clamp(1.8rem, 5vw, 2.6rem);
-    font-weight: 900;
+    font-weight: 800;
     color: var(--color-text-primary);
     letter-spacing: 0.02em;
     line-height: 1.2;
@@ -163,7 +163,7 @@ const dateInfo = parseFrontmatterDate(date);
     position: relative; margin-top: 2rem; 
     font-size: clamp(1.35rem, 3.4vw, 1.75rem); font-weight: 700; color: var(--color-text-secondary);
   }
-  .rich-article h3 { margin-top: 1.25rem; margin-bottom: 0.5rem; font-size: clamp(1.1rem, 2.6vw, 1.35rem); font-weight: 700; }
+  .rich-article h3 { margin-top: 1.25rem; margin-bottom: 0; font-size: clamp(1.1rem, 2.6vw, 1.35rem); font-weight: 600; }
   .rich-article h4 { margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.05rem; font-weight: 600; }
 
   .rich-article p { margin: 0.25rem 0; }
@@ -171,15 +171,16 @@ const dateInfo = parseFrontmatterDate(date);
   .rich-article ol { padding-left: 1.25rem; list-style: decimal; }
   .rich-article li { margin: 0.3rem 0; }
 
-  .rich-article strong { font-weight: 800; color: var(--color-text-primary); }
+  .rich-article strong { font-weight: 700; color: var(--color-text-primary); }
   .rich-article em { font-style: normal; font-weight: 600; }
 
   .rich-article a { color: var(--color-theme); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 
   .rich-article img { display: block; max-width: 100%; border-radius: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 
-  .rich-article blockquote { margin: 0; padding: 0.25rem 0.875rem; background: #f8faf7; border-left: 6px solid var(--color-theme); border-radius: 0.5rem; white-space: pre-line; }
+  .rich-article blockquote { margin: 0; padding: 0.25rem 0.875rem; margin-top: 2rem; margin-bottom: 2rem;  background: #f8faf7; border-left: 6px solid var(--color-theme); border-radius: 0.5rem; white-space: pre-line; }
   .rich-article blockquote p { margin: 0; }
+
   /* 引用上下の外側の余白（gridのgap分）を圧縮 */
   .rich-article > blockquote { margin-top: -1rem; margin-bottom: -1rem; }
 
@@ -191,14 +192,6 @@ const dateInfo = parseFrontmatterDate(date);
 
   .rich-article hr { border: none; height: 1px; background: #e5e7eb; margin: 1.5rem 0; }
 
-  /* タグマップ（日本語 -> クラス） */
-  .プレスリリース { }
-  .お知らせ { }
-  .イベント { }
-  .実績 { }
-  .メディア掲載 { }
-  .ブログ { }
-  .導入事例 { }
 </style>
 
 <script>
