@@ -1,0 +1,256 @@
+---
+import RootLayout from "~/layouts/RootLayout.astro";
+import Header from "~/components/ui/Header/Header.astro";
+import HeaderBackground from "~/components/ui/Header/HeaderBackground.astro";
+import Footer from "~/components/ui/Footer/Footer.astro";
+
+type Frontmatter = {
+  title: string;
+  date: string; // ISO or yyyy-mm-dd
+  tags?: string[];
+  excerpt?: string;
+  image?: string;
+};
+
+const modules = import.meta.glob("./*.mdx", { eager: true });
+const posts = Object.entries(modules)
+  .map(([path, mod]) => {
+    const frontmatter = (mod as any).frontmatter as Frontmatter;
+    const file = path.split("/").pop() || "";
+    const slug = file.replace(/\.mdx$/, "");
+    return { url: `/news/${slug}/`, ...frontmatter };
+  })
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+function getMonthName(month: number) {
+  return `${month + 1}月`;
+}
+
+let lastMonth: string | null = null;
+---
+
+<RootLayout>
+  <HeaderBackground />
+  <Header />
+  <main
+    class="bg-bg-secondary pt-18 pb-24 min-h-[calc(100vh-var(--height-header))]"
+  >
+    {/* コンテナの最大幅を広げてコンテンツエリアを確保 */}
+    <section class="mx-auto max-w-4xl w-full sm:px-4">
+      <header class="text-center space-y-2 mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold news-title">おしらせ</h1>
+      </header>
+
+      <div id="timeline" class="relative">
+        {/* グローバルのレール（左カラム幅に追従） */}
+        <div
+          class="pointer-events-none absolute inset-y-0 left-0 w-[96px] md:w-[128px]"
+        >
+          <div
+            id="timeline-rail"
+            class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[3px] bg-text-tertiary"
+          >
+          </div>
+        </div>
+        {/* タイムライン両端のカバー（最初/最後の線を消す） */}
+        <div
+          class="pointer-events-none absolute left-0 right-0 top-0 h-40 md:h-48 bg-bg-secondary"
+        >
+        </div>
+        <div
+          class="pointer-events-none absolute left-0 right-0 bottom-0 h-14 md:h-20 bg-bg-secondary"
+        >
+        </div>
+        {
+          posts.map((p, i) => {
+            const d = new Date(p.date);
+            const day = d.getDate();
+            const currentMonthName = getMonthName(d.getMonth());
+
+            const isNewMonth = lastMonth !== currentMonthName;
+            if (isNewMonth) {
+              lastMonth = currentMonthName;
+            }
+
+            const vtags = p.tags ?? [];
+            const isFirst = i === 0;
+            const isLast = i === posts.length - 1;
+
+            return (
+              <>
+                {isNewMonth && (
+                  <div class="timeline-month grid grid-cols-[96px_1fr] md:grid-cols-[128px_1fr] gap-x-4 md:gap-x-8 mb-4">
+                    <div class="flex justify-center py-2">
+                      <span class="bg-text-tertiary text-white font-bold text-base md:text-2xl px-5 py-1.5 rounded-full z-10">
+                        {currentMonthName}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                <div class="timeline-item grid grid-cols-[96px_1fr] md:grid-cols-[128px_1fr] gap-x-4 py-10 md:py-12 ">
+                  {/* 左側: タイムライン（先端に丸い縁）と中央の大きな日付 */}
+                  <div class="relative h-full">
+                    {/* マスク: 日付の上下に余白を広めに確保（96px）し、背後のレールを隠す */}
+                    <div
+                      class="absolute left-1/2 -translate-x-1/2"
+                      style="top: calc(50% - 48px); height: 96px; width: 14px; background: var(--color-bg-secondary);"
+                    />
+                    {/* 先頭調整: 一番上は上側の線を完全に消す */}
+                    {isFirst && (
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2"
+                        style="top: 0; height: calc(50% + 48px); width: 14px; background: var(--color-bg-secondary);"
+                      />
+                    )}
+                    {/* 末尾調整: 一番下は下側の線を完全に消す */}
+                    {isLast && (
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2"
+                        style="top: calc(50% - 48px); bottom: 0; width: 14px; background: var(--color-bg-secondary);"
+                      />
+                    )}
+                    {/* 先端の円（上側）- 最初の要素では非表示 */}
+                    {!isFirst && (
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2 bg-text-tertiary"
+                        style="top: calc(50% - 48px); width: 12px; height: 12px; border-radius: 9999px; border: 2px solid white;"
+                      />
+                    )}
+                    {/* 先端の円（下側）- 最後の要素では非表示 */}
+                    {!isLast && (
+                      <div
+                        class="absolute left-1/2 -translate-x-1/2 bg-text-tertiary"
+                        style="top: calc(50% + 48px - 12px); width: 12px; height: 12px; border-radius: 9999px; border: 2px solid white;"
+                      />
+                    )}
+                    {/* 日付（中央） */}
+                    <div class="absolute inset-0 flex items-center justify-center">
+                      <div class="font-black text-text-tertiary text-3xl md:text-4xl leading-none">
+                        {day}日
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 右側: コンテンツカード */}
+                  <div>
+                    <a href={p.url} class="group relative inline-flex w-full">
+                      <div class="w-full bg-theme text-white p-5 pr-3 md:p-6 md:pr-6 rounded-l-3xl rounded-r-none sm:rounded-3xl flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 shadow-lg will-change-transform transform-gpu transition-all duration-200 ease-in-out border-b-10 border-green-700 group-hover:translate-y-1 group-hover:border-transparent overflow-hidden min-h-[120px] sm:min-h-[148px]">
+                        <div
+                          class:list={[
+                            "flex-1 min-w-0 flex flex-col gap-2",
+                            !p.excerpt &&
+                              (vtags.length === 0 || vtags.length > -1) &&
+                              "justify-center",
+                          ]}
+                        >
+                          {vtags.length > 0 && (
+                            <div class="flex flex-wrap gap-2 items-center mb-2">
+                              {vtags.map((t) => (
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-white text-theme">
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          <h3 class="font-bold text-lg md:text-xl mb-3 md:mb-4">
+                            {p.title}
+                          </h3>
+                          {p.excerpt && (
+                            <p class="text-sm opacity-90 line-clamp-3">
+                              {p.excerpt}
+                            </p>
+                          )}
+                        </div>
+                        <div class="shrink-0 w-full sm:w-auto mt-3 sm:mt-0">
+                          <div class="relative w-full sm:w-[220px] aspect-[16/9] rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                            {p.image ? (
+                              <img
+                                src={p.image}
+                                alt={p.title}
+                                class="absolute inset-0 w-full h-full object-cover"
+                              />
+                            ) : (
+                              <img
+                                src="/og-image.png"
+                                alt="thumbnail"
+                                class="absolute inset-0 w-full h-full object-cover"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </>
+            );
+          })
+        }
+      </div>
+    </section>
+  </main>
+  <Footer />
+</RootLayout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+
+    function initAnimations() {
+      // For debugging
+      console.log("GSAP animation script started (news page).");
+
+      const title = document.querySelector(".news-title");
+      const rail = document.querySelector("#timeline-rail");
+      const items = gsap.utils.toArray(
+        ".timeline-month, .timeline-item"
+      ) as Element[];
+
+      if (!title || !rail || items.length === 0) {
+        return;
+      }
+
+      // Kill previous animations on this element before creating new ones
+      // This is important for astro:after-swap
+      const targets = [title, rail].filter(Boolean) as Element[];
+      gsap.killTweensOf([...targets, ...items]);
+
+      // Set initial states
+      if (title) gsap.set(title, { opacity: 0, y: 30 });
+      if (rail) gsap.set(rail, { scaleY: 0, transformOrigin: "top" });
+      gsap.set(items, { opacity: 0, y: 40 });
+
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out", duration: 1 },
+        delay: 0.1,
+      });
+
+      tl.to(title, { opacity: 1, y: 0 }).to(
+        rail,
+        { scaleY: 1, duration: 1.2 },
+        "-=0.7"
+      );
+
+      items.forEach((item) => {
+        gsap.to(item, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", initAnimations);
+    document.addEventListener("astro:after-swap", initAnimations);
+  }
+</script>
