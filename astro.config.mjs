@@ -1,6 +1,7 @@
 // @ts-check
 
 import sitemap from '@astrojs/sitemap';
+import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 import { loadEnv } from 'vite';
@@ -11,6 +12,7 @@ export default defineConfig({
   site: env.DEV ? 'http://localhost:4321' : 'https://lp.memot.app',
   integrations: [
     sitemap(),
+    mdx(),
   ],
   vite: {
     plugins: [

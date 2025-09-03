@@ -17,12 +17,13 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.4.1",
     "@tailwindcss/vite": "^4.1.11",
-    "gsap": "^3.12.5",
     "astro": "^5.13.1",
+    "gsap": "^3.12.5",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.3.4",
     "@biomejs/biome": "2.1.2",
     "@types/node": "^22.16.5",
     "happy-dom": "^18.0.1",

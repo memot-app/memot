@@ -1,0 +1,100 @@
+---
+import RootLayout from "~/layouts/RootLayout.astro";
+import Header from "~/components/ui/Header/Header.astro";
+import HeaderBackground from "~/components/ui/Header/HeaderBackground.astro";
+import Footer from "~/components/ui/Footer/Footer.astro";
+
+type Frontmatter = {
+  title: string;
+  date: string; // ISO or yyyy-mm-dd
+  tags?: string[];
+  excerpt?: string;
+  image?: string;
+};
+
+const modules = import.meta.glob('./*.mdx', { eager: true });
+const posts = Object.entries(modules)
+  .map(([path, mod]) => {
+    const frontmatter = (mod as any).frontmatter as Frontmatter;
+    const file = path.split('/').pop() || '';
+    const slug = file.replace(/\.mdx$/, '');
+    return { url: `/news/${slug}/`, ...frontmatter };
+  })
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+// フィルター用のタグを限定（表示用に使用）
+const allowedTags = ['お知らせ', 'ブログ'] as const;
+const allowedTagSet = new Set(allowedTags);
+
+function formatDateStr(dateStr: string) {
+  const d = new Date(dateStr);
+  return {
+    yyyy: d.getFullYear(),
+    mm: String(d.getMonth() + 1).padStart(2, '0'),
+    dd: String(d.getDate()).padStart(2, '0'),
+  };
+}
+
+---
+
+<RootLayout>
+  <HeaderBackground />
+  <Header />
+  <main class="bg-bg-secondary pt-28 pb-24 min-h-[calc(100vh-var(--height-header))]">
+    <section class="mx-auto max-w-4xl w-full px-4 space-y-12">
+      <header class="text-center space-y-2">
+        <h1 class="text-4xl md:text-5xl font-bold">おしらせ</h1>
+      </header>
+      <ul id="news-list" class="space-y-7">
+        {posts.map((p, i) => {
+          const { yyyy, mm, dd } = formatDateStr(p.date);
+          const vtags = (p.tags ?? []).filter((t) => allowedTagSet.has(t as any));
+          return (
+            <li>
+              <a href={p.url} class="block group">
+                <div class="relative grid grid-cols-[88px_1fr_auto] items-start gap-4 md:gap-6 p-4 md:p-6 rounded-2xl border border-gray-200 bg-white hover:shadow-xl transition-shadow">
+                  <!-- 左: 日付バッジ（ポップ） -->
+                  <div class="w-[88px] shrink-0 flex flex-col items-center justify-center rounded-2xl bg-bg-primary border border-gray-200 py-3">
+                    <div class="text-[10px] tracking-widest text-text-quaternary">{yyyy}</div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-text-primary leading-none">{mm}</div>
+                    <div class="text-xl md:text-2xl font-extrabold text-text-primary leading-none">{dd}</div>
+                  </div>
+
+                  <!-- 中央: テキスト -->
+                  <div class="min-w-0 flex-1 flex flex-col gap-2">
+                    {vtags.length > 0 && (
+                      <div class="flex flex-wrap gap-2 items-center">
+                        {vtags.map((t) => (
+                          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-theme text-white">{t}</span>
+                        ))}
+                      </div>
+                    )}
+                    <h3 class="text-base md:text-xl font-bold text-text-secondary group-hover:underline decoration-2 underline-offset-4 line-clamp-2">{p.title}</h3>
+                    {p.excerpt && (
+                      <p class="text-sm md:text-base text-text-tertiary line-clamp-2">{p.excerpt}</p>
+                    )}
+                  </div>
+
+                  <!-- 右: サムネイル -->
+                  <div class="hidden sm:block shrink-0">
+                    <div class="relative w-[150px] md:w-[200px] aspect-[16/9] rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
+                      {p.image ? (
+                        <img src={p.image} alt={p.title} class="absolute inset-0 w-full h-full object-cover" />
+                      ) : (
+                        <img src="/og-image.png" alt="thumbnail" class="absolute inset-0 w-full h-full object-cover" />
+                      )}
+                    </div>
+                  </div>
+
+                  <!-- デコレーション（水玉） -->
+                  <div class="pointer-events-none absolute -top-3 -left-3 size-7 rounded-full bg-theme"></div>
+                </div>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</RootLayout>
