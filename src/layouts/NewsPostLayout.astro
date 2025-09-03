@@ -160,8 +160,8 @@ const dateInfo = parseFrontmatterDate(date);
     font-size: clamp(1.75rem, 4.6vw, 2.25rem); font-weight: 900; color: var(--color-text-secondary);
   }
   .rich-article h2 {
-    position: relative; margin-top: 2rem; margin-bottom: 0.75rem;
-    font-size: clamp(1.35rem, 3.4vw, 1.75rem); font-weight: 800; color: var(--color-text-secondary);
+    position: relative; margin-top: 2rem; 
+    font-size: clamp(1.35rem, 3.4vw, 1.75rem); font-weight: 700; color: var(--color-text-secondary);
   }
   .rich-article h3 { margin-top: 1.25rem; margin-bottom: 0.5rem; font-size: clamp(1.1rem, 2.6vw, 1.35rem); font-weight: 700; }
   .rich-article h4 { margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.05rem; font-weight: 600; }
@@ -178,7 +178,10 @@ const dateInfo = parseFrontmatterDate(date);
 
   .rich-article img { display: block; max-width: 100%; border-radius: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 
-  .rich-article blockquote { margin: 0.5rem 0; padding: 0.75rem 1rem; background: #f8faf7; border-left: 6px solid var(--color-theme); border-radius: 0.5rem; }
+  .rich-article blockquote { margin: 0; padding: 0.25rem 0.875rem; background: #f8faf7; border-left: 6px solid var(--color-theme); border-radius: 0.5rem; white-space: pre-line; }
+  .rich-article blockquote p { margin: 0; }
+  /* 引用上下の外側の余白（gridのgap分）を圧縮 */
+  .rich-article > blockquote { margin-top: -1rem; margin-bottom: -1rem; }
 
   .rich-article :not(pre) > code { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 0.15rem 0.35rem; border-radius: 0.375rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; }
 
