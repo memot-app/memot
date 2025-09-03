@@ -1,0 +1,9 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<div class:list={["h-header bg-bg-primary", className]} {...props}></div>

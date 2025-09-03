@@ -1,0 +1,23 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import AppLinkWeb from "../AppLink/AppLinkWeb.astro";
+import BrandLogoFull from "../Brand/BrandLogoFull.astro";
+
+interface Props extends HTMLAttributes<"header"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<header
+  class:list={[
+    "z-10 fixed top-0 inset-x-0 h-header",
+    "bg-bg-primary/50 backdrop-blur-2xl",
+    className,
+  ]}
+  {...props}
+>
+  <div class="mx-auto max-w-screen-xl h-full flex items-center justify-between px-6 sm:px-8">
+     <BrandLogoFull class="w-[140px] md:w-[160px] flex-shrink-0 flex-grow-0" />
+    <AppLinkWeb class="w-[180px] md:w-[260px] flex-shrink-0 flex-grow-0" />
+  </div>
+</header>

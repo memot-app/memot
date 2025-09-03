@@ -1,0 +1,19 @@
+---
+import type { ComponentProps } from "astro/types";
+import Link from "../Link/Link.astro";
+
+interface Props extends ComponentProps<typeof Link> {}
+
+const { href, class: className, ...props } = Astro.props;
+---
+
+<Link
+  href={href}
+  class:list={[
+    "text-footer-link text-text-tertiary hover:underline hover:opacity-80 transition",
+    className,
+  ]}
+  {...props}
+>
+  <slot />
+</Link>

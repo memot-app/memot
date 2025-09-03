@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+import type { ComponentProps } from "astro/types";
+import MemotNamelogo from "~/assets/brand/memot-namelogo.svg";
+import { SITE } from "~/constants/metadata";
+import Link from "../Link/Link.astro";
+
+interface Props extends ComponentProps<typeof Link> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<Link
+  href={SITE.appUrl.web}
+  class:list={["hover:opacity-80 transition", className]}
+  {...props}
+>
+  <Image class="size-full" src={MemotNamelogo} alt="めもっと" inferSize />
+</Link>

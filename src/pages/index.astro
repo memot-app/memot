@@ -1,0 +1,512 @@
+---
+import { Image } from "astro:assets";
+import top_home from "~/assets/ui/top-home.png";
+import top_daylog from "~/assets/ui/top-daylog.png";
+import everyone_page from "~/assets/ui/everyone-page.png";
+import profile from "~/assets/ui/profile.png";
+import modal_big from "~/assets/ui/modal-big.png";
+
+// 特徴
+import StrikeThroughDM from "~/assets/richText/strikethrough-dm.svg";
+import StrikeThroughLike from "~/assets/richText/strikethrough-like.svg";
+import StrikeThroughReply from "~/assets/richText/strikethrough-reply.svg";
+import StrikeThroughRepost from "~/assets/richText/strikethrough-repost.svg";
+import CalendarMon from "~/assets/calender/calendar-mon.svg";
+import CalendarTue from "~/assets/calender/calendar-tue.svg";
+import CalendarWed from "~/assets/calender/calendar-wed.svg";
+import CalendarThu from "~/assets/calender/calendar-thu.svg";
+import CalendarFri from "~/assets/calender/calendar-fri.svg";
+import CalendarSat from "~/assets/calender/calendar-sat.svg";
+import CalendarSun from "~/assets/calender/calendar-sun.svg";
+import NoteLocked from "~/assets/note-locked.svg";
+
+// コンポーネント
+import MessageCard from "~/components/MessageCard.astro";
+import AppLinkAppStore from "~/components/ui/AppLink/AppLinkAppStore.astro";
+import AppLinkGooglePlay from "~/components/ui/AppLink/AppLinkGooglePlay.astro";
+import AppLinkWeb from "~/components/ui/AppLink/AppLinkWeb.astro";
+import BrandIcon from "~/components/ui/Brand/BrandIcon.astro";
+import ConceptList from "~/components/ui/ConceptList/ConceptList.astro";
+import ConceptListItem from "~/components/ui/ConceptList/ConceptListItem.astro";
+import RoundCornerContainer from "~/components/ui/Container/RoundCornerContainer.astro";
+import FeatureDisplay from "~/components/ui/FeatureDisplay/FeatureDisplay.astro";
+import FeatureDisplayImage from "~/components/ui/FeatureDisplay/FeatureDisplayImage.astro";
+import FeatureDisplayTitle from "~/components/ui/FeatureDisplay/FeatureDisplayTitle.astro";
+import FeatureDisplayDescription from "~/components/ui/FeatureDisplay/FeatureDisplayDescription.astro";
+import FeatureList from "~/components/ui/FeatureList/FeatureList.astro";
+import FeatureListItem from "~/components/ui/FeatureList/FeatureListItem.astro";
+import Footer from "~/components/ui/Footer/Footer.astro";
+import Header from "~/components/ui/Header/Header.astro";
+import HeaderBackground from "~/components/ui/Header/HeaderBackground.astro";
+import RootLayout from "~/layouts/RootLayout.astro";
+
+import DaylogMovie from "~/assets/daylog-prototype.mp4";
+import Letter from "~/assets/letter.mp4";
+---
+
+<RootLayout>
+  <!-- ヘッダー -->
+  <HeaderBackground />
+  <Header />
+
+  <!-- メインコンテンツ -->
+  <main class="min-h-screen bg-bg-secondary">
+    <!-- ヒーローセクション -->
+    <section class="bg-bg-primary pt-16 pb-24 md:pt-24 md:pb-32">
+      <div
+        class="mx-auto max-w-screen-xl w-full flex flex-col justify-between gap-y-16 md:gap-y-20 px-4"
+      >
+        <h1
+          class="text-hero text-text-primary text-center text-[clamp(2.4rem,5vw,3.25rem)]"
+        >
+          <p>みんなの日常。</p>
+          <p>わたしの独り言。</p>
+        </h1>
+        <div
+          class="grid grid-cols-2 md:flex md:flex-row items-center justify-center gap-y-4 sm:gap-y-0 md:gap-x-32 lg:gap-x-0"
+        >
+          <!-- 左上: 投稿画面 -->
+          <div
+            class="col-start-1 row-start-1 flex justify-center items-center md:w-auto"
+          >
+            <Image
+              class="w-[clamp(200px,40vw,300px)] md:w-[clamp(140px,35vw,360px)]"
+              src={top_home}
+              width={top_home.width}
+              height={top_home.height}
+              alt="アプリの投稿画面"
+            />
+          </div>
+
+          <!-- 右上: メッセージ -->
+          <div
+            class="hidden lg:flex col-start-2 row-start-1 items-center justify-center w-full md:w-auto gap-4"
+          >
+            <!-- 左側のメッセージカード -->
+            <div
+              id="message-card-container"
+              class="flex flex-col items-start gap-2 md:gap-4 text-[clamp(0.75rem,1.8vw,1rem)]"
+            >
+              <MessageCard
+                message="久しぶりに新宿に行った"
+                rotateX={30}
+                rotateY={35}
+                rotateZ={-12}
+                class="-ml-9 message-card"
+              />
+              <MessageCard
+                message="新宿のカフェでリラックス"
+                rotateX={30}
+                rotateY={35}
+                rotateZ={-12}
+                class="-ml-6 message-card"
+              />
+              <MessageCard
+                message="この季節はうどんを食べたくなる"
+                rotateX={30}
+                rotateY={35}
+                rotateZ={-12}
+                class="-ml-3 message-card"
+              />
+              <MessageCard
+                message="この季節はうどんを食べたくなるな。おいしい店ないかな"
+                rotateX={30}
+                rotateY={35}
+                rotateZ={-12}
+                class="ml-0 message-card"
+              />
+            </div>
+
+            <!-- 右側のメッセージカード -->
+            <div
+              id="message-card-container-right"
+              class="flex flex-col items-end gap-2 md:gap-4 text-[clamp(0.75rem,1.8vw,1rem)]"
+            >
+              <MessageCard
+                message={`来週、久しぶりに新宿に行くんだね、楽しみだね！新宿ってお店がいっぱいあって迷っちゃうよね。もし時間があったら、
+                新宿御苑でゆっくり散歩するのもおすすめだよ。美味しいランチのお店もたくさんあるから、ぜひ探してみてね！ 
+                もし何か辛いことがあったとしても、美味しいものを食べたり、自然の中でゆっくり過ごしたりすると、少し心が軽くなることもあるよ。焦らず、あなたのペースでいこう！応援してるよ💪`}
+                rotateX={-30}
+                rotateY={35}
+                rotateZ={12}
+                shadowDirection="bottom-right"
+                class="-mr-9 message-card"
+              />
+            </div>
+          </div>
+
+          <!-- 右下: おすすめ画面 -->
+          <div
+            class="col-start-2 row-start-2 flex justify-center items-center -mt-52 md:mt-0 md:w-auto"
+          >
+            <Image
+              class="w-[clamp(200px,40vw,300px)] md:w-[clamp(140px,35vw,360px)]"
+              src={top_daylog}
+              width={top_daylog.width}
+              height={top_daylog.height}
+              alt="アプリのおすすめ画面"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- イントロダクションセクション -->
+    <section
+      class="bg-bg-secondary py-24 px-4 grid place-content-center gap-y-16"
+    >
+      <div class="mx-auto max-w-3xl w-full grid content-between gap-y-14">
+        <h2
+          class="text-intro text-text-secondary text-center text-[clamp(1.25rem,6vw,2.25rem)]"
+        >
+          <p>期待を生むのではなく</p>
+          <p>ありのままの自分を届ける。</p>
+        </h2>
+        <!-- 画像ギャラリー -->
+        <div
+          class="flex flex-row items-center justify-center gap-4 md:gap-8"
+        >
+          <Image
+            class="w-[clamp(140px,40vw,260px)]"
+            src={everyone_page}
+            width={everyone_page.width}
+            height={everyone_page.height}
+            alt="フォロー中のタイムラインページ"
+          />
+          <Image
+            class="w-[clamp(140px,40vw,260px)]"
+            src={profile}
+            width={profile.width}
+            height={profile.height}
+            alt="共有プロフィールページ"
+          />
+        </div>
+          <div class="text-center space-y-[clamp(1rem,4vw,2rem)]">
+            <div class="max-w-3xl font-semibold mx-auto text-[clamp(0.9rem,2.5vw,1.4rem)] text-text-secondary leading-relaxed space-y-[clamp(1rem,3vw,1.5rem)]">
+              <p>
+                現代のインターネットでは、匿名性の陰で心ない言葉が飛び交い、誰かを傷つけてしまうことがあります。そんなコミュニケーションのすれ違いを減らすために、AIがやさしく仲介する世界を目指しています。
+                窓の存在を意識せずに景色を眺めるように、AIの存在は自然に溶け込み、心地よい会話を支える存在として寄り添います。めもっとは、思いやりのある言葉を自ら選び、互いの気持ちがやさしく巡る場所です。
+              </p>
+            </div>
+          </div>
+      </div>
+      
+      <!-- 特徴 -->
+      <div class="w-full max-w-4xl mx-auto grid gap-y-6">
+        <!-- 3つの特徴 -->
+        <FeatureList>
+          <FeatureListItem number={1}>疲れないSNS</FeatureListItem>
+          <FeatureListItem number={2}>日常を静かに共有</FeatureListItem>
+          <FeatureListItem number={3}>日記で毎日を振り返る</FeatureListItem>
+        </FeatureList>
+      </div>
+    </section>
+
+    <!-- プロモーションビデオセクション -->
+    <section class="bg-bg-secondary py-16 md:py-24 px-4 grid gap-y-8 md:gap-y-12 feature-display-section">
+      <h2 class="text-feature text-center text-[clamp(1.0rem,8vw,2.3rem)]">
+        プロモーションビデオ
+      </h2>
+      <div class="w-full max-w-4xl mx-auto">
+        <div class="relative w-full h-0 pt-[56.25%] rounded-2xl overflow-hidden">
+          <iframe
+            class="absolute top-0 left-0 w-full h-full"
+            src="https://drive.google.com/file/d/1IqjMCetumwwDYq3DIPfyvr5PzkiFaFVG/preview"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- コンセプトセクション -->
+    <RoundCornerContainer
+      class="bg-theme text-white py-16 md:py-24 px-4 grid gap-y-12"
+    >
+      <div class="max-w-4xl mx-auto">
+        <h2
+          class="text-concept text-center py-4 text-[clamp(1.5rem,7vw,3rem)]"
+        >
+          しずかで疲れない空間
+        </h2>
+        <p
+          class="text-concept-sub text-center mx-auto text-[clamp(1rem,3.5vw,1.5rem)]"
+        >
+          他人の評価に縛られず、“今”をメモできる場所。気軽に、気ままに、自分のためのメモをどうぞ。
+        </p>
+      </div>
+      <!-- コンセプト枠 -->
+      <ConceptList class="mx-auto max-w-screen-xl w-full grid gap-y-20">
+        <!-- 1 -->
+        <ConceptListItem
+          item={{ texts: ["期待を生むことなく", "静かに共有。"] }}
+          imagesWrapperClass="gap-4"
+        >
+          <Image
+            class="w-[clamp(100px,20vw,130px)]"
+            src={StrikeThroughDM}
+            width={StrikeThroughDM.width}
+            height={StrikeThroughDM.height}
+            alt="DMに打ち消し線"
+          />
+          <Image
+            class="w-[clamp(100px,30vw,230px)]"
+            src={StrikeThroughReply}
+            width={StrikeThroughReply.width}
+            height={StrikeThroughReply.height}
+            alt="リプライに打ち消し線"
+          />
+          <Image
+            class="w-[clamp(100px,30vw,230px)]"
+            src={StrikeThroughRepost}
+            width={StrikeThroughRepost.width}
+            height={StrikeThroughRepost.height}
+            alt="リポストに打ち消し線"
+          />
+          <Image
+            class="w-[clamp(100px,25vw,180px)]"
+            src={StrikeThroughLike}
+            width={StrikeThroughLike.width}
+            height={StrikeThroughLike.height}
+            alt="いいねに打ち消し線"
+          />
+        </ConceptListItem>
+        <!-- 2 -->
+        <ConceptListItem
+          item={{ texts: ["残るのは1週間だけ。", "過去のことは気にしない。"] }}
+          imagesWrapperClass="grid justify-items-center gap-y-2 md:gap-y-4"
+        >
+          <div
+            class="flex items-center justify-center gap-x-3"
+          >
+            <Image
+              class="w-[clamp(40px,10vw,100px)]"
+              src={CalendarMon}
+              width={CalendarMon.width}
+              height={CalendarMon.height}
+              alt="カレンダー月曜日"
+            />
+            <Image
+              class="w-[clamp(40px,10vw,100px)]"
+              src={CalendarTue}
+              width={CalendarTue.width}
+              height={CalendarTue.height}
+              alt="カレンダー火曜日"
+            />
+            <Image
+              class="w-[clamp(40px,10vw,100px)]"
+              src={CalendarWed}
+              width={CalendarWed.width}
+              height={CalendarWed.height}
+              alt="カレンダー水曜日"
+            />
+          </div>
+          <div
+            class="flex items-center justify-center gap-x-3"
+          >
+            <Image
+              class="w-[clamp(40px,10vw,100px)]"
+              src={CalendarThu}
+              width={CalendarThu.width}
+              height={CalendarThu.height}
+              alt="カレンダー木曜日"
+            />
+            <Image
+              class="w-[clamp(40px,10vw,100px)]"
+              src={CalendarFri}
+              width={CalendarFri.width}
+              height={CalendarFri.height}
+              alt="カレンダー金曜日"
+            />
+            <Image
+              class="w-[clamp(40px,10vw,100px)]"
+              src={CalendarSat}
+              width={CalendarSat.width}
+              height={CalendarSat.height}
+              alt="カレンダー土曜日"
+            />
+            <Image
+              class="w-[clamp(40px,10vw,100px)]"
+              src={CalendarSun}
+              width={CalendarSun.width}
+              height={CalendarSun.height}
+              alt="カレンダー日曜日"
+            />
+          </div>
+        </ConceptListItem>
+        <!-- 3 -->
+        <ConceptListItem
+          item={{ texts: ["自分だけが見える", "めもアプリとしても。"] }}
+        >
+          <Image
+            class="w-[clamp(140px,40vw,220px)]"
+            src={NoteLocked}
+            width={NoteLocked.width}
+            height={NoteLocked.height}
+            alt="ロックされたノート"
+          />
+        </ConceptListItem>
+      </ConceptList>
+    </RoundCornerContainer>
+
+    <!-- アイキャッチ/バンパーセクション -->
+    <section
+      class="relative mx-auto max-w-screen-xl w-full flex flex-col-reverse lg:flex-row justify-center lg:justify-between items-start lg:items-center py-24 px-6 sm:px-8 gap-y-8 -mt-24"
+    >
+      <h3
+        class="text-bumper text-text-tertiary text-start text-[clamp(1.5rem,5vw,2.25rem)]"
+      >
+        <p>独り言。</p>
+        <p>買い物のメモ。</p>
+        <p>趣味のこと。</p>
+        <p>気軽にめもして共有。</p>
+      </h3>
+      <Image
+        class="w-[clamp(280px,75vw,520px)]"
+        src={modal_big}
+        width={modal_big.width}
+        height={modal_big.height}
+        alt="アプリの日記画面"
+      />
+    </section>
+
+    <!-- フィーチャーセクション -->
+    <section
+      class="rounded-t-[60px] md:rounded-t-[100px] shadow-theme-glow py-24 md:py-32 px-4 grid gap-y-20 md:gap-y-28"
+    >
+      <h2 class="text-feature text-center text-[clamp(2.0rem,8vw,3.5625rem)]">
+        <span
+          class="text-transparent bg-clip-text bg-linear-to-r from-theme-gradient to-theme"
+          >AIがつながる新たな体験</span
+        >
+      </h2>
+      <div class="grid gap-y-20 md:gap-y-40">
+        <!-- 1 -->
+        <FeatureDisplay class="mx-auto max-w-screen-xl w-full px-8" leftOffset={true}>
+          <FeatureDisplayTitle
+            slot="left-title"
+            head="自動日記"
+            headSub="〜自分から自分へ〜"
+          />
+          <FeatureDisplayImage
+            slot="left-video"
+            videoSrc={DaylogMovie}
+            videoPoster=""
+          />
+          <FeatureDisplayDescription
+            slot="left-description"
+            body={[
+              "AIの「ことね」は、あなたのメモに込められた感情や関心を読み取り、楽しみな予定や疲れた気持ちにそっと寄り添う日記を届けます。",
+            ]}
+          />
+          
+          <FeatureDisplayTitle
+            slot="right-title"
+            head="感情レター"
+            headSub="〜自分から他人へ〜"
+          />
+          <FeatureDisplayImage
+            slot="right-video"
+            videoSrc={Letter}
+            videoPoster=""
+          />
+          <FeatureDisplayDescription
+            slot="right-description"
+            body={[
+              "他のユーザーのメモに対して気持ちを言葉にして送る言葉をAIがやさしく受け取り、投稿者を傷つけないように言葉を整えてから届けてくれます。 ",
+            ]}
+          />
+        </FeatureDisplay>
+      </div>
+    </section>
+
+    <!-- クロージングセクション -->
+    <section class="bg-bg-secondary py-24 md:py-36 px-10">
+      <div class="mx-auto max-w-screen-lg w-full grid gap-y-8">
+        <div
+          class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-x- gap-y-8"
+        >
+          <h2
+            class="text-closing text-text-primary text-center md:text-start text-[clamp(1.75rem,5.5vw,2.75rem)]"
+          >
+            <p>儚い”めも”から。</p>
+            <p>
+              “もっと”<span
+                class="text-[clamp(2.25rem,7vw,4.25rem)] text-theme"
+                >自分らしさ</span
+              >を。
+            </p>
+          </h2>
+          <BrandIcon class="w-[clamp(130px,20vw,180px)]" />
+        </div>
+        <!-- アプリのリンク -->
+        <div class="grid gap-y-8">
+          <div
+            class="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-between"
+          >
+            <!-- <div class="flex flex-row items-center gap-x-3">
+              <AppLinkAppStore class="h-[2.75rem] md:h-[4rem]" />
+              <AppLinkGooglePlay class="h-[2.75rem] md:h-[4rem]" />
+            </div> -->
+            <AppLinkWeb class="h-[3.25rem] md:h-[4rem]" />
+          </div>
+          <small
+            class="text-text-tertiary font-bold text-center md:text-left text-[clamp(0.875rem,4vw,1.125rem)]"
+            >※iOS・Android・Webで提供予定。</small
+          >
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- フッター -->
+  <Footer />
+</RootLayout>
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // FeatureDisplay animation
+      const featureSections = document.querySelectorAll(".feature-display-section");
+      featureSections.forEach((section) => {
+        gsap.from(section, {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section as HTMLElement,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+
+      // MessageCard animation
+      const messageCardContainers = document.querySelectorAll(
+        '[id^="message-card-container"]',
+      );
+      messageCardContainers.forEach((container) => {
+        const cards = container.querySelectorAll(".message-card");
+        if (cards.length > 0) {
+          gsap.from(cards, {
+            opacity: 0,
+            y: -30,
+            duration: 0.8,
+            ease: "power2.out",
+            stagger: 0.2,
+            scrollTrigger: {
+              trigger: container as HTMLElement,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          });
+        }
+      });
+    });
+  }
+</script>

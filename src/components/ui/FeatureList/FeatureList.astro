@@ -1,0 +1,18 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"ul"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<ul
+  class:list={[
+    "grid grid-cols-2 gap-4 justify-items-center md:flex md:justify-center md:items-stretch md:gap-x-[32px]",
+    "[&>:first-child]:col-span-2",
+    className,
+  ]}
+  {...props}
+>
+  <slot />
+</ul>

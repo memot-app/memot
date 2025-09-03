@@ -1,0 +1,11 @@
+---
+import type { PolymorphicProps } from "~/types";
+
+type Props = PolymorphicProps<"section">;
+
+const { as: Tag = "section", class: className, ...props } = Astro.props;
+---
+
+<Tag class:list={["rounded-[68px]", className]} {...props}>
+  <slot />
+</Tag>

@@ -1,29 +1,36 @@
 {
-  "name": "webut_web",
-  "version": "0.1.0",
-  "private": true,
+  "name": "memot",
+  "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest",
+    "check:astro": "astro check --minimumFailingSeverity=warning",
+    "check:biome": "biome check . --error-on-warnings",
+    "check": "npm run --parallel \"/^check:.*/\"",
+    "fix:biome": "biome check . --error-on-warnings --write",
+    "fix": "npm run fix:biome"
   },
   "dependencies": {
-    "@next/third-parties": "^15.2.4",
-    "@supabase/supabase-js": "^2.49.1",
-    "next": "15.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@astrojs/sitemap": "^3.4.1",
+    "@tailwindcss/vite": "^4.1.11",
+    "gsap": "^3.12.5",
+    "astro": "^5.13.1",
+    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.2.0",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "@astrojs/check": "^0.9.4",
+    "@biomejs/biome": "2.1.2",
+    "@types/node": "^22.16.5",
+    "happy-dom": "^18.0.1",
+    "lefthook": "^1.12.2",
+    "prettier": "3.6.2",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.6",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   }
 }
