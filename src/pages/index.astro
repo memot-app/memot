@@ -130,6 +130,7 @@ import Letter from "~/assets/letter.mp4";
                 rotateY={35}
                 rotateZ={12}
                 shadowDirection="bottom-right"
+                enableTextAnimation={true}
                 class="-mr-9 message-card"
               />
             </div>
@@ -153,7 +154,7 @@ import Letter from "~/assets/letter.mp4";
 
     <!-- イントロダクションセクション -->
     <section
-      class="bg-bg-secondary py-24 px-4 grid place-content-center gap-y-16"
+      class="bg-bg-secondary py-24 px-4 grid place-content-center gap-y-16 feature-display-section"
     >
       <div class="mx-auto max-w-3xl w-full grid content-between gap-y-14">
         <h2
@@ -163,9 +164,7 @@ import Letter from "~/assets/letter.mp4";
           <p>ありのままの自分を届ける。</p>
         </h2>
         <!-- 画像ギャラリー -->
-        <div
-          class="flex flex-row items-center justify-center gap-4 md:gap-8"
-        >
+        <div class="flex flex-row items-center justify-center gap-4 md:gap-8">
           <Image
             class="w-[clamp(140px,40vw,260px)]"
             src={everyone_page}
@@ -181,16 +180,18 @@ import Letter from "~/assets/letter.mp4";
             alt="共有プロフィールページ"
           />
         </div>
-          <div class="text-center space-y-[clamp(1rem,4vw,2rem)]">
-            <div class="max-w-3xl font-semibold mx-auto text-[clamp(0.9rem,2.5vw,1.4rem)] text-text-secondary leading-relaxed space-y-[clamp(1rem,3vw,1.5rem)]">
-              <p>
-                現代のインターネットでは、匿名性の陰で心ない言葉が飛び交い、誰かを傷つけてしまうことがあります。そんなコミュニケーションのすれ違いを減らすために、AIがやさしく仲介する世界を目指しています。
-                窓の存在を意識せずに景色を眺めるように、AIの存在は自然に溶け込み、心地よい会話を支える存在として寄り添います。めもっとは、思いやりのある言葉を自ら選び、互いの気持ちがやさしく巡る場所です。
-              </p>
-            </div>
+        <div class="text-center space-y-[clamp(1rem,4vw,2rem)]">
+          <div
+            class="max-w-3xl font-semibold mx-auto text-[clamp(0.9rem,2.5vw,1.4rem)] text-text-secondary leading-relaxed space-y-[clamp(1rem,3vw,1.5rem)]"
+          >
+            <p>
+              現代のインターネットでは、匿名性の陰で心ない言葉が飛び交い、誰かを傷つけてしまうことがあります。そんなコミュニケーションのすれ違いを減らすために、AIがやさしく仲介する世界を目指しています。
+              窓の存在を意識せずに景色を眺めるように、AIの存在は自然に溶け込み、心地よい会話を支える存在として寄り添います。めもっとは、思いやりのある言葉を自ら選び、互いの気持ちがやさしく巡る場所です。
+            </p>
           </div>
+        </div>
       </div>
-      
+
       <!-- 特徴 -->
       <div class="w-full max-w-4xl mx-auto grid gap-y-6">
         <!-- 3つの特徴 -->
@@ -203,30 +204,31 @@ import Letter from "~/assets/letter.mp4";
     </section>
 
     <!-- プロモーションビデオセクション -->
-    <section class="bg-bg-secondary py-16 md:py-24 px-4 grid gap-y-8 md:gap-y-12 feature-display-section">
+    <section
+      class="bg-bg-primary py-16 md:py-24 px-4 grid gap-y-8 md:gap-y-12 feature-display-section -mb-10"
+    >
       <h2 class="text-feature text-center text-[clamp(1.0rem,8vw,2.3rem)]">
         プロモーションビデオ
       </h2>
       <div class="w-full max-w-4xl mx-auto">
-        <div class="relative w-full h-0 pt-[56.25%] rounded-2xl overflow-hidden">
+        <div
+          class="relative w-full h-0 pt-[56.25%] rounded-2xl overflow-hidden"
+        >
           <iframe
             class="absolute top-0 left-0 w-full h-full"
             src="https://drive.google.com/file/d/1IqjMCetumwwDYq3DIPfyvr5PzkiFaFVG/preview"
             allow="autoplay; encrypted-media"
-            allowfullscreen
-          ></iframe>
+            allowfullscreen></iframe>
         </div>
       </div>
     </section>
 
     <!-- コンセプトセクション -->
     <RoundCornerContainer
-      class="bg-theme text-white py-16 md:py-24 px-4 grid gap-y-12"
+      class="bg-theme text-white py-8 md:py-24 px-4 grid gap-y-12 relative z-10"
     >
       <div class="max-w-4xl mx-auto">
-        <h2
-          class="text-concept text-center py-4 text-[clamp(1.5rem,7vw,3rem)]"
-        >
+        <h2 class="text-concept text-center py-4 text-[clamp(1.5rem,7vw,3rem)]">
           しずかで疲れない空間
         </h2>
         <p
@@ -276,9 +278,7 @@ import Letter from "~/assets/letter.mp4";
           item={{ texts: ["残るのは1週間だけ。", "過去のことは気にしない。"] }}
           imagesWrapperClass="grid justify-items-center gap-y-2 md:gap-y-4"
         >
-          <div
-            class="flex items-center justify-center gap-x-3"
-          >
+          <div class="flex items-center justify-center gap-x-3">
             <Image
               class="w-[clamp(40px,10vw,100px)]"
               src={CalendarMon}
@@ -301,9 +301,7 @@ import Letter from "~/assets/letter.mp4";
               alt="カレンダー水曜日"
             />
           </div>
-          <div
-            class="flex items-center justify-center gap-x-3"
-          >
+          <div class="flex items-center justify-center gap-x-3">
             <Image
               class="w-[clamp(40px,10vw,100px)]"
               src={CalendarThu}
@@ -359,7 +357,7 @@ import Letter from "~/assets/letter.mp4";
         <p>独り言。</p>
         <p>買い物のメモ。</p>
         <p>趣味のこと。</p>
-        <p>気軽にめもして共有。</p>
+        <p>気軽にメモして共有。</p>
       </h3>
       <Image
         class="w-[clamp(280px,75vw,520px)]"
@@ -377,12 +375,15 @@ import Letter from "~/assets/letter.mp4";
       <h2 class="text-feature text-center text-[clamp(2.0rem,8vw,3.5625rem)]">
         <span
           class="text-transparent bg-clip-text bg-linear-to-r from-theme-gradient to-theme"
-          >AIがつながる新たな体験</span
+          >AIがつなげる新たな体験</span
         >
       </h2>
       <div class="grid gap-y-20 md:gap-y-40">
         <!-- 1 -->
-        <FeatureDisplay class="mx-auto max-w-screen-xl w-full px-8" leftOffset={true}>
+        <FeatureDisplay
+          class="mx-auto max-w-screen-xl w-full px-8"
+          leftOffset={true}
+        >
           <FeatureDisplayTitle
             slot="left-title"
             head="自動日記"
@@ -399,7 +400,7 @@ import Letter from "~/assets/letter.mp4";
               "AIの「ことね」は、あなたのメモに込められた感情や関心を読み取り、楽しみな予定や疲れた気持ちにそっと寄り添う日記を届けます。",
             ]}
           />
-          
+
           <FeatureDisplayTitle
             slot="right-title"
             head="感情レター"
@@ -413,7 +414,7 @@ import Letter from "~/assets/letter.mp4";
           <FeatureDisplayDescription
             slot="right-description"
             body={[
-              "他のユーザーのメモに対して気持ちを言葉にして送る言葉をAIがやさしく受け取り、投稿者を傷つけないように言葉を整えてから届けてくれます。 ",
+              "他のユーザーのメモに対して気持ちを送る言葉をAIがやさしく受け取り、投稿者への感情のレターとして言葉を整えてから届けてくれます。 ",
             ]}
           />
         </FeatureDisplay>
@@ -431,8 +432,7 @@ import Letter from "~/assets/letter.mp4";
           >
             <p>儚い”めも”から。</p>
             <p>
-              “もっと”<span
-                class="text-[clamp(2.25rem,7vw,4.25rem)] text-theme"
+              “もっと”<span class="text-[clamp(2.25rem,7vw,4.25rem)] text-theme"
                 >自分らしさ</span
               >を。
             </p>
@@ -471,42 +471,124 @@ import Letter from "~/assets/letter.mp4";
 
     document.addEventListener("DOMContentLoaded", () => {
       // FeatureDisplay animation
-      const featureSections = document.querySelectorAll(".feature-display-section");
+      const featureSections = document.querySelectorAll(
+        ".feature-display-section"
+      );
       featureSections.forEach((section) => {
         gsap.from(section, {
           opacity: 0,
-          y: 50,
-          duration: 1,
+          y: 100,
+          duration: 0.7,
           ease: "power3.out",
           scrollTrigger: {
             trigger: section as HTMLElement,
-            start: "top 85%",
+            start: "top 45%",
             toggleActions: "play none none none",
           },
         });
       });
 
-      // MessageCard animation
-      const messageCardContainers = document.querySelectorAll(
-        '[id^="message-card-container"]',
+      // MessageCard animation - 投稿風アニメーション
+      const leftContainer = document.querySelector("#message-card-container");
+      const rightContainer = document.querySelector(
+        "#message-card-container-right"
       );
-      messageCardContainers.forEach((container) => {
-        const cards = container.querySelectorAll(".message-card");
-        if (cards.length > 0) {
-          gsap.from(cards, {
-            opacity: 0,
-            y: -30,
-            duration: 0.8,
-            ease: "power2.out",
-            stagger: 0.2,
-            scrollTrigger: {
-              trigger: container as HTMLElement,
-              start: "top 80%",
-              toggleActions: "play none none none",
+
+      // テキストのリッチフェードアニメーション（高パフォーマンス）
+      function startTextAnimation() {
+        const cards = document.querySelectorAll(
+          '[data-enable-text-animation="true"]'
+        );
+
+        const reducedMotion =
+          typeof window !== "undefined" &&
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        cards.forEach((card) => {
+          const textElement = card.querySelector(
+            ".message-text"
+          ) as HTMLElement;
+
+          if (!textElement) return;
+
+          // 初期スタイル（GPUフレンドリー）
+          textElement.style.willChange = "opacity, transform, filter";
+          textElement.style.opacity = "0";
+          textElement.style.color = "black";
+
+          if (reducedMotion) {
+            // 低モーション環境ではシンプルにフェードのみ
+            gsap.to(textElement, {
+              opacity: 1,
+              duration: 0.4,
+              ease: "power1.out",
+              clearProps: "willChange",
+            });
+            return;
+          }
+
+          // リッチなフェード（わずかな持ち上がり + ブラー解除）
+          gsap.fromTo(
+            textElement,
+            { opacity: 0, y: 8, filter: "blur(10px)" },
+            {
+              opacity: 1,
+              y: 0,
+              filter: "blur(0px)",
+              duration: 0.7,
+              ease: "power2.out",
+              delay: 0.05,
+              clearProps: "willChange,filter,transform",
+            }
+          );
+        });
+      }
+
+      if (leftContainer && rightContainer) {
+        const leftCards = leftContainer.querySelectorAll(".message-card");
+        const rightCards = rightContainer.querySelectorAll(".message-card");
+
+        // 初期状態で両方を非表示に設定
+        gsap.set(leftCards, { opacity: 0, scale: 0.8, y: 20 });
+        gsap.set(rightCards, { opacity: 0, scale: 0.9, x: 30 });
+
+        // 左側のカードのアニメーション（一つずつ投稿されるように）
+        if (leftCards.length > 0) {
+          ScrollTrigger.create({
+            trigger: leftContainer as HTMLElement,
+            start: "top 80%",
+            onEnter: () => {
+              gsap.to(leftCards, {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.45,
+                ease: "back.out(1.7)",
+                stagger: 0.55, // 体感速度アップ
+                onComplete: () => {
+                  // 左側完了後に右側アニメーション開始
+                  if (rightCards.length > 0) {
+                    gsap.to(rightCards, {
+                      opacity: 1,
+                      scale: 1,
+                      x: 0,
+                      duration: 0.8,
+                      ease: "power2.out",
+                      delay: 0.25, // 間隔を短縮
+                      onComplete: () => {
+                        // 右側のカード表示完了後、テキストアニメーション開始
+                        startTextAnimation();
+                      },
+                    });
+                  }
+                },
+              });
             },
+            toggleActions: "play none none none",
           });
         }
-      });
+      }
     });
   }
 </script>
