@@ -12,13 +12,13 @@ type Frontmatter = {
   image?: string;
 };
 
-const modules = import.meta.glob("./*.mdx", { eager: true });
+const modules = import.meta.glob("./article/*.mdx", { eager: true });
 const posts = Object.entries(modules)
   .map(([path, mod]) => {
     const frontmatter = (mod as any).frontmatter as Frontmatter;
     const file = path.split("/").pop() || "";
     const slug = file.replace(/\.mdx$/, "");
-    return { url: `/news/${slug}/`, ...frontmatter };
+    return { url: `/news/article/${slug}/`, ...frontmatter };
   })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
