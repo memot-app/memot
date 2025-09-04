@@ -7,7 +7,7 @@ import FallbackImage from "~public/og-image.png";
 interface Props {
   title?: string;
   description?: string;
-  image?: ImageMetadata;
+  image?: ImageMetadata | string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -16,7 +16,19 @@ const {
   title = SITE.title,
   description = SITE.description,
   image = FallbackImage,
-} = Astro.props;
+} = Astro.props as Props;
+
+function resolveOgImageURL(img: ImageMetadata | string) {
+  if (typeof img === 'string') {
+    // Allow absolute or relative URLs
+    try {
+      return new URL(img, Astro.url).toString();
+    } catch {
+      return new URL('/og-image.png', Astro.url).toString();
+    }
+  }
+  return new URL(img.src, Astro.url).toString();
+}
 ---
 
 <!-- Global Metadata -->
@@ -55,11 +67,11 @@ const {
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:image" content={resolveOgImageURL(image)} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+<meta property="twitter:image" content={resolveOgImageURL(image)} />

@@ -12,13 +12,13 @@ type Frontmatter = {
   image?: string;
 };
 
-const modules = import.meta.glob("./*.mdx", { eager: true });
+const modules = import.meta.glob("./article/*.mdx", { eager: true });
 const posts = Object.entries(modules)
   .map(([path, mod]) => {
     const frontmatter = (mod as any).frontmatter as Frontmatter;
     const file = path.split("/").pop() || "";
     const slug = file.replace(/\.mdx$/, "");
-    return { url: `/news/${slug}/`, ...frontmatter };
+    return { url: `/news/article/${slug}/`, ...frontmatter };
   })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -29,14 +29,14 @@ function getMonthName(month: number) {
 let lastMonth: string | null = null;
 ---
 
-<RootLayout>
+<RootLayout title={`おしらせ | めもっと`} description={`めもっとからのお知らせ一覧です。最新情報や更新内容をお届けします。`}>
   <HeaderBackground />
   <Header />
   <main
     class="bg-bg-secondary pt-18 pb-24 min-h-[calc(100vh-var(--height-header))]"
   >
     {/* コンテナの最大幅を広げてコンテンツエリアを確保 */}
-    <section class="mx-auto max-w-4xl w-full sm:px-4">
+    <section id="news-container" data-anim="pending" class="mx-auto max-w-4xl w-full sm:px-4">
       <header class="text-center space-y-2 mb-16">
         <h1 class="text-4xl md:text-5xl font-bold news-title">おしらせ</h1>
       </header>
@@ -193,6 +193,38 @@ let lastMonth: string | null = null;
   <Footer />
 </RootLayout>
 
+<style>
+  /* Hide initial state to avoid flash before GSAP sets styles */
+  #news-container[data-anim="pending"] .news-title {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  #news-container[data-anim="pending"] #timeline-rail {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  #news-container[data-anim="pending"] .timeline-month,
+  #news-container[data-anim="pending"] .timeline-item {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+</style>
+
+<noscript>
+  <style>
+    /* JS無効時は常に表示 */
+    #news-container .news-title,
+    #news-container .timeline-month,
+    #news-container .timeline-item {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    #news-container #timeline-rail {
+      transform: none !important;
+    }
+  </style>
+  </noscript>
+
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -209,6 +241,7 @@ let lastMonth: string | null = null;
       const items = gsap.utils.toArray(
         ".timeline-month, .timeline-item"
       ) as Element[];
+      const container = document.getElementById("news-container");
 
       if (!title || !rail || items.length === 0) {
         return;
@@ -223,6 +256,9 @@ let lastMonth: string | null = null;
       if (title) gsap.set(title, { opacity: 0, y: 30 });
       if (rail) gsap.set(rail, { scaleY: 0, transformOrigin: "top" });
       gsap.set(items, { opacity: 0, y: 40 });
+
+      // Release CSS guard after GSAP has set initial states
+      container?.removeAttribute("data-anim");
 
       const tl = gsap.timeline({
         defaults: { ease: "power3.out", duration: 1 },
