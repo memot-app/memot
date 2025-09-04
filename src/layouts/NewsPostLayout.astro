@@ -54,7 +54,7 @@ function parseFrontmatterDate(input: string | Date) {
 const dateInfo = parseFrontmatterDate(date);
 ---
 
-<RootLayout>
+<RootLayout title={`${title} | めもっと`} description={description ?? `${title} - めもっとのおしらせ`} image={image}>
   <HeaderBackground />
   <Header />
   <main class="bg-bg-secondary pt-28 pb-20 min-h-[calc(100vh-var(--height-header))]">
