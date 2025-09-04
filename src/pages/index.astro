@@ -50,7 +50,7 @@ import Letter from "~/assets/letter.mp4";
   <Header />
 
   <!-- メインコンテンツ -->
-  <main class="min-h-screen bg-bg-secondary">
+  <main id="home-container" data-anim="pending" class="min-h-screen bg-bg-secondary">
     <!-- ヒーローセクション -->
     <section class="bg-bg-primary pt-5 pb-24 md:pb-32">
       <div
@@ -109,7 +109,7 @@ import Letter from "~/assets/letter.mp4";
                 class="-ml-3 message-card"
               />
               <MessageCard
-                message="この季節はうどんを食べたくなるな。おいしい店ないかな"
+                message="つかれた。。最近辛いことが多い..."
                 rotateX={30}
                 rotateY={35}
                 rotateZ={-12}
@@ -462,6 +462,29 @@ import Letter from "~/assets/letter.mp4";
   <!-- フッター -->
   <Footer />
 </RootLayout>
+
+<style>
+  /* Prevent first-paint flicker before GSAP sets initial states */
+  #home-container[data-anim="pending"] .text-hero {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  #home-container[data-anim="pending"] .message-card {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+</style>
+
+<noscript>
+  <style>
+    /* JS disabled: always show */
+    #home-container .text-hero,
+    #home-container .message-card {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  </style>
+</noscript>
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -470,6 +493,14 @@ import Letter from "~/assets/letter.mp4";
     gsap.registerPlugin(ScrollTrigger);
 
     document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("home-container");
+
+      // Hero initial state to avoid flash
+      const hero = document.querySelector(".text-hero");
+      if (hero) {
+        gsap.set(hero, { opacity: 0, y: 24 });
+      }
+
       // FeatureDisplay animation
       const featureSections = document.querySelectorAll(
         ".feature-display-section"
@@ -549,9 +580,12 @@ import Letter from "~/assets/letter.mp4";
         const leftCards = leftContainer.querySelectorAll(".message-card");
         const rightCards = rightContainer.querySelectorAll(".message-card");
 
-        // 初期状態で両方を非表示に設定
+        // 初期状態（CSSガードと一致）をJS側にも明示
         gsap.set(leftCards, { opacity: 0, scale: 0.8, y: 20 });
         gsap.set(rightCards, { opacity: 0, scale: 0.9, x: 30 });
+
+        // Release CSS guard after initial GSAP states are applied
+        container?.removeAttribute("data-anim");
 
         // 左側のカードのアニメーション（一つずつ投稿されるように）
         if (leftCards.length > 0) {
@@ -588,6 +622,14 @@ import Letter from "~/assets/letter.mp4";
             toggleActions: "play none none none",
           });
         }
+      } else {
+        // If containers are missing, still release CSS guard
+        container?.removeAttribute("data-anim");
+      }
+
+      // Animate hero after guard removal
+      if (hero) {
+        gsap.to(hero, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.05 });
       }
     });
   }
