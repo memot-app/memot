@@ -50,7 +50,11 @@ import Letter from "~/assets/letter.mp4";
   <Header />
 
   <!-- メインコンテンツ -->
-  <main id="home-container" data-anim="pending" class="min-h-screen bg-bg-secondary">
+  <main
+    id="home-container"
+    data-anim="pending"
+    class="min-h-screen bg-bg-secondary"
+  >
     <!-- ヒーローセクション -->
     <section class="bg-bg-primary pt-5 pb-24 md:pb-32">
       <div
@@ -154,7 +158,7 @@ import Letter from "~/assets/letter.mp4";
 
     <!-- イントロダクションセクション -->
     <section
-      class="bg-bg-secondary py-24 px-4 grid place-content-center gap-y-16 feature-display-section"
+      class="bg-bg-secondary py-24 px-4 grid place-content-center gap-y-16"
     >
       <div class="mx-auto max-w-3xl w-full grid content-between gap-y-14">
         <h2
@@ -513,7 +517,7 @@ import Letter from "~/assets/letter.mp4";
           ease: "power3.out",
           scrollTrigger: {
             trigger: section as HTMLElement,
-            start: "top 45%",
+            start: "top 70%",
             toggleActions: "play none none none",
           },
         });
@@ -629,7 +633,13 @@ import Letter from "~/assets/letter.mp4";
 
       // Animate hero after guard removal
       if (hero) {
-        gsap.to(hero, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.05 });
+        gsap.to(hero, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: 0.05,
+        });
       }
     });
   }
