@@ -14,17 +14,21 @@ const zeroPaddedNumber = String(number).padStart(maxNumberLength, "0");
 <li
   class:list={[
     "inline-flex items-center justify-start gap-x-3 md:gap-x-6",
-    "outline-[3px] outline-border-primary rounded-[clamp(1rem,3vw,1.75rem)]",
+    "outline-2 md:outline-[3px] outline-border-primary rounded-[clamp(1rem,3vw,1.75rem)]",
     "h-auto",
     "px-3 md:px-6 py-4",
     className,
   ]}
   {...props}
 >
-  <span class="text-2xl md:text-4xl font-bold text-text-primary"
-    >{zeroPaddedNumber}</span
+  <span
+    class="font-bold text-text-primary"
+    style="font-size: clamp(1.25rem, 4vw, 2.5rem);">{zeroPaddedNumber}</span
   >
-  <p class="text-base md:text-2xl font-bold text-text-primary">
+  <p
+    class="font-bold text-text-primary"
+    style="font-size: clamp(1rem, 3vw, 1.5rem);"
+  >
     <slot />
   </p>
 </li>
