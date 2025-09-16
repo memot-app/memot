@@ -36,7 +36,7 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
   <div class="flex flex-col items-center gap-4">
     <video
       id={uniqueId}
-      class="w-[clamp(200px,60%,280px)] rounded-[clamp(1.5rem,8vw,3rem)] border-4 border-gray-300 overflow-hidden"
+      class="w-[clamp(200px,60%,280px)] rounded-[3rem] border-4 border-gray-300 overflow-hidden"
       poster={videoPoster}
       preload="metadata"
       muted
@@ -92,70 +92,29 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // Global sequential playback queue to prevent overlapping autoplay
-    const w = window as any;
-    if (!w.__memotVideoQueue) {
-      w.__memotVideoQueue = {
-        playing: null as HTMLVideoElement | null,
-        queue: [] as HTMLVideoElement[],
-        ensureEndedHook(v: HTMLVideoElement) {
-          const handler = () => {
-            v.setAttribute('data-played', 'true');
-            (w.__memotVideoQueue as any).playing = null;
-            let next: HTMLVideoElement | undefined;
-            while ((w.__memotVideoQueue as any).queue.length > 0 && !next) {
-              const cand = (w.__memotVideoQueue as any).queue.shift();
-              if (!cand) continue;
-              if (!cand.isConnected) continue;
-              if (cand.hasAttribute('data-played')) continue;
-              next = cand;
-            }
-            if (next) {
-              (w.__memotVideoQueue as any).start(next, /*restart*/ true);
-            }
-          };
-          v.removeEventListener('ended', handler);
-          v.addEventListener('ended', handler, { once: true });
-        },
-        start(v: HTMLVideoElement, restart = false) {
-          const mq = w.__memotVideoQueue as any;
-          if (mq.playing && mq.playing !== v) {
-            try { mq.playing.pause(); } catch {}
-          }
-          mq.playing = v;
-          try { if (restart) v.currentTime = 0; } catch {}
-          mq.ensureEndedHook(v);
-          v.play().catch(() => { console.log('Auto-play was prevented'); });
-        },
-        enqueue(v: HTMLVideoElement) {
-          const mq = w.__memotVideoQueue as any;
-          if (v.hasAttribute('data-enqueued') || v.hasAttribute('data-played')) return;
-          v.setAttribute('data-enqueued', 'true');
-          if (!mq.playing) {
-            mq.start(v, /*restart*/ true);
-          } else {
-            mq.queue.push(v);
-          }
-        },
-      };
-    }
-    const g = w.__memotVideoQueue as any;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const video = entry.target as HTMLVideoElement;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const video = entry.target as HTMLVideoElement;
-          if (video && !video.hasAttribute('data-played')) {
-            // Enqueue for sequential autoplay (do not start immediately)
-            (g as any).enqueue(video);
-            // Also ensure UI updates when it ends
-            video.addEventListener('ended', () => {
-              updatePlayPauseButton(video.id, false);
-            }, { once: true });
+            if (video && !video.hasAttribute("data-played")) {
+              video.play().catch(() => {
+                console.log("Auto-play was prevented");
+              });
+
+              video.addEventListener("ended", () => {
+                video.setAttribute("data-played", "true");
+                updatePlayPauseButton(video.id, false);
+              });
+            }
           }
-        }
-      });
-    }, { threshold: 0.5 });
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
 
     function updatePlayPauseButton(videoId: string, isPlaying: boolean) {
       const playIcon = document.getElementById(`play-icon-${videoId}`);
@@ -185,8 +144,7 @@ const uniqueId = `video-${Math.random().toString(36).substring(2, 9)}`;
           const videoElement = video as HTMLVideoElement;
 
           if (videoElement.paused) {
-            // Exclusively play this one; pause any other
-            (g as any).start(videoElement, /*restart*/ false);
+            videoElement.play();
             updatePlayPauseButton(video.id, true);
           } else {
             videoElement.pause();
