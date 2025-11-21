@@ -10,6 +10,7 @@ interface Props {
   tags?: string[];
   image?: string; // public path optional
   description?: string;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
 // MDXのレイアウトに渡るpropsは、環境により frontmatter 配下になる場合があるため
@@ -21,6 +22,11 @@ const date = (__p.date ?? __fm.date ?? "") as string | Date;
 const tags = (__p.tags ?? __fm.tags ?? []) as string[];
 const image = (__p.image ?? __fm.image) as string | undefined;
 const description = (__p.description ?? __fm.description) as string | undefined;
+const headings = (__p.headings ?? []) as {
+  depth: number;
+  slug: string;
+  text: string;
+}[];
 
 function parseFrontmatterDate(input: string | Date) {
   let y = NaN,
@@ -60,6 +66,8 @@ function parseFrontmatterDate(input: string | Date) {
 }
 
 const dateInfo = parseFrontmatterDate(date);
+
+const tocHeadings = headings.filter((h) => h.depth <= 3);
 ---
 
 <RootLayout
@@ -107,6 +115,32 @@ const dateInfo = parseFrontmatterDate(date);
       }
 
       <article class="rich-article">
+        {
+          tocHeadings.length > 0 && (
+            <nav class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
+              <ul class="list-none p-0 m-0 flex flex-col gap-2">
+                {tocHeadings.map((h) => (
+                  <li
+                    class={`block ${
+                      h.depth === 1
+                        ? "pl-0 font-bold"
+                        : h.depth === 2
+                          ? "pl-0 font-semibold"
+                          : "pl-6 text-[0.95em] text-[var(--color-text-secondary)]"
+                    }`}
+                  >
+                    <a
+                      href={`#${h.slug}`}
+                      class="!text-[var(--color-text-secondary)] no-underline font-medium transition-colors block hover:!text-[var(--color-text-primary)] hover:underline"
+                    >
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
         <slot />
       </article>
     </section>
@@ -199,6 +233,14 @@ const dateInfo = parseFrontmatterDate(date);
     font-size: 1rem;
     line-height: 1.9;
     color: var(--color-text-secondary);
+  }
+
+  /* ヘッダー固定分などのスクロール位置調整 */
+  .rich-article h1,
+  .rich-article h2,
+  .rich-article h3,
+  .rich-article h4 {
+    scroll-margin-top: 8rem;
   }
   .rich-article h1 {
     margin-top: 2.5rem;
@@ -350,5 +392,51 @@ const dateInfo = parseFrontmatterDate(date);
       }
     });
     pre.appendChild(btn);
+  });
+
+  // 見出しにコピーリンクを追加
+  const headings = document.querySelectorAll(
+    "article.rich-article h1, article.rich-article h2, article.rich-article h3"
+  );
+  headings.forEach((heading) => {
+    if (!heading.id) return;
+
+    // Add group class for hover effect
+    heading.classList.add("group");
+
+    const link = document.createElement("button");
+    // Tailwind classes for the link button
+    link.className =
+      "heading-link ml-2 text-[var(--color-text-quaternary)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 hover:text-[var(--color-theme)] inline-flex items-center justify-center align-middle text-[0.8em] cursor-pointer bg-transparent border-none p-0";
+
+    link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`;
+    link.title = "リンクをコピー";
+    link.setAttribute("aria-label", "リンクをコピー");
+
+    link.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const url = new URL(window.location.href);
+      url.hash = heading.id;
+
+      // Scroll to heading
+      heading.scrollIntoView({ behavior: "smooth" });
+      // Update URL without reload
+      history.pushState(null, "", url.toString());
+
+      try {
+        await navigator.clipboard.writeText(url.toString());
+
+        // Show feedback
+        const originalHTML = link.innerHTML;
+        link.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        setTimeout(() => {
+          link.innerHTML = originalHTML;
+        }, 2000);
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
+    });
+
+    heading.appendChild(link);
   });
 </script>
