@@ -16,19 +16,21 @@ interface Props {
 // 直接値が無ければ frontmatter をフォールバックとして参照する
 const __p = Astro.props as any;
 const __fm = (__p?.frontmatter ?? {}) as Partial<Props>;
-const title = (__p.title ?? __fm.title ?? '') as string;
-const date = (__p.date ?? __fm.date ?? '') as string | Date;
-const tags = ((__p.tags ?? __fm.tags) ?? []) as string[];
+const title = (__p.title ?? __fm.title ?? "") as string;
+const date = (__p.date ?? __fm.date ?? "") as string | Date;
+const tags = (__p.tags ?? __fm.tags ?? []) as string[];
 const image = (__p.image ?? __fm.image) as string | undefined;
 const description = (__p.description ?? __fm.description) as string | undefined;
 
 function parseFrontmatterDate(input: string | Date) {
-  let y = NaN, m = NaN, d = NaN;
+  let y = NaN,
+    m = NaN,
+    d = NaN;
   if (input instanceof Date) {
     y = input.getUTCFullYear();
     m = input.getUTCMonth() + 1;
     d = input.getUTCDate();
-  } else if (typeof input === 'string') {
+  } else if (typeof input === "string") {
     const m1 = input.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
     if (m1) {
       y = Number(m1[1]);
@@ -44,45 +46,65 @@ function parseFrontmatterDate(input: string | Date) {
     }
   }
   if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) {
-    return { yyyy: '', mm: '', dd: '', iso: '', valid: false } as const;
+    return { yyyy: "", mm: "", dd: "", iso: "", valid: false } as const;
   }
-  const mm = String(m).padStart(2, '0');
-  const dd = String(d).padStart(2, '0');
-  return { yyyy: String(y), mm, dd, iso: `${y}-${mm}-${dd}`, valid: true } as const;
+  const mm = String(m).padStart(2, "0");
+  const dd = String(d).padStart(2, "0");
+  return {
+    yyyy: String(y),
+    mm,
+    dd,
+    iso: `${y}-${mm}-${dd}`,
+    valid: true,
+  } as const;
 }
 
 const dateInfo = parseFrontmatterDate(date);
 ---
 
-<RootLayout title={`${title} | めもっと`} description={description ?? `${title} - めもっとのおしらせ`} image={image}>
+<RootLayout
+  title={`${title} | めもっと`}
+  description={description ?? `${title} - めもっとのおしらせ`}
+  image={image}
+>
   <HeaderBackground />
   <Header />
-  <main class="bg-bg-secondary pt-28 pb-20 min-h-[calc(100vh-var(--height-header))]">
+  <main
+    class="bg-bg-secondary pt-28 pb-20 min-h-[calc(100vh-var(--height-header))]"
+  >
     <section class="container-news">
       <header class="news-hero">
-        {tags && tags.length > 0 && (
-          <div class="news-hero__tags">
-            {tags.map((t) => (
-              <span class:list={["chip", (t)]}>{t}</span>
-            ))}
-          </div>
-        )}
+        {
+          tags && tags.length > 0 && (
+            <div class="news-hero__tags">
+              {tags.map((t) => (
+                <span class:list={["chip", t]}>{t}</span>
+              ))}
+            </div>
+          )
+        }
         <h1 class="news-hero__title"><span class="hash"></span>{title}</h1>
         <p class="news-hero__meta">
-          {dateInfo.valid ? (
-            <time datetime={dateInfo.iso}>{dateInfo.yyyy}/{dateInfo.mm}/{dateInfo.dd}</time>
-          ) : (
-            <span>{typeof date === 'string' ? date : ''}</span>
-          )}
+          {
+            dateInfo.valid ? (
+              <time datetime={dateInfo.iso}>
+                {dateInfo.yyyy}/{dateInfo.mm}/{dateInfo.dd}
+              </time>
+            ) : (
+              <span>{typeof date === "string" ? date : ""}</span>
+            )
+          }
         </p>
         {description && <p class="news-hero__desc">{description}</p>}
       </header>
 
-      {image && (
-        <div class="news-hero__image">
-          <img src={image} alt={title} />
-        </div>
-      )}
+      {
+        image && (
+          <div class="news-hero__image">
+            <img src={image} alt={title} />
+          </div>
+        )
+      }
 
       <article class="rich-article">
         <slot />
@@ -112,7 +134,11 @@ const dateInfo = parseFrontmatterDate(date);
     text-align: center;
     padding-bottom: 0.5rem;
   }
-  .news-hero__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .news-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
   .news-hero__title {
     font-size: clamp(1.8rem, 5vw, 2.6rem);
     font-weight: 800;
@@ -125,8 +151,14 @@ const dateInfo = parseFrontmatterDate(date);
     margin-right: 0.25em;
     color: var(--color-theme);
   }
-  .news-hero__meta { color: var(--color-text-quaternary); font-size: 0.9rem; }
-  .news-hero__desc { color: var(--color-text-secondary); margin-top: 0.25rem; }
+  .news-hero__meta {
+    color: var(--color-text-quaternary);
+    font-size: 0.9rem;
+  }
+  .news-hero__desc {
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+  }
 
   .news-hero__image {
     width: 100%;
@@ -135,17 +167,30 @@ const dateInfo = parseFrontmatterDate(date);
     border: 1px solid #e5e7eb;
     background: white;
   }
-  .news-hero__image img { width: 100%; height: auto; display: block; }
+  .news-hero__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 
   /* タグチップ */
   .chip {
-    display: inline-flex; align-items: center; gap: 0.25rem;
-    padding: 0.25rem 0.625rem; border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
     border: 1px solid #418a24; /* theme border */
-    background: #5DB53E; /* theme */
-    color: #ffffff; font-size: 0.75rem; font-weight: 700;
+    background: #5db53e; /* theme */
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
   }
-  .chip--primary { background: #5DB53E; color: #ffffff; border-color: #418a24; }
+  .chip--primary {
+    background: #5db53e;
+    color: #ffffff;
+    border-color: #418a24;
+  }
 
   /* 記事本文（Markdown） */
   .rich-article {
@@ -156,57 +201,151 @@ const dateInfo = parseFrontmatterDate(date);
     color: var(--color-text-secondary);
   }
   .rich-article h1 {
-    margin-top: 2.5rem; margin-bottom: 0.75rem;
-    font-size: clamp(1.75rem, 4.6vw, 2.25rem); font-weight: 900; color: var(--color-text-secondary);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.75rem, 4.6vw, 2.25rem);
+    font-weight: 900;
+    color: var(--color-text-secondary);
   }
   .rich-article h2 {
-    position: relative; margin-top: 2rem; 
-    font-size: clamp(1.35rem, 3.4vw, 1.75rem); font-weight: 700; color: var(--color-text-secondary);
+    position: relative;
+    margin-top: 2rem;
+    font-size: clamp(1.35rem, 3.4vw, 1.75rem);
+    font-weight: 700;
+    color: var(--color-text-secondary);
   }
-  .rich-article h3 { margin-top: 1.25rem; margin-bottom: 0; font-size: clamp(1.1rem, 2.6vw, 1.35rem); font-weight: 600; }
-  .rich-article h4 { margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.05rem; font-weight: 600; }
+  .rich-article h3 {
+    margin-top: 1.25rem;
+    margin-bottom: 0;
+    font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+    font-weight: 600;
+  }
+  .rich-article h4 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
 
-  .rich-article p { margin: 0.25rem 0; }
-  .rich-article ul { padding-left: 1.25rem; list-style: disc; }
-  .rich-article ol { padding-left: 1.25rem; list-style: decimal; }
-  .rich-article li { margin: 0.3rem 0; }
+  .rich-article p {
+    margin: 0.25rem 0;
+  }
+  .rich-article ul {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .rich-article ol {
+    padding-left: 1.25rem;
+    list-style: decimal;
+  }
+  .rich-article li {
+    margin: 0.3rem 0;
+  }
 
-  .rich-article strong { font-weight: 700; color: var(--color-text-primary); }
-  .rich-article em { font-style: normal; font-weight: 600; }
+  .rich-article strong {
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+  .rich-article em {
+    font-style: normal;
+    font-weight: 600;
+  }
 
-  .rich-article a { color: var(--color-theme); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+  .rich-article a {
+    color: var(--color-theme);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 600;
+  }
 
-  .rich-article img { display: block; max-width: 100%; border-radius: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .rich-article img {
+    display: block;
+    max-width: 100%;
+    max-height: clamp(400px, 50vh, 700px);
+    border-radius: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-block: 1.5rem;
+  }
 
-  .rich-article blockquote { margin: 0; padding: 0.25rem 0.875rem; margin-top: 2rem; margin-bottom: 2rem;  background: #f8faf7; border-left: 6px solid var(--color-theme); border-radius: 0.5rem; white-space: pre-line; }
-  .rich-article blockquote p { margin: 0; }
+  .rich-article blockquote {
+    margin: 0;
+    padding: 0.25rem 0.875rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    background: #f8faf7;
+    border-left: 6px solid var(--color-theme);
+    border-radius: 0.5rem;
+    white-space: pre-line;
+  }
+  .rich-article blockquote p {
+    margin: 0;
+  }
 
   /* 引用上下の外側の余白（gridのgap分）を圧縮 */
-  .rich-article > blockquote { margin-top: -1rem; margin-bottom: -1rem; }
+  .rich-article > blockquote {
+    margin-top: -1rem;
+    margin-bottom: -1rem;
+  }
 
-  .rich-article :not(pre) > code { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 0.15rem 0.35rem; border-radius: 0.375rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; }
+  .rich-article :not(pre) > code {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.375rem;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+    font-size: 0.9em;
+  }
 
-  .rich-article pre { background: #0b1020; color: #e2e8f0; padding: 1rem; border-radius: 0.75rem; overflow: auto; border: 1px solid rgba(255,255,255,0.06); position: relative; }
-  .rich-article pre code { color: inherit; font-size: 0.92rem; }
-  .rich-article pre .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.25); font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 0.375rem; cursor: pointer; }
+  .rich-article pre {
+    background: #0b1020;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow: auto;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    position: relative;
+  }
+  .rich-article pre code {
+    color: inherit;
+    font-size: 0.92rem;
+  }
+  .rich-article pre .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+  }
 
-  .rich-article hr { border: none; height: 1px; background: #e5e7eb; margin: 1.5rem 0; }
-
+  .rich-article hr {
+    border: none;
+    height: 1px;
+    background: #e5e7eb;
+    margin: 1.5rem 0;
+  }
 </style>
 
 <script>
   // コードブロックにコピー用ボタンを追加
-  document.querySelectorAll('article.rich-article pre').forEach((pre) => {
-    const btn = document.createElement('button');
-    btn.className = 'copy-btn';
-    btn.textContent = 'コピー';
-    btn.addEventListener('click', async () => {
-      const code = pre.querySelector('code');
+  document.querySelectorAll("article.rich-article pre").forEach((pre) => {
+    const btn = document.createElement("button");
+    btn.className = "copy-btn";
+    btn.textContent = "コピー";
+    btn.addEventListener("click", async () => {
+      const code = pre.querySelector("code");
       if (code) {
         try {
-          await navigator.clipboard.writeText(code.textContent || '');
-          btn.textContent = 'コピーしました！';
-          setTimeout(() => (btn.textContent = 'コピー'), 1500);
+          await navigator.clipboard.writeText(code.textContent || "");
+          btn.textContent = "コピーしました！";
+          setTimeout(() => (btn.textContent = "コピー"), 1500);
         } catch {}
       }
     });
